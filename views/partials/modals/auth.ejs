@@ -1,0 +1,75 @@
+<%# login modal %>
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# modal title %>
+        <h5 class="modal-title" id="loginModalTitle">Login</h5>
+        <%# close modal %>
+        <button type="button" class="btn btn-secondary fa fa-window-close close" data-dismiss="modal" aria-label="close"></button>
+      </div>
+      <%# login form %>
+      <form action="/auth/login" method="POST">
+        <div class="modal-body">
+          <%# email input %>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" name="email" placeholder="name@example.com" />
+            <label for="loginEmail" class="form-label">Email address</label>
+          </div>
+          <%# password input %>
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Password" />
+            <label for="loginPassword" class="form-label">Password</label>
+          </div>
+        </div>
+        <%# form buttons %>
+        <div class="modal-footer">
+          <%# close modal %>
+          <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancel</button>
+          <%# login buttons %>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%# signp modal %>
+<div class="modal fade" id="signpModal" tabindex="-1" role="dialog" aria-labelledby="signpModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# modal title %>
+        <h5 class="modal-title" id="signpModalTitle">Signup</h5>
+        <%# close modal %>
+        <button type="button" class="btn btn-secondary fa fa-window-close close" data-dismiss="modal" aria-label="close"></button>
+      </div>
+      <%# signup form %>
+      <form action="/auth/signup" method="POST">
+        <div class="modal-body">
+          <%# email input %>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="signEmail" aria-describedby="emailHelp" name="email" placeholder="name@example.com" />
+            <label for="signEmail" class="form-label">Email address</label>
+          </div>
+          <%# password input %>
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="signPassword" name="password" placeholder="Password" />
+            <label for="signPassword" class="form-label">Password</label>
+          </div>
+          <%# confirm password input %>
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Password" />
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <%# close modal %>
+          <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancel</button>
+          <%# sign buttons %>
+          <button type="submit" class="btn btn-primary">Signup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
