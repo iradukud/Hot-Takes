@@ -1,13 +1,25 @@
 <%- include('partials/header') -%>
 
-<div class="container">
-  <div class="row mt-5">
-    <div class="col-6">
-      <form action="/auth/logout" method="GET">
-        <button type="submit" class="btn btn-primary">Logout</button>
-      </form>
+<div class="d-flex flex-nowrap">
+  <%# load desktop sidebar modals partial %>
+  <%- include('partials/modals/deskSide') -%>
+  <%# load mobile sidebar modals partial %>
+  <%- include('partials/modals/mobSide') -%>
+
+  <%# main section of the page %>
+  <section class="ms-3">
+    <h1 class="display-5">Home</h1>
+    <div>
+
+
     </div>
-  </div>
+  </section>
+
+
 </div>
 
+<%# load basic site scripts %>
+<%- include('partials/scripts') -%>
+
+<%# load footer partial %>
 <%- include('partials/footer') -%>

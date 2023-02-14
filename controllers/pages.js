@@ -4,7 +4,7 @@ const User = require("../models/User");
 exports.getIndex = (req, res) => {
   //if already signed in redirect to dashboard
   if (req.user) {
-    return res.redirect("/home");
+    return res.redirect("/homepage");
   };
   res.render("index.ejs", { title: "Login or Signup" });
 };

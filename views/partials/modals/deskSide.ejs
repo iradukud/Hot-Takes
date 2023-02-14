@@ -1,0 +1,73 @@
+<%# desktop sidebar navigation %>
+<nav class="d-flex flex-md-wrap sidebar desktop">
+  <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-nav" style="width: 160px;">
+    <%# site log %>
+    <div class="d-flex justify-content-center">
+      <a href="/" class="link-light">
+        <img src="/imgs/hot_takes-nav-desktop-logo.png" alt="hot_takes-logo" width="72" height="100%">
+      </a>
+    </div>
+
+    <hr>
+
+    <%# nav container %>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <%# nav item - home %>
+      <li class="nav-item">
+        <a href="#" class="nav-link link-light text-nav <%= title=="Homepage" ? "selected" : "" %>">
+          <i class="fa fa-home"></i>
+          <span>Home</span>
+        </a>
+      </li>
+      <%# nav item - trending %>
+      <li>
+        <a href="#" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
+          <i class="fa fa-hashtag"></i>
+          <span>Trending</span>
+        </a>
+      </li>
+      <%# nav item - messages %>
+      <li>
+        <a href="#" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
+          <i class="fa fa-envelope"></i>
+          <span>Messages</span>
+        </a>
+      </li>
+      <%# nav item - trending %>
+      <li>
+        <a href="#" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
+          <i class="fa fa-user"></i>
+          <span>Profile</span>
+        </a>
+      </li>
+      <%# create take %>
+      <li>
+        <div class="btn nav-link text-nav active mt-4">
+          <span>Take</span>
+        </div>
+      </li>
+    </ul>
+
+    <hr>
+
+    <%# dropdown menu %>
+    <div class="dropdown">
+      <a href="#" class="d-flex align-items-center link-light text-decoration-none dropdown-toggle text-nav" data-bs-toggle="dropdown" aria-expanded="false">
+        <%# user profile image %>
+        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+        <%# user handle %>
+        <strong>mdo</strong>
+      </a>
+      <%# list of dropdown items %>
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+        <%# account link %>
+        <li><a class="dropdown-item" href="#">Account</a></li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <%# logout link %>
+        <li><a class="dropdown-item" href="/auth/logout">Sign out</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
