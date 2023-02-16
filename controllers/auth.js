@@ -105,14 +105,15 @@ exports.postSignup = (req, res, next) => {
 
   //create new user using the User Schema
   const user = new User({
-    userName: req.body.userName,
+    userName : req.body.userName,
+    userHandle: req.body.userHandle,
     email: req.body.email,
     password: req.body.password,
   });
 
   //saving user's information
   User.findOne(
-    { $or: [{ email: req.body.email }, { userName: req.body.userName }] },
+    { $or: [{ email: req.body.email }, { userHandle: req.body.userHandle }] },
     (err, existingUser) => {
 
       //if an error occurs end function and return the error

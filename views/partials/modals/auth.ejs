@@ -47,6 +47,16 @@
       <%# signup form %>
       <form action="/auth/signup" method="POST">
         <div class="modal-body">
+          <%# username input %>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="userName" name="userName" placeholder="userName">
+            <label for="userName" class="form-label">User Name</label>
+          </div>
+          <%# user handle input %>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="userHandle" name="userHandle" placeholder="userHandle">
+            <label for="userHandle" class="form-label">User handle</label>
+          </div>
           <%# email input %>
           <div class="form-floating mb-3">
             <input type="email" class="form-control" id="signEmail" aria-describedby="emailHelp" name="email" placeholder="name@example.com" />

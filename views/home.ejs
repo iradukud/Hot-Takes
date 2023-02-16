@@ -5,10 +5,10 @@
   <%- include('partials/modals/sidebar') -%>
 
   <%# main section of the page %>
-  <section class="ms-3">
-    <h1 class="display-5">Home</h1>
+  <main class="d-flex flex-column col-sm-3 ms-3 me-3 flex-shrink-0">
+    <h1 class="text-center">Home</h1>
 
-    <div>
+    <div class="d-flex justify-content-center mb-4">
       <form action="/post/create" enctype="multipart/form-data" method='POST'>
         <div class="d-flex">
           <%# user profile image %>
@@ -32,8 +32,47 @@
       </form>
     </div>
 
-  </section>
+    <%# if user has any post show them %>
+    <%if(posts.length){%>
+    <section class="d-flex flex-column align-items-center">
+      <%posts.forEach(post=>{%>
+      <div class="row col-sm-8">
+        <%# container for each post %>
+        <div class="d-flex mb-3">
+          <%# user profile image %>
+          <div class="flex-column">
+            <img src="https://github.com/mdo.png" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+          </div>
+          <div class="flex-column w-100">
+            <span class="d-block"><strong><%= user['userName'] %></strong></span>
+            <span class="d-block mb-1">@<%= user['userHandle'] %></span>
 
+            <p class="text-wrap"><%= post.take %></p>
+            <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
+              <%if(post['image']){%>
+              <img src="<%= post['image']%>" alt="" width="200" height="100%">
+            <%}%>
+          </div>
+            <div class="d-flex justify-content-around align-items-center">
+              <%if(post['user'].toString().trim() == user['_id'].toString().trim()){%>
+            <i class="fas fa-edit"></i>
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            <%}%>
+            <div>
+              <i class="fa fa-comments" aria-hidden="true"></i><span><span>
+                <span><%= post['comments'].length %></span>
+              </div>
+            <div>
+              <i class="fa fa-fire"></i>
+              <span><%= post['flames'].length %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%})%>
+            <%}%>
+    </section>
+  </main>
 
 </div>
 

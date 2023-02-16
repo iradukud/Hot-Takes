@@ -1,4 +1,5 @@
 const cloudinary = require("../middleware/cloudinary");
+const User = require("../models/User");
 const Post = require("../models/Post");
 
 module.exports = {
@@ -20,7 +21,9 @@ module.exports = {
         user: req.user.id,
       });
       console.log("take has been added!");
-      res.render("home.ejs", { title: 'Homepage' });
+      const user = await User.findById({ _id: req.user.id });
+      const posts = await Post.find({ user: req.user }).sort({ createdAt: "desc" }).lean();
+      res.render("home.ejs", { title: 'Homepage', posts: posts, user: user });
     } catch (err) {
       console.log(err);
     }
