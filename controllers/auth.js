@@ -50,7 +50,7 @@ exports.postLogin = (req, res, next) => {
 
       //redirect to user's homepage
       req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(req.session.returnTo || "/homepage");
+      res.redirect(req.session.returnTo || "/home");
     });
   })(req, res, next);
 };
@@ -139,7 +139,7 @@ exports.postSignup = (req, res, next) => {
           if (err) {
             return next(err);
           }
-          res.redirect("/homepage");
+          res.redirect("/home");
         });
       });
     });

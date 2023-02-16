@@ -1,4 +1,4 @@
-    /*  side bar styling */
+    /* sidebar styling */
     .sidebar {
       height: 100vh;
       /*
@@ -26,16 +26,45 @@
       background-color: #ff7f27 !important;
     }
 
-    /*  desktop nav */
+    /* desktop nav */
     @media (max-width: 576px) {
       .desktop {
         display: none !important;
       }
     }
 
-    /*  mobile nav */
+    /* mobile nav */
     @media (min-width: 576px) {
       .mobile {
         display: none !important;
       }
+    }
+
+    /* post form styling */
+    /* remove textarea's border */
+    .post {
+      border: none;
+      outline: none;
+      overflow: hidden;
+      resize: none;
+      border-bottom: 1px solid #ff7f27;
+    }
+
+    /* hide default file input */
+    .inputImage {
+      display: none;
+    }
+
+    /* input image icon */
+    .fa-file-image {
+      color: #ff7f27;
+    }
+    
+    /* form button */
+    .btnSub{
+     color: white;
+     background-color: #ff7f27;
+     border: none;
+     border-radius: 0.25rem;
+     padding: 0.1rem 1rem
     }

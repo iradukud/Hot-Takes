@@ -10,7 +10,7 @@ const logger = require("morgan");
 const connectDB = require("./config/database");
 const authRoutes = require("./routes/auth");
 const pagesRoutes = require("./routes/pages");
-//const postRoutes = require("./routes/posts");
+const postRoutes = require("./routes/posts");
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
@@ -57,7 +57,7 @@ app.use(flash());
 //Setup Routes For Which The Server Is Listening
 app.use("/", pagesRoutes);
 app.use("/auth", authRoutes);
-//app.use("/post", postRoutes);
+app.use("/post", postRoutes);
 
 //Server Running
 app.listen(process.env.PORT, () => {

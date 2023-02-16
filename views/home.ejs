@@ -2,17 +2,36 @@
 
 <div class="d-flex flex-nowrap">
   <%# load desktop sidebar modals partial %>
-  <%- include('partials/modals/deskSide') -%>
-  <%# load mobile sidebar modals partial %>
-  <%- include('partials/modals/mobSide') -%>
+  <%- include('partials/modals/sidebar') -%>
 
   <%# main section of the page %>
   <section class="ms-3">
     <h1 class="display-5">Home</h1>
+
     <div>
-
-
+      <form action="/post/create" enctype="multipart/form-data" method='POST'>
+        <div class="d-flex">
+          <%# user profile image %>
+          <img src="https://github.com/mdo.png" alt="user profile" width="32" height="32" class="rounded-circle me-2">
+          <textarea name="post" id="" cols="50" rows="3" placeholder="What's your take?" class="post"></textarea>
+        </div>
+        <div class="d-flex justify-content-between align-items-center ms-5 mt-2">
+          <div>
+            <%# input image label %>
+            <label for="file-input" class="">
+              <i class="fa fa-file-image" aria-hidden="true" width="35"></i>
+            </label>
+            <%# input file %>
+            <input type="file" id="file-input" name="postImage" class="inputImage">
+          </div>
+          <div>
+            <%# submission button %>
+            <button type="sumbit" value="Upload" class="btnSub">Take</button>
+          </div>
+        </div>
+      </form>
     </div>
+
   </section>
 
 

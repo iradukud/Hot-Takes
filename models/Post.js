@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
   image: {
     type: String,
     require: true,
@@ -13,12 +9,16 @@ const PostSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  caption: {
+  take: {
     type: String,
     required: true,
   },
-  likes: {
-    type: Number,
+  comments:{
+    type: Array,
+    required: true,
+  },
+  flames: {
+    type: Array,
     required: true,
   },
   user: {
