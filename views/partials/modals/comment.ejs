@@ -1,0 +1,38 @@
+<%# comment modal %>
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# modal title %>
+        <h5 class="modal-title" id="commentModalTitle">Add Comment</h5>
+        <%# close modal %>
+        <button type="button" class="btn btn-secondary fa fa-window-close close" data-dismiss="modal" aria-label="close"></button>
+      </div>
+      <%# login form %>
+      <form action="/post/addComment" method="POST">
+        <div class="modal-body">
+          <%# email input %>
+          <textarea class="form-control" id="commentText" name="comment" placeholder="Comment" cols="50" rows="3"></textarea>
+
+          <%# hidden inputs %>
+          <%# post id %>
+          <input type="hidden" id="postId" name="postId" value="" />
+          <%# username %>
+          <input type="hidden" name="userName" value="<%=user['userName']%>" />
+          <%# user handle %>
+          <input type="hidden" name="userHandle" value="<%=user['userHandle']%>" />
+          <%# user image -- future implementation %>
+          <%# comment image -- future implementation %>
+
+        </div>
+        <%# form buttons %>
+        <div class="modal-footer">
+          <%# close modal %>
+          <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancel</button>
+          <%# login buttons %>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

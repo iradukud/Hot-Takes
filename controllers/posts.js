@@ -3,15 +3,17 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 
 module.exports = {
+  //create a new post
   createPost: async (req, res) => {
     try {
-      console.log(req.body)
       let result = ''
-      // Upload image to cloudinary
+
+      // Upload image to cloudinary, if provided
       if (req.file) {
         result = await cloudinary.uploader.upload(req.file.path);
       }
 
+      //save post in DB
       await Post.create({
         image: result.secure_url || '',
         cloudinaryId: result.public_id || '',
@@ -19,8 +21,29 @@ module.exports = {
         comments: [],
         flames: [],
         user: req.user.id,
+        userName: req.user.userName,
+        userHandle: req.user.userHandle,
+        //user image -- future implentation 
       });
+
       console.log("take has been added!");
+      //find all user posts
+      const user = await User.findById({ _id: req.user.id });
+      const posts = await Post.find({ user: req.user }).sort({ createdAt: "desc" }).lean();
+      res.render("home.ejs", { title: 'Homepage', posts: posts, user: user });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  //add comment to post  
+  addComment: async (req, res) => {
+    try {
+      //insert comment into comments array
+      await Post.findOneAndUpdate({ _id: req.body.postId }, {
+        $push: { comments: { comment: req.body.comment, userName: req.body.userName, userHandle: req.body.userHandle } }
+      });
+
+      console.log("comment added!");
       const user = await User.findById({ _id: req.user.id });
       const posts = await Post.find({ user: req.user }).sort({ createdAt: "desc" }).lean();
       res.render("home.ejs", { title: 'Homepage', posts: posts, user: user });
