@@ -65,7 +65,7 @@
                 <i class="fa fa-trash"></i>
                 <%}%>
             
-                <%# like and comment buttons %> 
+                <%# like and comment buttons %>
                 <div>
                   <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
                   <span><%= post['comments'].length %></span>
@@ -75,11 +75,38 @@
                   <span><%= post['flames'].length %></span>
                 </div>
               </div>
+
+              <%# post comments %>
+              <%  for(i=0;i<post['comments'].length;i++){ %>
+              <div class="d-flex mb-3">
+                <div class="flex-column">
+                  <img src="https://github.com/mdo.png" alt="user profile" width="45" height="45" class="rounded-circle me-2">
+                </div>
+                <div class="flex-column w-100">
+                  <%# user name %>
+                  <span><strong><%= post['comments'][i]['userName'] %></strong></span>
+                  <%# user handle %>
+                  <span class="mb-1">@<%= post['comments'][i]['userHandle'] %></span>
+                  <%# post text %>
+                  <p class="text-wrap border-bottom"><%= post['comments'][i]['comment']%></p>
+
+                  <div class="d-flex justify-content-around align-items-center">
+                    <%# if owner of post %>
+                    <%if(post['user'].toString().trim() == user['_id'].toString().trim()){%>
+                    <i class="fas fa-edit"></i>
+                    <i class="fa fa-trash"></i>
+                    <%}%>
+                  </div>
+                </div>
+              </div>
+
+              <% } %>
+
+                  </div>
+                </div>
+                <%})%>
+              </div>
             </div>
-          </div>
-          <%})%>
-        </div>
-      </div>
     </section>
     <%}%>
 
