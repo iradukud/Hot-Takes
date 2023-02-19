@@ -15,22 +15,17 @@ module.exports = {
 
       //save post in DB
       await Post.create({
+        account:req.user._id,
+        user: req.body.user,
+        take: req.body.post,
         image: result.secure_url || '',
         cloudinaryId: result.public_id || '',
-        take: req.body.post,
         comments: [],
         flames: [],
-        user: req.user.id,
-        userName: req.user.userName,
-        userHandle: req.user.userHandle,
-        //user image -- future implentation 
       });
 
       console.log("take has been added!");
-      //find all user posts
-      const user = await User.findById({ _id: req.user.id });
-      const posts = await Post.find({ user: req.user }).sort({ createdAt: "desc" }).lean();
-      res.render("home.ejs", { title: 'Homepage', posts: posts, user: user });
+      res.redirect('/home');
     } catch (err) {
       console.log(err);
     }
@@ -44,9 +39,7 @@ module.exports = {
       });
 
       console.log("comment added!");
-      const user = await User.findById({ _id: req.user.id });
-      const posts = await Post.find({ user: req.user }).sort({ createdAt: "desc" }).lean();
-      res.render("home.ejs", { title: 'Homepage', posts: posts, user: user });
+      res.redirect('/home');
     } catch (err) {
       console.log(err);
     }

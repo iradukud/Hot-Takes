@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema({
+  take: {
+    type: String,
+    required: true,
+  },
   image: {
     type: String,
     require: true,
@@ -9,11 +13,7 @@ const PostSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  take: {
-    type: String,
-    required: true,
-  },
-  comments:{
+  comments: {
     type: Array,
     required: true,
   },
@@ -21,21 +21,17 @@ const PostSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-  userName: { 
-    type: String,
-    required: true, 
-  },
-  userHandle: { 
-    type: String,
-    required: true, 
-  },
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  account: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Account",
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 

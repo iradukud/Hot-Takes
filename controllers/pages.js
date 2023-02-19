@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
+const mongoose = require("mongoose");
 
 
 //get main/index page
@@ -14,9 +15,41 @@ exports.getIndex = (req, res) => {
 //get homepage
 exports.getHome = async (req, res) => {
   try {
-    const user = await User.findById({ _id: req.user.id });
-    const posts = await Post.find({ user: req.user }).sort({ createdAt: "desc" }).lean();
-    res.render("home.ejs", { title: 'Homepage', posts: posts, user: user });
+    //find logged in user
+    const user = await User.findOne({ account: req.user._id });
+    //retrieve one via account id
+    const post = await Post.findOne({ account: req.user._id });
+    //find every post posted by posted by user and people their following
+    const posts = await mongoose.connection.db.collection("posts").aggregate([
+      { 
+        //implement way to fetch user's followers posts
+        $match: { user: post.user } 
+      },
+      {
+        $lookup:
+        {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "postUser"
+        }
+
+      },
+      {
+        $unwind: "$postUser"
+      },
+      {
+        $project: {
+          "postUser._id": 0,
+          "postUser.cloudinaryId": 0,
+          "postUser.account": 0,
+        }
+      },
+    ]).toArray();
+
+    console.log(posts)
+
+    res.render("home.ejs", { title: 'Homepage', posts: posts, currentUser: user });
   } catch (err) {
     console.log(err);
   }

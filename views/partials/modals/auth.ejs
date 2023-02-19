@@ -45,39 +45,61 @@
         <button type="button" class="btn btn-secondary fa fa-window-close close" data-dismiss="modal" aria-label="close"></button>
       </div>
       <%# signup form %>
-      <form action="/auth/signup" method="POST">
+      <form action="/auth/signup" enctype="multipart/form-data" method="POST">
         <div class="modal-body">
-          <%# username input %>
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="userName" name="userName" placeholder="userName">
-            <label for="userName" class="form-label">User Name</label>
-          </div>
-          <%# user handle input %>
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="userHandle" name="userHandle" placeholder="userHandle">
-            <label for="userHandle" class="form-label">User handle</label>
-          </div>
-          <%# email input %>
-          <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="signEmail" aria-describedby="emailHelp" name="email" placeholder="name@example.com" />
-            <label for="signEmail" class="form-label">Email address</label>
-          </div>
-          <%# password input %>
-          <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="signPassword" name="password" placeholder="Password" />
-            <label for="signPassword" class="form-label">Password</label>
-          </div>
-          <%# confirm password input %>
-          <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Password" />
-            <label for="confirmPassword" class="form-label">Confirm Password</label>
-          </div>
+          <%# step 1: account creation information %>
+          <section class="step1">
+            <%# email input %>
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="signEmail" aria-describedby="emailHelp" name="email" placeholder="name@example.com" />
+              <label for="signEmail" class="form-label">Email address</label>
+            </div>
+            <%# password input %>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="signPassword" name="password" placeholder="Password" />
+              <label for="signPassword" class="form-label">Password</label>
+            </div>
+            <%# confirm password input %>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Password" />
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+            </div>
+          </section>
+          <%# step 2: user information %>
+          <section class="step2">
+            <%# username %>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="userName" name="userName" placeholder="userName">
+              <label for="userName" class="form-label">Username</label>
+            </div>
+            <%# user handle input %>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="userHandle" name="userHandle" placeholder="userHandle">
+              <label for="userHandle" class="form-label">User Handle</label>
+            </div>
+            <%# user profile %>
+            <div class="text-center">
+              <input type="file" id="profileImage" name="profileImage" class="inputImage">
+              <label for="profileImage" class="fa fa-file-image" width="35">
+                Profile Image
+              </label>
+            </div>
+          </section>
+
+
         </div>
         <div class="modal-footer">
-          <%# close modal %>
-          <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancel</button>
-          <%# sign buttons %>
-          <button type="submit" class="btn btn-primary">Signup</button>
+          <section class="step1">
+            <%# close modal %>
+            <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancel</button>
+            <%# next buttons %>
+            <button type="button" class="btn btn-primary" id="nextSignup">Next</button>
+          </section>
+          <section class="step2">
+            <%# sign buttons %>
+            <button type="button" class="btn btn-secondary" id="backSignup" >Back</button>
+            <button type="submit" class="btn btn-primary" value="Upload" >Signup</button>
+          </section>
         </div>
       </form>
     </div>

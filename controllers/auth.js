@@ -1,5 +1,6 @@
 const passport = require("passport");
 const validator = require("validator");
+const Account = require("../models/Account");
 const User = require("../models/User");
 const cloudinary = require("../middleware/cloudinary");
 
@@ -104,15 +105,13 @@ exports.postSignup = (req, res, next) => {
   });
 
   //create new user using the User Schema
-  const user = new User({
-    userName : req.body.userName,
-    userHandle: req.body.userHandle,
+  const user = new Account({
     email: req.body.email,
     password: req.body.password,
   });
 
   //saving user's information
-  User.findOne(
+  Account.findOne(
     { $or: [{ email: req.body.email }, { userHandle: req.body.userHandle }] },
     (err, existingUser) => {
 
@@ -135,12 +134,31 @@ exports.postSignup = (req, res, next) => {
         }
 
         //user sign in
-        req.logIn(user, (err) => {
+        req.logIn(user, async (err) => {
           //if an error occurs end function and return the error
           if (err) {
             return next(err);
           }
-          res.redirect("/home");
+
+          let result=''
+
+          // Upload image to cloudinary, if provided
+          if (req.file) {
+            result = await cloudinary.uploader.upload(req.file.path);
+          }
+
+          //save post in DB
+          await User.create({
+            userName: req.body.userName,
+            userHandle: req.body.userHandle,
+            profileImage: result.secure_url || 'https://res.cloudinary.com/dwwcootcr/image/upload/v1676950620/676-6764065_default-profile-picture-transparent-hd-png-download_zgrei6.png',
+            cloudinaryId: result.public_id || '',
+            following: [],
+            follower:[],
+            account:req.user.id,
+           });
+
+           res.redirect("/home");
         });
       });
     });

@@ -1,37 +1,121 @@
 <%- include('partials/header') -%>
-<div class="container">
-  <div class="row justify-content-center mt-5">
-    <div class="col-6">
-      <h2><%= post.title %></h2>
-      <img class="img-fluid" src="<%= post.image%>" />
-      <div class="row justify-content-between">
-        <form
-          class="col-1"
-          action="/post/likePost/<%= post.id %>?_method=PUT"
-          method="POST"
-        >
-          <button class="btn btn-primary fa fa-heart" type="submit"></button>
-        </form>
-        <h3 class="col-3">Likes: <%= post.likes %></h3>
-        <%if(post.user == user.id){ %>
-        <form
-          action="/post/deletePost/<%= post.id %>?_method=DELETE"
-          method="POST"
-          class="col-3"
-        >
-          <button class="btn btn-primary fa fa-trash" type="submit"></button>
-        </form>
-        <%}%>
-      </div>
+
+<div class="d-flex flex-nowrap">
+  <%# load desktop sidebar modals partial %>
+  <%- include('partials/sidebar') -%>
+
+  <%# main section of the page %>
+  <main class="d-flex flex-column col-sm-3 mx-3 ">
+    <h1 class="text-center">Home</h1>
+    <div class="d-flex justify-content-center mb-4">
+      <form action="/post/create" enctype="multipart/form-data" method='POST'>
+        <div class="d-flex">
+          <%# user profile image %>
+          <img src="https://github.com/mdo.png" alt="user profile" width="32" height="32" class="rounded-circle me-2">
+          <textarea name="post" cols="50" rows="3" placeholder="What's your take?" class="post"></textarea>
+        </div>
+        <div class="d-flex justify-content-between align-items-center ms-5 mt-2">
+          <%# post image %>
+          <div>
+            <label for="file-input" class="fa fa-file-image" width="35"></label>
+            <input type="file" id="file-input" name="postImage" class="inputImage">
+          </div>
+          <div>
+            <%# submission button %>
+            <button type="sumbit" value="Upload" class="btnSub">Take</button>
+          </div>
+        </div>
+      </form>
     </div>
-    <div class="col-3 mt-5">
-      <p><%= post.caption %></p>
-    </div>
-    <div class="col-6 mt-5">
-      <a class="btn btn-primary" href="/profile">Return to Profile</a>
-      <a class="btn btn-primary" href="/feed">Return to Feed</a>
-    </div>
-  </div>
+
+    <%# if user has any post show them %>
+    <%if(posts.length){%>
+    <section class="d-flex flex-column align-items-center">
+      <div class="row col-10">
+        <%posts.forEach(post=>{%>
+        <%# container for each post %>
+        <div class="d-flex mb-3">
+          <%# user profile image %>
+          <div class="flex-column">
+            <img src="https://github.com/mdo.png" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+          </div>
+          <%# post text %>
+          <div class="flex-column w-100">
+            <%# user name %>
+            <span><strong><%= post['userName'] %></strong></span>
+            <%# user handle %>
+            <span class="mb-1">@<%= post['userHandle'] %></span>
+            <%# post text %>
+            <p class="text-wrap"><%= post.take %></p>
+            <%# post image image %>
+            <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
+              <%if(post['image']){%>
+              <img src="<%= post['image']%>" alt="" width="200" height="100%">
+              <%}%>
+            </div>
+            <%# post icons %>
+              <div class="d-flex justify-content-around align-items-center">
+                <%# if owner of post %>
+                <%if(post['user'].toString().trim() == user['_id'].toString().trim()){%>
+                <i class="fas fa-edit"></i>
+                <i class="fa fa-trash"></i>
+                <%}%>
+            
+                <%# like and comment buttons %>
+                <div>
+                  <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
+                  <span><%= post['comments'].length %></span>
+                </div>
+                <div>
+                  <i class="fa fa-fire"></i>
+                  <span><%= post['flames'].length %></span>
+                </div>
+              </div>
+
+              <%# post comments %>
+              <%  for(i=0;i<post['comments'].length;i++){ %>
+              <div class="d-flex mb-3">
+                <div class="flex-column">
+                  <img src="https://github.com/mdo.png" alt="user profile" width="45" height="45" class="rounded-circle me-2">
+                </div>
+                <div class="flex-column w-100">
+                  <%# user name %>
+                  <span><strong><%= post['comments'][i]['userName'] %></strong></span>
+                  <%# user handle %>
+                  <span class="mb-1">@<%= post['comments'][i]['userHandle'] %></span>
+                  <%# post text %>
+                  <p class="text-wrap border-bottom"><%= post['comments'][i]['comment']%></p>
+
+                  <div class="d-flex justify-content-around align-items-center">
+                    <%# if owner of post %>
+                    <%if(post['user'].toString().trim() == user['_id'].toString().trim()){%>
+                    <i class="fas fa-edit"></i>
+                    <i class="fa fa-trash"></i>
+                    <%}%>
+                  </div>
+                </div>
+              </div>
+
+              <% } %>
+
+                  </div>
+                </div>
+                <%})%>
+              </div>
+            </div>
+    </section>
+    <%}%>
+
+
+  </main>
+
 </div>
 
-<%- include('partials/footer') -%>
+<%# load basic site scripts %>
+    <%- include('partials/modals/comment') -%>
+
+    <%# load basic site scripts %>
+    <%- include('partials/scripts') -%>
+
+    <%# load footer partial %>
+    <%- include('partials/footer') -%>
