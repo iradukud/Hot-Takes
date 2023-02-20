@@ -1,6 +1,7 @@
 const cloudinary = require("../middleware/cloudinary");
 const User = require("../models/User");
 const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 
 module.exports = {
   //create a new post
@@ -24,6 +25,8 @@ module.exports = {
         flames: [],
       });
 
+      const post = await Post.findOne({ account: req.user._id });
+
       console.log("take has been added!");
       res.redirect('/home');
     } catch (err) {
@@ -32,10 +35,29 @@ module.exports = {
   },
   //add comment to post  
   addComment: async (req, res) => {
+    let result = ''
+
+    // Upload image to cloudinary, if provided
+    if (req.file) {
+      result = await cloudinary.uploader.upload(req.file.path);
+    }
+
     try {
-      //insert comment into comments array
-      await Post.findOneAndUpdate({ _id: req.body.postId }, {
-        $push: { comments: { comment: req.body.comment, userName: req.body.userName, userHandle: req.body.userHandle } }
+      //save comment in DB
+      await Comment.create({ 
+        comment: req.body.comment,
+        image: result.secure_url || '',
+        cloudinaryId: result.public_id || '',
+        user: req.body.userId,
+        postId: req.body.postId,
+      });
+
+      //retrieve created comment
+      const comment = await Comment.findOne({ user: req.body.userId, postId: req.body.postId, comment: req.body.comment, });
+      
+      //placed the created comment
+      await Post.findOneAndUpdate({_id: req.body.postId},{
+        $push: {comments:comment['_id']}
       });
 
       console.log("comment added!");

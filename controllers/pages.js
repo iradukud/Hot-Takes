@@ -47,8 +47,6 @@ exports.getHome = async (req, res) => {
       },
     ]).toArray();
 
-    console.log(posts)
-
     res.render("home.ejs", { title: 'Homepage', posts: posts, currentUser: user });
   } catch (err) {
     console.log(err);

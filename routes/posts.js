@@ -9,11 +9,9 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 //router.get("/:id", ensureAuth, postsController.getPost);
 
 router.post("/create", upload.single("postImage"), postsController.createPost);
+router.post("/addComment", upload.single("commentImage"), postsController.addComment);
 
 /*
-//for now limit comments to text only
-router.post("/addComment", postsController.addComment);
-
 router.put("/likePost/:id", postsController.likePost);
 
 router.delete("/deletePost/:id", postsController.deletePost);
