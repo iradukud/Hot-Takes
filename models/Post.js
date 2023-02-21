@@ -13,10 +13,6 @@ const PostSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  comments: {
-    type: Array,
-    required: true,
-  },
   flames: {
     type: Array,
     required: true,
