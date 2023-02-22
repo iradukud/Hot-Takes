@@ -71,8 +71,12 @@
                   <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
                   <span><%= post['comments'].length %></span>
                 </div>
-                <div>
-                  <i class="fa fa-fire"></i>
+                <div class="d-flex">
+                  <form action="/post/like" method="POST">
+                    <input type="hidden" name="postId" value="<%= post['_id'] %>" />
+                    <input type="hidden" name="user" value="<%= currentUser['_id'] %>"/>
+                    <button type="sumbit" class="btn fa fa-fire px-1 py-0 %>"></button>
+                  </form>
                   <span><%= post['flames'].length %></span>
                 </div>
               </div>
@@ -89,10 +93,10 @@
 </div>
 
 <%# load comment modal %>
-<%- include('partials/modals/comment') -%>
+    <%- include('partials/modals/comment') -%>
 
-<%# load basic site scripts %>
+    <%# load basic site scripts %>
     <%- include('partials/scripts') -%>
-    
-<%# load footer partial %>
+
+    <%# load footer partial %>
     <%- include('partials/footer') -%>
