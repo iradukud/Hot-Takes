@@ -13,10 +13,6 @@ const PostSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  flames: {
-    type: Array,
-    required: true,
-  },
   createdAt: {
     type: Date,
     default: Date.now,

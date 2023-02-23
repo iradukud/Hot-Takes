@@ -56,7 +56,8 @@ exports.getHome = async (req, res) => {
           foreignField: "postId",
           as: "comments"
         }
-      },{
+      },
+      {
         $lookup:
         {
           from: "likes",
