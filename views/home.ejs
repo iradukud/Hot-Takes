@@ -51,7 +51,7 @@
             <%# user handle %>
             <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
             <%# post text %>
-            <p class="text-wrap"><%= post.take %></p>
+            <p id="postContent" class="text-wrap"><%= post['post'] %></p>
             <%# post image image %>
             <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
               <%if(post['image']){%>
@@ -62,7 +62,7 @@
               <div class="d-flex justify-content-around align-items-center">
                 <%# if owner of post, show edit and delete features  %>
                 <%if(post['user'].toString().trim() == currentUser['_id'].toString().trim()){%>
-                <i class="fas fa-edit"></i>
+                <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
                 <i class="fa fa-trash"></i>
                 <%}%>
 
@@ -74,7 +74,7 @@
                 <div class="d-flex">
                   <form action="/post/like" method="POST">
                     <input type="hidden" name="postId" value="<%= post['_id'] %>" />
-                    <input type="hidden" name="user" value="<%= currentUser['_id'] %>"/>
+                    <input type="hidden" name="user" value="<%= currentUser['_id'] %>" />
                     <button type="sumbit" class="btn fa fa-fire px-1 py-0 %>"></button>
                   </form>
                   <span><%= post['likes'].length %></span>
@@ -93,10 +93,13 @@
 </div>
 
 <%# load comment modal %>
-    <%- include('partials/modals/comment') -%>
+<%- include('partials/modals/comment') -%>
 
-    <%# load basic site scripts %>
-    <%- include('partials/scripts') -%>
+<%# load comment modal %>
+<%- include('partials/modals/post') -%>
 
-    <%# load footer partial %>
-    <%- include('partials/footer') -%>
+<%# load basic site scripts %>
+<%- include('partials/scripts') -%>
+
+<%# load footer partial %>
+<%- include('partials/footer') -%>

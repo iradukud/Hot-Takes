@@ -17,18 +17,16 @@ module.exports = {
 
       //save post in DB
       await Post.create({
-        account:req.user._id,
+        account: req.user._id,
         user: req.body.user,
-        take: req.body.post,
+        post: req.body.post,
         image: result.secure_url || '',
         cloudinaryId: result.public_id || '',
-        comments: [],
-        flames: [],
       });
 
       const post = await Post.findOne({ account: req.user._id });
 
-      console.log("take has been added!");
+      console.log("post has been added!");
       res.redirect('/home');
     } catch (err) {
       console.log(err);
@@ -45,7 +43,7 @@ module.exports = {
 
     try {
       //save comment in DB
-      await Comment.create({ 
+      await Comment.create({
         comment: req.body.comment,
         image: result.secure_url || '',
         cloudinaryId: result.public_id || '',
@@ -55,10 +53,10 @@ module.exports = {
 
       //retrieve created comment
       const comment = await Comment.findOne({ user: req.body.userId, postId: req.body.postId, comment: req.body.comment, });
-      
+
       //placed the created comment
-      await Post.findOneAndUpdate({_id: req.body.postId},{
-        $push: {comments:comment['_id']}
+      await Post.findOneAndUpdate({ _id: req.body.postId }, {
+        $push: { comments: comment['_id'] }
       });
 
       console.log("comment added!");
@@ -67,24 +65,69 @@ module.exports = {
       console.log(err);
     }
   },
+  //like post
   likePost: async (req, res) => {
     try {
       //find if user already liked post
       const liked = await Like.findOne({ user: req.body.user, postId: req.body.postId });
-  
+
       //if user has'nt liked the post create new like
       //else remove existing like
-      if(!liked){
-        await Like.create({ 
+      if (!liked) {
+        await Like.create({
           user: req.body.user,
           postId: req.body.postId,
         });
-      }else{
-        await Like.remove({user: req.body.user, postId: req.body.postId});
+      } else {
+        await Like.remove({ user: req.body.user, postId: req.body.postId });
       };
 
       console.log("like added or removed");
       res.redirect(`/home`);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  //edit post
+  editPost: async (req, res) => {
+    try {
+      //retrieve post by id
+      let post = await Post.findById({ _id: req.body.postId })
+      let result = ''
+
+      // Upload image to cloudinary, if provided
+      // And save other changes
+      if (req.file) {
+        //delete recipe's image from cloudinary
+        if (recipe.cloudinaryId) {
+          await cloudinary.uploader.destroy(post.cloudinaryId);
+        }
+
+        //upload image to cloudinary
+        result = await cloudinary.uploader.upload(req.file.path);
+
+        //assign image and other changes to post
+        await Post.findOneAndUpdate({ _id: req.body.postId },
+          {
+            $set: {
+              image: result.secure_url,
+              cloudinaryId: result.public_id,
+              post: req.body.editPost,
+            }
+          });
+
+      }else{
+        //assign changes to post
+        await Post.findOneAndUpdate({ _id: req.body.postId },
+          {
+            $set: {
+              post: req.body.editPost,
+            }
+          });
+      }
+
+      console.log("post has been editted!");
+      res.redirect('/home');
     } catch (err) {
       console.log(err);
     }

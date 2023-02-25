@@ -1,0 +1,37 @@
+<%# comment modal %>
+<div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="editPostModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# modal title %>
+        <h5 class="modal-title" id="editPostModalTitle">Edit Post</h5>
+        <%# close modal %>
+        <button type="button" class="btn btn-secondary fa fa-window-close close" data-dismiss="modal" aria-label="close"></button>
+      </div>
+      <%# login form %>
+      <form action="/post/editPost?_method=PUT" enctype="multipart/form-data" method="POST">
+        <div class="modal-body">
+          <%# comment text %>
+          <textarea class="form-control" id="editPost" name="editPost" cols="50" rows="3"></textarea>
+          <%# comment image %>
+          <div class="text-center my-3">
+            <label for="editPostImage" class="fa fa-file-image" width="35">Post Image</label>
+            <input type="file" id="editPostImage" name="postImage" class="inputImage">
+          </div>
+          <%# hidden inputs %>
+          <div>
+            <%# post id %>
+            <input type="hidden" id="postId2" name="postId" value="" />
+          </div>
+        </div>
+          <%# form buttons %>
+          <div class="modal-footer">
+            <%# close modal %>
+            <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancel</button>
+            <%# login buttons %>
+            <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
