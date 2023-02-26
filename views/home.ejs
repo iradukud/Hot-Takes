@@ -35,38 +35,53 @@
     </div>
 
     <%if(posts.length){%>
+
     <section class="d-flex flex-column align-items-center">
       <div class="row col-10">
+
         <%posts.forEach(post=>{%>
+
         <%# container for each post %>
         <div class="d-flex mb-3">
           <%# user profile image %>
           <div class="flex-column">
             <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
           </div>
+
           <%# post text %>
           <div class="flex-column w-100">
             <%# user name %>
             <span><strong><%= post['postUser']['userName'] %></strong></span>
+
             <%# user handle %>
             <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
+
             <%# post text %>
             <p id="postContent" class="text-wrap"><%= post['post'] %></p>
+
             <%# post image image %>
             <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
+
               <%if(post['image']){%>
+
               <img src="<%= post['image']%>" alt="" width="200" height="100%">
+
               <%}%>
-              </div>
+
+            </div>
+              
               <%# post icons %>
               <div class="d-flex justify-content-around align-items-center">
-                <%# if owner of post, show edit and delete features  %>
+
+                <%# if owner of post, show edit and delete buttons  %>
                 <%if(post['user'].toString().trim() == currentUser['_id'].toString().trim()){%>
+
                 <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
                 <form action="/post/deletePost?_method=delete" method="POST">
                   <input type="hidden" name="postId" value="<%= post['_id'] %>" />
                   <button type="sumbit" class="btn fa fa-trash py-0 %>"></button>
                 </form>
+
                 <%}%>
 
                 <%# like and comment buttons %>
@@ -82,27 +97,81 @@
                   </form>
                   <span><%= post['likes'].length %></span>
                 </div>
-              </div>
 
+              </div>
             </div>
           </div>
+
           <%})%>
+
         </div>
-      </div>
     </section>
+
     <%}%>
+  
   </main>
+
+  <div class="d-flex flex-column text-center mt-3 mx-1">
+    <h6 >Quick Search</h6>
+    <form action="" id="searchForm" class="col-12 col-lg-auto mb-3 mb-lg-0" method="POST" >
+      <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="search">
+      <div class="my-2">
+        <button type="sumbit" id="searchUsers" class="btnSub">Users</button>
+        <button type="sumbit" id="searchPosts" class="btnSub">Takes</button>
+      </div>
+    </form>
+
+    <% 
+    //search results for users
+    if(typeof searchUsers != 'undefined') {
+      for(i=0;i<searchUsers.length;i++){ 
+        if(i==3) { 
+          break; 
+        } 
+    %>
+
+    <%# container for user %>
+    <div class="d-flex mb-3">
+      <%# user profile image %>
+      <div class="flex-column">
+        <img src="<%= searchUsers[i]['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+      </div>
+
+      <%# user details %>
+      <div class="flex-column">
+        <div>
+          <%# user name %>
+          <span><strong><%= searchUsers[i]['userName'] %></strong></span>
+          <%# user handle %>
+          <span>@<%= searchUsers[i]['userHandle'] %></span>
+        </div>
+        <%# follow/unfollow button %>
+        <button class="btnSub">follow</button>
+      </div>
+    </div>
+
+    <%
+      } 
+    } 
+    if(typeof searchPosts != 'undefined') {
+    %>
+
+    <%
+    }
+    %>
+    
+</div>
 
 </div>
 
 <%# load comment modal %>
-    <%- include('partials/modals/comment') -%>
+<%- include('partials/modals/comment') -%>
 
-    <%# load comment modal %>
-    <%- include('partials/modals/post') -%>
+<%# load comment modal %>
+<%- include('partials/modals/post') -%>
 
-    <%# load basic site scripts %>
-    <%- include('partials/scripts') -%>
+<%# load basic site scripts %>
+<%- include('partials/scripts') -%>
 
-    <%# load footer partial %>
-    <%- include('partials/footer') -%>
+<%# load footer partial %>
+<%- include('partials/footer') -%>

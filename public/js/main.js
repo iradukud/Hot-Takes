@@ -29,3 +29,19 @@ $('.editPostTrigger').click(function () {
     document.querySelector('#postId2').value = this.getAttribute('class').split(' ').pop().trim()
     document.querySelector('#editPost').value = document.querySelector('#postContent').innerText
 })
+
+//trigger event to edit post
+$('.editPostTrigger').click(function () {
+    $('#editPostModal').modal('show');
+    
+    //place current post's id into the forms
+    document.querySelector('#postId2').value = this.getAttribute('class').split(' ').pop().trim()
+    document.querySelector('#editPost').value = document.querySelector('#postContent').innerText
+})
+
+//setup form to search for users
+$('#searchUsers').click(function () {
+        
+    //set action of form
+    document.querySelector('#searchForm').setAttribute('action', '/searchUsers')
+})
