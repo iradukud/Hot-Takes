@@ -98,8 +98,8 @@ module.exports = {
       // Upload image to cloudinary, if provided
       // And save other changes
       if (req.file) {
-        //delete recipe's image from cloudinary
-        if (recipe.cloudinaryId) {
+        //delete post's image from cloudinary
+        if (post.cloudinaryId) {
           await cloudinary.uploader.destroy(post.cloudinaryId);
         }
 
@@ -116,7 +116,7 @@ module.exports = {
             }
           });
 
-      }else{
+      } else {
         //assign changes to post
         await Post.findOneAndUpdate({ _id: req.body.postId },
           {
@@ -134,16 +134,34 @@ module.exports = {
   },
   deletePost: async (req, res) => {
     try {
-      // Find post by id
-      let post = await Post.findById({ _id: req.params.id });
-      // Delete image from cloudinary
-      await cloudinary.uploader.destroy(post.cloudinaryId);
-      // Delete post from db
-      await Post.remove({ _id: req.params.id });
+      //find post by id
+      let post = await Post.findById({ _id: req.body.postId });
+
+      //find all the related comments
+      let comments = await Comment.find({ postId: req.body.postId });
+
+      //remove comment's image from cloudinary
+      comments.forEach(async (comment) => {
+        if (comment.cloudinaryId) {
+          await cloudinary.uploader.destroy(comment.cloudinaryId);
+        }
+      })
+
+      //delete comments from db
+      await Comment.remove({ postId: req.body.postId });
+
+      //delete post's image from cloudinary
+      if (post.cloudinaryId) {
+        await cloudinary.uploader.destroy(post.cloudinaryId);
+      }
+
+      //delete post from db
+      await Post.remove({ _id: req.body.postId });
+
       console.log("Deleted Post");
-      res.redirect("/profile");
+      res.redirect("/home");
     } catch (err) {
-      res.redirect("/profile");
+      res.redirect("/home");
     }
   },
 };

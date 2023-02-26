@@ -63,7 +63,10 @@
                 <%# if owner of post, show edit and delete features  %>
                 <%if(post['user'].toString().trim() == currentUser['_id'].toString().trim()){%>
                 <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
-                <i class="fa fa-trash"></i>
+                <form action="/post/deletePost?_method=delete" method="POST">
+                  <input type="hidden" name="postId" value="<%= post['_id'] %>" />
+                  <button type="sumbit" class="btn fa fa-trash py-0 %>"></button>
+                </form>
                 <%}%>
 
                 <%# like and comment buttons %>
@@ -93,13 +96,13 @@
 </div>
 
 <%# load comment modal %>
-<%- include('partials/modals/comment') -%>
+    <%- include('partials/modals/comment') -%>
 
-<%# load comment modal %>
-<%- include('partials/modals/post') -%>
+    <%# load comment modal %>
+    <%- include('partials/modals/post') -%>
 
-<%# load basic site scripts %>
-<%- include('partials/scripts') -%>
+    <%# load basic site scripts %>
+    <%- include('partials/scripts') -%>
 
-<%# load footer partial %>
-<%- include('partials/footer') -%>
+    <%# load footer partial %>
+    <%- include('partials/footer') -%>

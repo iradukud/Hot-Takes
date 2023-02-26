@@ -14,10 +14,7 @@ router.post("/like", postsController.likePost);
 
 router.put("/editPost", upload.single("postImage"), postsController.editPost);
 
-/*
-router.put("/likePost/:id", postsController.likePost);
+router.delete("/deletePost", postsController.deletePost);
 
-router.delete("/deletePost/:id", postsController.deletePost);
-*/
 
 module.exports = router;
