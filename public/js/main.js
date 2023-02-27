@@ -45,3 +45,9 @@ $('#searchUsers').click(function () {
     //set action of form
     document.querySelector('#searchForm').setAttribute('action', '/searchUsers')
 })
+
+$('#searchPosts').click(function () {
+        
+    //set action of form
+    document.querySelector('#searchForm').setAttribute('action', '/post/searchPosts')
+})

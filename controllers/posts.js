@@ -1,4 +1,5 @@
 const cloudinary = require("../middleware/cloudinary");
+const mongoose = require("mongoose");
 const User = require("../models/User");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
@@ -165,7 +166,7 @@ module.exports = {
     }
   },
   //complete a general search
-  searchUsers : async (req, res) => {
+  searchPosts : async (req, res) => {
     try {
       //find logged in user
       const user = await User.findOne({ account: req.user._id });
@@ -223,11 +224,8 @@ module.exports = {
         ]).toArray();
       }
 
-      //retrieves users that match the search
-      const searchUsers = await User.find({ userHandle: { "$regex": req.body.search, "$options": "i" }, userHandle: { $ne: user['_id'] } });
-
       //retrieves post that match the search
-      const searchPosts = posts = await mongoose.connection.db.collection("posts").aggregate([
+      const searchPosts =  await mongoose.connection.db.collection("posts").aggregate([
         {
           //implement way to fetch user's followers posts
           $match: { post: { "$regex": req.body.search, "$options": "i" } }
@@ -256,7 +254,7 @@ module.exports = {
 
 
       console.log("search has been completed!")
-      res.render("home.ejs", { title: 'Homepage', posts: posts, currentUser: user, searchUsers: searchUsers, searchPosts: searchPosts, searchItem: req.body.search });
+      res.render("home.ejs", { title: 'Homepage', posts: posts, currentUser: user, searchPosts: searchPosts, searchItem: req.body.search });
 
     } catch (err) {
       console.log(err);

@@ -146,20 +146,69 @@
           <span>@<%= searchUsers[i]['userHandle'] %></span>
         </div>
         <%# follow/unfollow button %>
-        <button class="btnSub">follow</button>
+        <button class="btnSub">FOLLOW</button>
       </div>
     </div>
+    <%
+      }
+      if(searchUsers.length>2){%>
+
+    <button class="btnSub">more</button>
 
     <%
       } 
     } 
+
     if(typeof searchPosts != 'undefined') {
+      for(i=0;i<searchPosts.length;i++){ 
+        if(i==3) { 
+          break; 
+        } 
     %>
 
+    <div class="d-flex mb-3">
+      <%# user profile image %>
+      <div class="flex-column">
+        <img src="<%=searchPosts[i]['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+      </div>
+
+      <%# post text %>
+      <div class="flex-column w-100">
+        <%# user name %>
+        <span><strong><%= searchPosts[i]['postUser']['userName'] %></strong></span>
+
+        <%# user handle %>
+        <span class="mb-1">@<%= searchPosts[i]['postUser']['userHandle'] %></span>
+
+        <%# post text %>
+        <p class="text-wrap"><%= searchPosts[i]['post'] %></p>
+
+        <%# post image image %>
+        <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
+
+          <%if(searchPosts[i]['image']){%>
+
+          <img src="<%= searchPosts[i]['image']%>" alt="" width="200" height="100%" />
+
+          <% } %>
+
+        </div>
+      </div>
+    </div>
+
     <%
+      }  
+
+      if(searchPosts.length>2){
+    %>
+
+    <button class="btnSub">more</button>
+
+    <%
+      }
     }
     %>
-    
+
 </div>
 
 </div>

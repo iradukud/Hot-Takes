@@ -16,5 +16,7 @@ router.put("/editPost", upload.single("postImage"), postsController.editPost);
 
 router.delete("/deletePost", postsController.deletePost);
 
+router.post("/searchPosts", postsController.searchPosts);
+
 
 module.exports = router;
