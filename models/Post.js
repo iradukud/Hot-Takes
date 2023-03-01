@@ -13,6 +13,10 @@ const PostSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  edited: {
+    type: Boolean,
+    require: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

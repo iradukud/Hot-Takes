@@ -39,14 +39,15 @@ $('.editPostTrigger').click(function () {
     document.querySelector('#editPost').value = document.querySelector('#postContent').innerText
 })
 
-//setup form to search for users
-$('#searchUsers').click(function () {
+//setup form to quickly search for users
+$('#quickSearchUsers').click(function () {
         
     //set action of form
     document.querySelector('#searchForm').setAttribute('action', '/searchUsers')
 })
 
-$('#searchPosts').click(function () {
+//setup form to quickly search for posts
+$('#quickSearchPosts').click(function () {
         
     //set action of form
     document.querySelector('#searchForm').setAttribute('action', '/post/searchPosts')

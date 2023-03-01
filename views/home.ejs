@@ -116,8 +116,8 @@
     <form action="" id="searchForm" class="col-12 col-lg-auto mb-3 mb-lg-0" method="POST" >
       <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="search">
       <div class="my-2">
-        <button type="sumbit" id="searchUsers" class="btnSub">Users</button>
-        <button type="sumbit" id="searchPosts" class="btnSub">Takes</button>
+        <button type="sumbit" id="quickSearchUsers" class="btnSub">Users</button>
+        <button type="sumbit" id="quickSearchPosts" class="btnSub">Takes</button>
       </div>
     </form>
 
@@ -151,7 +151,7 @@
     </div>
     <%
       }
-      if(searchUsers.length>2){%>
+      if(searchUsers.length>3){%>
 
     <button class="btnSub">more</button>
 
@@ -188,7 +188,7 @@
 
           <%if(searchPosts[i]['image']){%>
 
-          <img src="<%= searchPosts[i]['image']%>" alt="" width="200" height="100%" />
+          <img src="<%= searchPosts[i]['image']%>" alt="" width="100" height="100%" />
 
           <% } %>
 
@@ -199,7 +199,7 @@
     <%
       }  
 
-      if(searchPosts.length>2){
+      if(searchPosts.length>3){
     %>
 
     <button class="btnSub">more</button>
