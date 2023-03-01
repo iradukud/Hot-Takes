@@ -1,11 +1,11 @@
-//post textarea auto resize
+/*post textarea auto resize
 textarea = document.querySelector(".post");
 textarea.addEventListener('input', autoResize, false);
 
 function autoResize() {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
-}
+}*/
 
 //trigger event to close modals
 $('.close').click(function () {
@@ -40,15 +40,15 @@ $('.editPostTrigger').click(function () {
 })
 
 //setup form to quickly search for users
-$('#quickSearchUsers').click(function () {
-        
+$('#searchUsers').click(function () {
     //set action of form
     document.querySelector('#searchForm').setAttribute('action', '/searchUsers')
 })
 
 //setup form to quickly search for posts
-$('#quickSearchPosts').click(function () {
+$('#searchPosts').click(function () {
         
     //set action of form
-    document.querySelector('#searchForm').setAttribute('action', '/post/searchPosts')
+    document.querySelector('#searchForm').setAttribute('action', '/searchPosts')
 })
+

@@ -10,7 +10,7 @@ router.get("/explore", pagesController.getExplore);
 
 
 router.post("/searchUsers", pagesController.searchUsers);
-
+router.post("/searchPosts", pagesController.searchPosts);
 
 //router.get("/feed", ensureAuth, postsController.getFeed);
 
