@@ -206,16 +206,7 @@ exports.searchUsers = async (req, res) => {
         },
       ]).toArray();
     }
-    
-    //store date for 7 days age
-    const sevenDayAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
-    const trending = [...posts]
-      //filter for posts older then last 7 days
-      //probably change to 2 days
-      .filter(post => post['createdAt'] >= sevenDayAgo)
-      //sort post based on user interactions
-      .sort((postA, postB) => (postB['likes'].length + postB['comments'].length) - (postA['likes'].length + postA['comments'].length));
     //retrieves users that match the search
     const searchUsers = await User.find({ userHandle: { "$regex": req.body.search, "$options": "i" } });
 
@@ -223,6 +214,16 @@ exports.searchUsers = async (req, res) => {
 
     //render page depending on where request came from
     if (req.body.title == 'Explore') {
+      //store date for 7 days age
+      const sevenDayAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+      const trending = [...posts]
+        //filter for posts older then last 7 days
+        //probably change to 2 days
+        .filter(post => post['createdAt'] >= sevenDayAgo)
+        //sort post based on user interactions
+        .sort((postA, postB) => (postB['likes'].length + postB['comments'].length) - (postA['likes'].length + postA['comments'].length));
+
       //respond by rendering homepage w/searched data
       res.render("explore.ejs", { title: 'Explore', trending: trending, currentUser: user, searchUsers: searchUsers, searchItem: req.body.search });
     } else if (req.body.title = 'Homepage') {
@@ -320,12 +321,47 @@ exports.searchPosts = async (req, res) => {
           "postUser.cloudinaryId": 0,
           "postUser.account": 0,
         }
+      }, {
+        $lookup:
+        {
+          from: "comments",
+          localField: "_id",
+          foreignField: "postId",
+          as: "comments"
+        }
+      },
+      {
+        $lookup:
+        {
+          from: "likes",
+          localField: "_id",
+          foreignField: "postId",
+          as: "likes"
+        }
       },
     ]).toArray();
 
-
     console.log("search has been completed!")
-    res.render("home.ejs", { title: 'Homepage', posts: posts, currentUser: user, searchPosts: searchPosts, searchItem: req.body.search });
+
+    //render page depending on where request came from
+    if (req.body.title == 'Explore') {
+      //store date for 7 days age
+      const sevenDayAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+      const trending = [...posts]
+        //filter for posts older then last 7 days
+        //probably change to 2 days
+        .filter(post => post['createdAt'] >= sevenDayAgo)
+        //sort post based on user interactions
+        .sort((postA, postB) => (postB['likes'].length + postB['comments'].length) - (postA['likes'].length + postA['comments'].length));
+
+      //respond by rendering homepage w/searched data
+      res.render("explore.ejs", { title: 'Explore', trending: trending, currentUser: user, searchPosts: searchPosts, searchItem: req.body.search });
+    
+    } else if (req.body.title = 'Homepage') {
+      //respond by rendering homepage w/searched data
+      res.render("home.ejs", { title: 'Homepage', posts: posts, currentUser: user, searchPosts: searchPosts, searchItem: req.body.search });
+    }
 
   } catch (err) {
     console.log(err);
