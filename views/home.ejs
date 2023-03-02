@@ -45,17 +45,22 @@
         <div class="d-flex mb-3">
           <%# user profile image %>
           <div class="flex-column">
-            <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+            <%# link to poster %>
+            <a href="/profile/<%=post['user']%>">
+              <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+            </a>
           </div>
 
           <%# post text %>
           <div class="flex-column w-100">
-            <%# user name %>
-            <span><strong><%= post['postUser']['userName'] %></strong></span>
+            <%# link to poster %>
+            <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
+              <%# user name %>
+              <span><strong><%= post['postUser']['userName'] %></strong></span>
 
-            <%# user handle %>
-            <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
-
+              <%# user handle %>
+              <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
+            </a>
             <%# post text %>
             <p id="postContent" class="text-wrap"><%= post['post'] %></p>
 
@@ -112,7 +117,7 @@
   </main>
 
   <%# load searchbar modals partial %>
-  <%- include('partials/searchbar') -%> 
+    <%- include('partials/searchbar') -%>
 
 </div>
 

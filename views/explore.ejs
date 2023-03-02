@@ -25,16 +25,22 @@
     <div class="d-flex mb-3">
       <%# user profile image %>
       <div class="flex-column">
-        <img src="<%= user['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+        <%# link to poster %>
+        <a href="/profile/<%=user['_id']%>">
+          <img src="<%= user['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+        </a>
       </div>
 
       <%# user details %>
       <div class="flex-column">
         <div>
+          <%# link to poster %>
+          <a href="/profile/<%=user['_id']%>" class="text-reset text-decoration-none">
           <%# user name %>
           <span><strong><%= user['userName'] %></strong></span>
           <%# user handle %>
           <span>@<%= user['userHandle'] %></span>
+          </a>
         </div>
         <%# follow/unfollow button %>
         <button class="btnSub">FOLLOW</button>
@@ -58,17 +64,22 @@
         <div class="d-flex mb-3">
           <%# user profile image %>
           <div class="flex-column">
-            <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+            <%# link to poster %>
+            <a href="/profile/<%=post['user']%>">
+              <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+            </a>
           </div>
 
           <%# post text %>
           <div class="flex-column w-100">
-            <%# user name %>
-            <span><strong><%= post['postUser']['userName'] %></strong></span>
+            <%# link to poster %>
+            <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
+              <%# user name %>
+              <span><strong><%= post['postUser']['userName'] %></strong></span>
 
-            <%# user handle %>
-            <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
-
+              <%# user handle %>
+              <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
+            </a>
             <%# post text %>
             <p id="postContent" class="text-wrap"><%= post['post'] %></p>
 
@@ -139,17 +150,22 @@
       <div class="d-flex mb-3">
         <%# user profile image %>
         <div class="flex-column">
-          <img src="<%=trending[i]['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+          <%# link to poster %>
+          <a href="/profile/<%=trending[i]['user']%>">
+            <img src="<%=trending[i]['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+          </a>
         </div>
 
         <%# post text %>
         <div class="flex-column w-100">
-          <%# user name %>
-          <span><strong><%= trending[i]['postUser']['userName'] %></strong></span>
+          <%# link to poster %>
+          <a href="/profile/<%=trending[i]['user']%>" class="text-reset text-decoration-none">
+            <%# user name %>
+            <span><strong><%= trending[i]['postUser']['userName'] %></strong></span>
 
-          <%# user handle %>
-          <span class="mb-1">@<%= trending[i]['postUser']['userHandle'] %></span>
-
+            <%# user handle %>
+            <span class="mb-1">@<%= trending[i]['postUser']['userHandle'] %></span>
+          </a>
           <%# post text %>
           <p id="postContent" class="text-wrap"><%= trending[i]['post'] %></p>
 

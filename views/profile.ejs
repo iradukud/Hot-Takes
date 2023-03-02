@@ -11,47 +11,64 @@
     <div class="d-flex d-flex justify-content-around border-bottom mb-4 pb-3">
 
       <div class="flex-column">
-        <img src="<%=profile['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
-        <%# user name %>
-        <span class="d-block"><strong><%= profile['userName'] %></strong></span>
-        <%# user handle %>
-        <span class="d-block mb-1">@<%= profile['userHandle'] %></span>
+        <%# link to profile %>
+        <a href="/profile/<%=profile['_id']%>" class="text-reset text-decoration-none">
+          <img src="<%=profile['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+          <%# user name %>
+          <span class="d-block"><strong><%= profile['userName'] %></strong></span>
+          <%# user handle %>
+          <span class="d-block mb-1">@<%= profile['userHandle'] %></span>
+        </a>
       </div>
 
       <div>
-        
-        <%if(profile['_id'].toString().trim() != profile['_id'].toString().trim()){%>
-          
-          <i class="fa fa-envelope "></i>
-          <button class="btnSub">Follow</button>
-        
-          <%}%>
 
-        </div>
-    
+        <%
+          if(profile['_id'].toString().trim() != currentUser['_id'].toString().trim()){
+        %>
+
+        <i class="fa fa-envelope "></i>
+        <button class="btnSub">Follow</button>
+
+        <%
+          }
+        %>
+
+      </div>
+
     </div>
 
-    <%if(posts.length){%>
+    <%
+    if(posts.length){
+      %>
 
     <section class="d-flex flex-column align-items-center">
       <div class="row col-10">
 
-        <%posts.forEach(post=>{%>
+        <%
+        posts.forEach(post=>{
+          %>
 
         <%# container for each post %>
         <div class="d-flex mb-3">
           <%# user profile image %>
           <div class="flex-column">
-            <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+            <%# link to poster %>
+            <a href="/profile/<%=post['user']%>">
+              <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+            </a>
           </div>
 
           <%# post text %>
           <div class="flex-column w-100">
-            <%# user name %>
-            <span><strong><%= post['postUser']['userName'] %></strong></span>
+            <%# link to poster %>
+            <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
+              <%# user name %>
+              <span><strong><%= post['postUser']['userName'] %></strong></span>
 
-            <%# user handle %>
-            <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
+              <%# user handle %>
+              <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
+            </a>
 
             <%# post text %>
             <p id="postContent" class="text-wrap"><%= post['post'] %></p>
@@ -59,53 +76,65 @@
             <%# post image image %>
             <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
 
-              <%if(post['image']){%>
+              <%
+              if(post['image']){
+                %>
 
               <img src="<%= post['image']%>" alt="" width="200" height="100%">
 
-              <%}%>
+              <%
+            }
+            %>
 
             </div>
-              
-              <%# post icons %>
-              <div class="d-flex justify-content-around align-items-center">
 
-                <%# if owner of post, show edit and delete buttons  %>
-                <%if(post['user'].toString().trim() == currentUser['_id'].toString().trim()){%>
+            <%# post icons %>
+            <div class="d-flex justify-content-around align-items-center">
 
-                <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
-                <form action="/post/deletePost?_method=delete" method="POST">
-                  <input type="hidden" name="postId" value="<%= post['_id'] %>" />
-                  <button type="sumbit" class="btn fa fa-trash py-0 %>"></button>
-                </form>
+              <%# if owner of post, show edit and delete buttons  %>
+              <%
+                if(post['user'].toString().trim() == currentUser['_id'].toString().trim()){
+                %>
 
-                <%}%>
+              <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
+              <form action="/post/deletePost?_method=delete" method="POST">
+                <input type="hidden" name="postId" value="<%= post['_id'] %>" />
+                <button type="sumbit" class="btn fa fa-trash py-0 %>"></button>
+              </form>
 
-                <%# like and comment buttons %>
-                <div>
-                  <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
-                  <span><%= post['comments'].length %></span>
-                </div>
-                <div class="d-flex">
-                  <form action="/post/like" method="POST">
-                    <input type="hidden" name="postId" value="<%= post['_id'] %>" />
-                    <input type="hidden" name="user" value="<%= currentUser['_id'] %>" />
-                    <button type="sumbit" class="btn fa fa-fire px-1 py-0 %>"></button>
-                  </form>
-                  <span><%= post['likes'].length %></span>
-                </div>
+              <%
+              }
+              %>
 
+              <%# like and comment buttons %>
+              <div>
+                <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
+                <span><%= post['comments'].length %></span>
               </div>
+              <div class="d-flex">
+                <form action="/post/like" method="POST">
+                  <input type="hidden" name="postId" value="<%= post['_id'] %>" />
+                  <input type="hidden" name="user" value="<%= currentUser['_id'] %>" />
+                  <button type="sumbit" class="btn fa fa-fire px-1 py-0 %>"></button>
+                </form>
+                <span><%= post['likes'].length %></span>
+              </div>
+
             </div>
           </div>
-
-          <%})%>
-
         </div>
+
+        <%
+        })
+        %>
+
+      </div>
     </section>
 
-    <%}%>
-  
+    <%
+  }
+  %>
+
   </main>
 
 
@@ -113,13 +142,13 @@
 </div>
 
 <%# load comment modal %>
-    <%- include('partials/modals/comment') -%>
+<%- include('partials/modals/comment') -%>
 
-    <%# load comment modal %>
-    <%- include('partials/modals/post') -%>
+<%# load comment modal %>
+<%- include('partials/modals/post') -%>
 
-    <%# load basic site scripts %>
-    <%- include('partials/scripts') -%>
+<%# load basic site scripts %>
+<%- include('partials/scripts') -%>
 
-    <%# load footer partial %>
-    <%- include('partials/footer') -%>
+<%# load footer partial %>
+<%- include('partials/footer') -%>

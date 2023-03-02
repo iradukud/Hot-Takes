@@ -1,7 +1,7 @@
 <%# quick searchbar %>
 <div class="d-flex flex-column text-center mt-3 mx-1">
-  <h6 >Quick Search</h6>
-  <form action="" id="searchForm" class="col-12 col-lg-auto mb-3 mb-lg-0" method="POST" >
+  <h6>Quick Search</h6>
+  <form action="" id="searchForm" class="col-12 col-lg-auto mb-3 mb-lg-0" method="POST">
     <input type="hidden" name="title" value="<%= title %>">
     <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="search">
     <div class="my-2">
@@ -23,16 +23,20 @@
   <div class="d-flex mb-3">
     <%# user profile image %>
     <div class="flex-column">
-      <img src="<%= searchUsers[i]['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+      <a href="/profile/<%=searchUsers[i]['_id']%>" class="text-reset text-decoration-none">
+        <img src="<%= searchUsers[i]['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+      </a>
     </div>
 
     <%# user details %>
     <div class="flex-column">
       <div>
-        <%# user name %>
-        <span><strong><%= searchUsers[i]['userName'] %></strong></span>
-        <%# user handle %>
-        <span>@<%= searchUsers[i]['userHandle'] %></span>
+        <a href="/profile/<%=searchUsers[i]['_id']%>" class="text-reset text-decoration-none">
+          <%# user name %>
+          <span><strong><%= searchUsers[i]['userName'] %></strong></span>
+          <%# user handle %>
+          <span>@<%= searchUsers[i]['userHandle'] %></span>
+        </a>
       </div>
       <%# follow/unfollow button %>
       <button class="btnSub">FOLLOW</button>
