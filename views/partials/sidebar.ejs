@@ -28,7 +28,7 @@
       </li>
       <%# nav item - trending %>
       <li>
-        <a href="#" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
+        <a href="/trending" class="nav-link link-light text-nav <%= title=="Trending" ? "selected" : "" %>">
           <i class="fa fa-hashtag"></i>
           <span>Trending</span>
         </a>
@@ -40,9 +40,9 @@
           <span>Messages</span>
         </a>
       </li>
-      <%# nav item - trending %>
+      <%# nav item - profile %>
       <li>
-        <a href="#" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
+        <a href="/profile/<%= currentUser['_id'] %>" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
           <i class="fa fa-user"></i>
           <span>Profile</span>
         </a>

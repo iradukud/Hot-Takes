@@ -153,6 +153,19 @@
           <%# post text %>
           <p id="postContent" class="text-wrap"><%= trending[i]['post'] %></p>
 
+          <%# post image image %>
+          <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
+
+            <%
+            if(trending[i]['image']){
+            %>
+
+            <img src="<%= trending[i]['image']%>" alt="" width="150" height="100%" />
+
+            <%
+            }
+            %>
+          </div>
 
           <%# post icons %>
           <div class="d-flex justify-content-around align-items-center">
