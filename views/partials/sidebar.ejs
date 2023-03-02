@@ -42,7 +42,7 @@
       </li>
       <%# nav item - profile %>
       <li>
-        <a href="/profile/<%= currentUser['_id'] %>" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
+        <a href="/profile/<%= currentUser['_id'] %>" class="nav-link link-light text-nav <%= title=="Profile" ? "selected" : "" %>">
           <i class="fa fa-user"></i>
           <span>Profile</span>
         </a>

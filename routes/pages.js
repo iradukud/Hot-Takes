@@ -8,6 +8,7 @@ router.get("/", pagesController.getIndex);
 router.get("/home", ensureAuth, pagesController.getHome);
 router.get("/explore", ensureAuth, pagesController.getExplore);
 router.get("/trending", ensureAuth, pagesController.getTrending);
+router.get("/profile/:id", ensureAuth, pagesController.getProfile);
 
 
 router.post("/searchUsers", pagesController.searchUsers);
