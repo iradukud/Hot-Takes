@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const User = require("../models/User");
-const Post = require("../models/Post");
 
 //get main/index page
 exports.getIndex = (req, res) => {
@@ -17,60 +16,54 @@ exports.getHome = async (req, res) => {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
 
-    //retrieve one post via account id
-    const post = await Post.findOne({ account: req.user._id });
-
     let posts = []
 
-    //if user has posted anything
-    if (post) {
-      //find every post posted by posted by user and people their following
-      posts = await mongoose.connection.db.collection("posts").aggregate([
+    //find every post posted by posted by user and people their following
+    posts = await mongoose.connection.db.collection("posts").aggregate([
+      {
+        //get all posts posted and followered by user
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'] }] }
+      },
+      {
+        $lookup:
         {
-          //get all posts posted and followered by user
-          $match: { $or: [{ user: post.user }, { followers: post.user }] }
-        },
-        {
-          $lookup:
-          {
-            from: "users",
-            localField: "user",
-            foreignField: "_id",
-            as: "postUser"
-          }
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "postUser"
+        }
 
-        },
+      },
+      {
+        $unwind: "$postUser"
+      },
+      {
+        $project: {
+          "postUser._id": 0,
+          "postUser.cloudinaryId": 0,
+          "postUser.account": 0,
+        }
+      },
+      {
+        $lookup:
         {
-          $unwind: "$postUser"
-        },
+          from: "comments",
+          localField: "_id",
+          foreignField: "postId",
+          as: "comments"
+        }
+      },
+      {
+        $lookup:
         {
-          $project: {
-            "postUser._id": 0,
-            "postUser.cloudinaryId": 0,
-            "postUser.account": 0,
-          }
-        },
-        {
-          $lookup:
-          {
-            from: "comments",
-            localField: "_id",
-            foreignField: "postId",
-            as: "comments"
-          }
-        },
-        {
-          $lookup:
-          {
-            from: "likes",
-            localField: "_id",
-            foreignField: "postId",
-            as: "likes"
-          }
-        },
-        { $sort: { createdAt: -1 } },
-      ]).toArray();
-    }
+          from: "likes",
+          localField: "_id",
+          foreignField: "postId",
+          as: "likes"
+        }
+      },
+      { $sort: { createdAt: -1 } },
+    ]).toArray();
 
     res.render("home.ejs", { title: 'Homepage', posts: posts, currentUser: user });
 
@@ -85,59 +78,53 @@ exports.getExplore = async (req, res) => {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
 
-    //retrieve one post via account id
-    const post = await Post.findOne({ account: req.user._id });
-
     let posts = []
 
-    //if user has posted anything
-    if (post) {
-      //find every post posted by posted by user and people their following
-      posts = await mongoose.connection.db.collection("posts").aggregate([
+    //find every post posted by posted by user and people their following
+    posts = await mongoose.connection.db.collection("posts").aggregate([
+      {
+        //get all posts posted and followered by user
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'] }] }
+      },
+      {
+        $lookup:
         {
-          //get all posts posted and followered by user
-          $match: { $or: [{ user: post.user }, { followers: post.user }] }
-        },
-        {
-          $lookup:
-          {
-            from: "users",
-            localField: "user",
-            foreignField: "_id",
-            as: "postUser"
-          }
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "postUser"
+        }
 
-        },
+      },
+      {
+        $unwind: "$postUser"
+      },
+      {
+        $project: {
+          "postUser._id": 0,
+          "postUser.cloudinaryId": 0,
+          "postUser.account": 0,
+        }
+      },
+      {
+        $lookup:
         {
-          $unwind: "$postUser"
-        },
+          from: "comments",
+          localField: "_id",
+          foreignField: "postId",
+          as: "comments"
+        }
+      },
+      {
+        $lookup:
         {
-          $project: {
-            "postUser._id": 0,
-            "postUser.cloudinaryId": 0,
-            "postUser.account": 0,
-          }
-        },
-        {
-          $lookup:
-          {
-            from: "comments",
-            localField: "_id",
-            foreignField: "postId",
-            as: "comments"
-          }
-        },
-        {
-          $lookup:
-          {
-            from: "likes",
-            localField: "_id",
-            foreignField: "postId",
-            as: "likes"
-          }
-        },
-      ]).toArray()
-    }
+          from: "likes",
+          localField: "_id",
+          foreignField: "postId",
+          as: "likes"
+        }
+      },
+    ]).toArray()
 
     //store date for 7 days age
     const sevenDayAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
@@ -160,59 +147,54 @@ exports.getTrending = async (req, res) => {
   try {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
-    //retrieve one via account id
-    const post = await Post.findOne({ account: req.user._id });
 
     let posts = []
 
-    //if user has posted anything
-    if (post) {
-      //find every post posted by posted by user and people their following
-      posts = await mongoose.connection.db.collection("posts").aggregate([
+    //find every post posted by posted by user and people their following
+    posts = await mongoose.connection.db.collection("posts").aggregate([
+      {
+        //get all posts posted and followered by user
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'] }] }
+      },
+      {
+        $lookup:
         {
-          //get all posts posted and followered by user
-          $match: { $or: [{ user: post.user }, { followers: post.user }] }
-        },
-        {
-          $lookup:
-          {
-            from: "users",
-            localField: "user",
-            foreignField: "_id",
-            as: "postUser"
-          }
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "postUser"
+        }
 
-        },
+      },
+      {
+        $unwind: "$postUser"
+      },
+      {
+        $project: {
+          "postUser._id": 0,
+          "postUser.cloudinaryId": 0,
+          "postUser.account": 0,
+        }
+      },
+      {
+        $lookup:
         {
-          $unwind: "$postUser"
-        },
+          from: "comments",
+          localField: "_id",
+          foreignField: "postId",
+          as: "comments"
+        }
+      },
+      {
+        $lookup:
         {
-          $project: {
-            "postUser._id": 0,
-            "postUser.cloudinaryId": 0,
-            "postUser.account": 0,
-          }
-        },
-        {
-          $lookup:
-          {
-            from: "comments",
-            localField: "_id",
-            foreignField: "postId",
-            as: "comments"
-          }
-        },
-        {
-          $lookup:
-          {
-            from: "likes",
-            localField: "_id",
-            foreignField: "postId",
-            as: "likes"
-          }
-        },
-      ]).toArray();
-    }
+          from: "likes",
+          localField: "_id",
+          foreignField: "postId",
+          as: "likes"
+        }
+      },
+    ]).toArray();
 
     //store date for 7 days age
     const sevenDayAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
@@ -342,7 +324,7 @@ exports.searchUsers = async (req, res) => {
   try {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
-    console.log(user)
+
     let posts = []
 
     //find every post posted by posted by user and people their following
@@ -433,7 +415,7 @@ exports.searchPosts = async (req, res) => {
   try {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
-   
+
     console.log(user)
 
     let posts = []

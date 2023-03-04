@@ -9,6 +9,9 @@ module.exports = {
   //create a new post
   createPost: async (req, res) => {
     try {
+      //find logged in user
+      const user = await User.findOne({ account: req.user._id });
+
       let result = ''
 
       // Upload image to cloudinary, if provided
@@ -22,11 +25,9 @@ module.exports = {
         user: req.body.user,
         post: req.body.post,
         image: result.secure_url || '',
-        followers: [],
+        followers: Array(user['followers'].length).map((_, index) => user['followers'][index]),
         cloudinaryId: result.public_id || '',
       });
-
-      const post = await Post.findOne({ account: req.user._id });
 
       console.log("post has been added!");
       res.redirect('/home');
@@ -90,7 +91,7 @@ module.exports = {
       console.log(err);
     }
   },
-  
+
   //edit post
   editPost: async (req, res) => {
     try {
@@ -168,5 +169,5 @@ module.exports = {
       res.redirect("/home");
     }
   },
-  
+
 };

@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema({
     type: Array,
     require: true,
   },
+  followers: {
+    type: Array,
+    require: true,
+  },
   account: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Account",

@@ -173,19 +173,27 @@ exports.followings = async (req, res, next) => {
   const user = await User.findOne({ account: req.user._id });
 
   //check is user is already following
-  const follower = await Follower.findOne({ follower: req.user._id })
+  const follower = await Follower.findOne({ follower: user['_id'], user: req.params.id })
 
   if (follower) {
     //delete follow 
-    await Follower.remove({ follower: user._id });
+    await Follower.remove({ follower: user['_id'], user: req.params.id });
     //delete follower
-    await Following.remove({ following: req.params.id });
+    await Following.remove({ following: req.params.id, user: user['_id'] });
 
     //remove user following to account
-    await User.findOneAndUpdate({ account: req.user._id },
+    await User.findByIdAndUpdate({ _id: user['_id'] },
       {
         $pull: {
           following: req.params.id,
+        }
+      });
+
+    //remove user follower to account
+    await User.findByIdAndUpdate({ _id: req.params.id },
+      {
+        $pull: {
+          followers: user['_id'].toString(),
         }
       });
 
@@ -202,20 +210,29 @@ exports.followings = async (req, res, next) => {
     //create follower in DB
     await Follower.create({
       user: req.params.id,
-      follower: user._id,
+      follower: user['_id'],
     });
 
     //create following in DB
     await Following.create({
-      user: user._id,
+      user: user['_id'],
       following: req.params.id,
     });
 
-    //added user following to account
-    await User.findOneAndUpdate({ account: req.user._id },
+
+    //add current to following of other user
+    await User.findByIdAndUpdate({ _id: user['_id'] },
       {
         $push: {
           following: req.params.id,
+        }
+      });
+
+    //added user follower to account
+    await User.findByIdAndUpdate({ _id: req.params.id },
+      {
+        $push: {
+          followers: user['_id'].toString(),
         }
       });
 
@@ -223,7 +240,7 @@ exports.followings = async (req, res, next) => {
     await Post.updateMany({ user: req.params.id },
       {
         $push: {
-          followers: user._id.toString(),
+          followers: user['_id'].toString(),
         }
       });
 
