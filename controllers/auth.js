@@ -177,9 +177,9 @@ exports.followings = async (req, res, next) => {
 
   if (follower) {
     //delete follow 
-    await Follower.remove({ follower: user['_id'], user: req.params.id });
+    await Follower.deleteOne({ follower: user['_id'], user: req.params.id });
     //delete follower
-    await Following.remove({ following: req.params.id, user: user['_id'] });
+    await Following.deleteOne({ following: req.params.id, user: user['_id'] });
 
     //remove user following to account
     await User.findByIdAndUpdate({ _id: user['_id'] },

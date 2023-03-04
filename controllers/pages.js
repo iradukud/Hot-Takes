@@ -22,7 +22,7 @@ exports.getHome = async (req, res) => {
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
         //get all posts posted and followered by user
-        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'] }] }
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString() }] }
       },
       {
         $lookup:
@@ -84,7 +84,7 @@ exports.getExplore = async (req, res) => {
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
         //get all posts posted and followered by user
-        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'] }] }
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString()  }] }
       },
       {
         $lookup:
@@ -154,7 +154,7 @@ exports.getTrending = async (req, res) => {
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
         //get all posts posted and followered by user
-        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'] }] }
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString()  }] }
       },
       {
         $lookup:
@@ -331,7 +331,7 @@ exports.searchUsers = async (req, res) => {
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
         //get all posts posted and followered by user
-        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'] }] }
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString()  }] }
       },
       {
         $lookup:

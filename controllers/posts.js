@@ -25,7 +25,7 @@ module.exports = {
         user: req.body.user,
         post: req.body.post,
         image: result.secure_url || '',
-        followers: Array(user['followers'].length).map((_, index) => user['followers'][index]),
+        followers: Array(user['followers'].length).fill(0).map((_, i) => user['followers'][i]),
         cloudinaryId: result.public_id || '',
       });
 
@@ -153,7 +153,7 @@ module.exports = {
       })
 
       //delete comments from db
-      await Comment.remove({ postId: req.body.postId });
+      await Comment.deleteMany({ postId: req.body.postId });
 
       //delete post's image from cloudinary
       if (post.cloudinaryId) {
@@ -161,7 +161,7 @@ module.exports = {
       }
 
       //delete post from db
-      await Post.remove({ _id: req.body.postId });
+      await Post.deleteOne({ _id: req.body.postId });
 
       console.log("Deleted Post");
       res.redirect("/home");
