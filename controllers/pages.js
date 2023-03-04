@@ -16,16 +16,18 @@ exports.getHome = async (req, res) => {
   try {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
-    //retrieve one via account id
+    
+    //retrieve one post via account id
     const post = await Post.findOne({ account: req.user._id });
+    
     let posts = []
+    
     //if user has posted anything
     if (post) {
       //find every post posted by posted by user and people their following
       posts = await mongoose.connection.db.collection("posts").aggregate([
         {
-          //implement way to fetch user's followers posts
-          $match: { user: post.user }
+          $match: { $or: [{ user: post.user }, { followers: post.user }]}  
         },
         {
           $lookup:
@@ -64,7 +66,7 @@ exports.getHome = async (req, res) => {
             foreignField: "postId",
             as: "likes"
           }
-        },
+        },{ $sort: { createdDate: -1 } },
       ]).toArray();
     }
     console.log(posts)

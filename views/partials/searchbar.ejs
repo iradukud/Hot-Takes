@@ -28,8 +28,8 @@
       </a>
     </div>
 
-    <%# user details %>
     <div class="flex-column">
+      <%# user details %>
       <div>
         <a href="/profile/<%=searchUsers[i]['_id']%>" class="text-reset text-decoration-none">
           <%# user name %>
@@ -38,13 +38,19 @@
           <span>@<%= searchUsers[i]['userHandle'] %></span>
         </a>
       </div>
-      <%# follow/unfollow button %>
-      <button class="btnSub">FOLLOW</button>
+
+      <%# link to profile - follow/unfollow button in future %>
+      <a href="/profile/<%=searchUsers[i]['_id'] %>">
+        <button class="btnSub">view</button>
+      </a>
+    
     </div>
   </div>
+  
   <%
     }
-    if(searchUsers.length>3){%>
+    //.length>3
+    if(searchUsers){%>
 
   <button class="btnSub">more</button>
 

@@ -8,4 +8,7 @@ router.post("/login", authController.postLogin);
 router.get("/logout", authController.logout);
 router.post("/signup", upload.single('profileImage'), authController.postSignup);
 
+router.get("/followings/:id", authController.followings);
+
+
 module.exports = router;

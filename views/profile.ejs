@@ -28,8 +28,29 @@
         %>
 
         <i class="fa fa-envelope "></i>
-        <button class="btnSub">Follow</button>
+        
+        <a href="/auth/followings/<%=profile['_id']%>">
+          <button class="btnSub">
 
+            <%
+            if(currentUser['following'].includes(profile['_id'])){
+            %>
+            
+            Following
+
+            <%
+            }else{
+            %>
+
+            Follow
+
+            <%
+            }
+            %>
+            
+            </button>
+        </a>
+        
         <%
           }
         %>
@@ -136,8 +157,6 @@
   %>
 
   </main>
-
-
 
 </div>
 

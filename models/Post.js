@@ -16,10 +16,14 @@ const PostSchema = new mongoose.Schema({
   edited: {
     type: Boolean,
     require: true,
-  },
+  },  
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  followers: {
+    type: Array,
+    require: true,
   },
   account: {
     type: mongoose.Schema.Types.ObjectId,

@@ -2,6 +2,9 @@ const passport = require("passport");
 const validator = require("validator");
 const Account = require("../models/Account");
 const User = require("../models/User");
+const Post = require("../models/Post");
+const Following = require("../models/following");
+const Follower = require("../models/follower");
 const cloudinary = require("../middleware/cloudinary");
 
 //login verification
@@ -140,7 +143,7 @@ exports.postSignup = (req, res, next) => {
             return next(err);
           }
 
-          let result=''
+          let result = ''
 
           // Upload image to cloudinary, if provided
           if (req.file) {
@@ -154,12 +157,79 @@ exports.postSignup = (req, res, next) => {
             profileImage: result.secure_url || 'https://res.cloudinary.com/dwwcootcr/image/upload/v1676950620/676-6764065_default-profile-picture-transparent-hd-png-download_zgrei6.png',
             cloudinaryId: result.public_id || '',
             following: [],
-            follower:[],
-            account:req.user.id,
-           });
+            follower: [],
+            account: req.user.id,
+          });
 
-           res.redirect("/home");
+          res.redirect("/home");
         });
       });
     });
+};
+
+//follow or unfollow user
+exports.followings = async (req, res, next) => {
+  //find logged in user
+  const user = await User.findOne({ account: req.user._id });
+
+  //check is user is already following
+  const follower = await Follower.findOne({ follower: req.user._id })
+
+  if (follower) {
+    //delete follow 
+    await Follower.remove({ follower: req.user._id });
+    //delete follower
+    await Following.remove({ following: req.params.id });
+
+    //remove user following to account
+    await User.findOneAndUpdate({ account: req.user._id },
+      {
+        $pull: {
+          following: req.params.id,
+        }
+      });
+
+    //unfollow user's posts
+    await Post.updateMany({ user: req.params.id },
+      {
+        $pull: {
+          followers: user._id.toString(),
+        }
+      });
+
+  }
+  else {
+    //create follower in DB
+    await Follower.create({
+      user: req.params.id,
+      follower: req.user._id,
+    });
+
+    //create following in DB
+    await Following.create({
+      user: req.user._id,
+      following: req.params.id,
+    });
+
+    //added user following to account
+    await User.findOneAndUpdate({ account: req.user._id },
+      {
+        $push: {
+          following: req.params.id,
+        }
+      });
+
+    //follow user's posts
+    await Post.updateMany({ user: req.params.id },
+      {
+        $push: {
+          followers: user._id.toString(),
+        }
+      });
+
+  }
+
+  console.log('user has been follow or unfollowed!')
+  res.redirect(`/profile/${req.params.id}`)
+
 };

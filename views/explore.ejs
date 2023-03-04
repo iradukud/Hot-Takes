@@ -36,14 +36,18 @@
         <div>
           <%# link to poster %>
           <a href="/profile/<%=user['_id']%>" class="text-reset text-decoration-none">
-          <%# user name %>
-          <span><strong><%= user['userName'] %></strong></span>
-          <%# user handle %>
-          <span>@<%= user['userHandle'] %></span>
+            <%# user name %>
+            <span><strong><%= user['userName'] %></strong></span>
+            <%# user handle %>
+            <span>@<%= user['userHandle'] %></span>
           </a>
         </div>
-        <%# follow/unfollow button %>
-        <button class="btnSub">FOLLOW</button>
+
+        <%# link to profile - follow/unfollow button in future %>
+        <a href="/profile/<%=user['_id']%>">
+          <button class="btnSub">view</button>
+        </a>
+
       </div>
     </div>
 

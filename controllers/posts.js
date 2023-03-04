@@ -22,6 +22,7 @@ module.exports = {
         user: req.body.user,
         post: req.body.post,
         image: result.secure_url || '',
+        followers: [],
         cloudinaryId: result.public_id || '',
       });
 
@@ -89,6 +90,7 @@ module.exports = {
       console.log(err);
     }
   },
+  
   //edit post
   editPost: async (req, res) => {
     try {
@@ -133,6 +135,7 @@ module.exports = {
       console.log(err);
     }
   },
+  //delete specified post
   deletePost: async (req, res) => {
     try {
       //find post by id

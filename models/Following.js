@@ -12,4 +12,4 @@ const FollowingSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Like", FollowingSchema);
+module.exports = mongoose.model("Following", FollowingSchema);
