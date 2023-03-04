@@ -16,18 +16,19 @@ exports.getHome = async (req, res) => {
   try {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
-    
+
     //retrieve one post via account id
     const post = await Post.findOne({ account: req.user._id });
-    
+
     let posts = []
-    
+
     //if user has posted anything
     if (post) {
       //find every post posted by posted by user and people their following
       posts = await mongoose.connection.db.collection("posts").aggregate([
         {
-          $match: { $or: [{ user: post.user }, { followers: post.user }]}  
+          //get all posts posted and followered by user
+          $match: { $or: [{ user: post.user }, { followers: post.user }] }
         },
         {
           $lookup:
@@ -66,11 +67,13 @@ exports.getHome = async (req, res) => {
             foreignField: "postId",
             as: "likes"
           }
-        },{ $sort: { createdDate: -1 } },
+        },
+        { $sort: { createdAt: -1 } },
       ]).toArray();
     }
-    console.log(posts)
+
     res.render("home.ejs", { title: 'Homepage', posts: posts, currentUser: user });
+
   } catch (err) {
     console.log(err);
   }
@@ -81,16 +84,19 @@ exports.getExplore = async (req, res) => {
   try {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
-    //retrieve one via account id
+
+    //retrieve one post via account id
     const post = await Post.findOne({ account: req.user._id });
+
     let posts = []
+
     //if user has posted anything
     if (post) {
       //find every post posted by posted by user and people their following
       posts = await mongoose.connection.db.collection("posts").aggregate([
         {
-          //implement way to fetch user's followers posts
-          $match: { user: post.user }
+          //get all posts posted and followered by user
+          $match: { $or: [{ user: post.user }, { followers: post.user }] }
         },
         {
           $lookup:
@@ -143,7 +149,6 @@ exports.getExplore = async (req, res) => {
       //sort post based on user interactions
       .sort((postA, postB) => (postB['likes'].length + postB['comments'].length) - (postA['likes'].length + postA['comments'].length));
 
-    console.log(posts);
     res.render("explore.ejs", { title: 'Explore', trending: trending, currentUser: user });
   } catch (err) {
     console.log(err);
@@ -165,8 +170,8 @@ exports.getTrending = async (req, res) => {
       //find every post posted by posted by user and people their following
       posts = await mongoose.connection.db.collection("posts").aggregate([
         {
-          //implement way to fetch user's followers posts
-          $match: { user: post.user }
+          //get all posts posted and followered by user
+          $match: { $or: [{ user: post.user }, { followers: post.user }] }
         },
         {
           $lookup:
@@ -238,8 +243,9 @@ exports.getProfile = async (req, res) => {
     //find clicked user
     const profile = await User.findById({ _id: req.params.id });
 
-    //find user profile
     let posts = []
+    let followers = []
+    let following = []
 
     //find every post posted by posted by clicked user
     posts = await mongoose.connection.db.collection("posts").aggregate([
@@ -287,9 +293,45 @@ exports.getProfile = async (req, res) => {
       },
     ]).toArray();
 
+    //find every user's follower
+    followers = await mongoose.connection.db.collection("followers").aggregate([
+      {
+        $match: { user: mongoose.Types.ObjectId(req.params.id) }
+      },
+      {
+        $lookup:
+        {
+          from: "users",
+          localField: "follower",
+          foreignField: "_id",
+          as: "followers"
+        }
+      },
+      {
+        $unwind: "$followers"
+      },
+    ]).toArray();
 
-    console.log(posts)
-    res.render("profile.ejs", { title: 'Profile', posts: posts, currentUser: user, profile: profile });
+    //find every user's follower
+    following = await mongoose.connection.db.collection("followings").aggregate([
+      {
+        $match: { user: mongoose.Types.ObjectId(req.params.id) }
+      },
+      {
+        $lookup:
+        {
+          from: "users",
+          localField: "following",
+          foreignField: "_id",
+          as: "followingUsers"
+        }
+      },
+      {
+        $unwind: "$followingUsers"
+      },
+    ]).toArray();
+
+    res.render("profile.ejs", { title: 'Profile', posts: posts, currentUser: user, profile: profile, following: following, followers: followers });
   } catch (err) {
     console.log(err);
   }
@@ -300,59 +342,55 @@ exports.searchUsers = async (req, res) => {
   try {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
-    //retrieve one via account id
-    const post = await Post.findOne({ account: req.user._id });
-
+    console.log(user)
     let posts = []
 
-    //if user has posted anything
-    if (post) {
-      //find every post posted by posted by user and people their following
-      posts = await mongoose.connection.db.collection("posts").aggregate([
+    //find every post posted by posted by user and people their following
+    posts = await mongoose.connection.db.collection("posts").aggregate([
+      {
+        //get all posts posted and followered by user
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'] }] }
+      },
+      {
+        $lookup:
         {
-          //implement way to fetch user's followers posts
-          $match: { user: post.user }
-        },
-        {
-          $lookup:
-          {
-            from: "users",
-            localField: "user",
-            foreignField: "_id",
-            as: "postUser"
-          }
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "postUser"
+        }
 
-        },
+      },
+      {
+        $unwind: "$postUser"
+      },
+      {
+        $project: {
+          "postUser._id": 0,
+          "postUser.cloudinaryId": 0,
+          "postUser.account": 0,
+        }
+      },
+      {
+        $lookup:
         {
-          $unwind: "$postUser"
-        },
+          from: "comments",
+          localField: "_id",
+          foreignField: "postId",
+          as: "comments"
+        }
+      },
+      {
+        $lookup:
         {
-          $project: {
-            "postUser._id": 0,
-            "postUser.cloudinaryId": 0,
-            "postUser.account": 0,
-          }
-        },
-        {
-          $lookup:
-          {
-            from: "comments",
-            localField: "_id",
-            foreignField: "postId",
-            as: "comments"
-          }
-        },
-        {
-          $lookup:
-          {
-            from: "likes",
-            localField: "_id",
-            foreignField: "postId",
-            as: "likes"
-          }
-        },
-      ]).toArray();
-    }
+          from: "likes",
+          localField: "_id",
+          foreignField: "postId",
+          as: "likes"
+        }
+      },
+    ]).toArray();
+
 
     //retrieves users that match the search
     const searchUsers = await User.find({ userHandle: { "$regex": req.body.search, "$options": "i" } });
@@ -395,59 +433,56 @@ exports.searchPosts = async (req, res) => {
   try {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
-    //retrieve one via account id
-    const post = await Post.findOne({ account: req.user._id });
+   
+    console.log(user)
 
     let posts = []
 
-    //if user has posted anything
-    if (post) {
-      //find every post posted by posted by user and people their following
-      posts = await mongoose.connection.db.collection("posts").aggregate([
+    //find every post posted by posted by user and people their following
+    posts = await mongoose.connection.db.collection("posts").aggregate([
+      {
+        //get all posts posted and followered by user
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'] }] }
+      },
+      {
+        $lookup:
         {
-          //implement way to fetch user's followers posts
-          $match: { user: post.user }
-        },
-        {
-          $lookup:
-          {
-            from: "users",
-            localField: "user",
-            foreignField: "_id",
-            as: "postUser"
-          }
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "postUser"
+        }
 
-        },
+      },
+      {
+        $unwind: "$postUser"
+      },
+      {
+        $project: {
+          "postUser._id": 0,
+          "postUser.cloudinaryId": 0,
+          "postUser.account": 0,
+        }
+      },
+      {
+        $lookup:
         {
-          $unwind: "$postUser"
-        },
+          from: "comments",
+          localField: "_id",
+          foreignField: "postId",
+          as: "comments"
+        }
+      },
+      {
+        $lookup:
         {
-          $project: {
-            "postUser._id": 0,
-            "postUser.cloudinaryId": 0,
-            "postUser.account": 0,
-          }
-        },
-        {
-          $lookup:
-          {
-            from: "comments",
-            localField: "_id",
-            foreignField: "postId",
-            as: "comments"
-          }
-        },
-        {
-          $lookup:
-          {
-            from: "likes",
-            localField: "_id",
-            foreignField: "postId",
-            as: "likes"
-          }
-        },
-      ]).toArray();
-    }
+          from: "likes",
+          localField: "_id",
+          foreignField: "postId",
+          as: "likes"
+        }
+      },
+    ]).toArray();
 
     //retrieves post that match the search
     const searchPosts = await mongoose.connection.db.collection("posts").aggregate([
@@ -526,4 +561,3 @@ exports.searchPosts = async (req, res) => {
   }
 
 };
-

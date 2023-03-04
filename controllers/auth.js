@@ -177,7 +177,7 @@ exports.followings = async (req, res, next) => {
 
   if (follower) {
     //delete follow 
-    await Follower.remove({ follower: req.user._id });
+    await Follower.remove({ follower: user._id });
     //delete follower
     await Following.remove({ following: req.params.id });
 
@@ -202,12 +202,12 @@ exports.followings = async (req, res, next) => {
     //create follower in DB
     await Follower.create({
       user: req.params.id,
-      follower: req.user._id,
+      follower: user._id,
     });
 
     //create following in DB
     await Following.create({
-      user: req.user._id,
+      user: user._id,
       following: req.params.id,
     });
 

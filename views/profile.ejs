@@ -10,47 +10,48 @@
 
     <div class="d-flex d-flex justify-content-around border-bottom mb-4 pb-3">
 
-      <div class="flex-column">
+      <div class="d-flex flex-column align-items-center text-center">
         <%# link to profile %>
         <a href="/profile/<%=profile['_id']%>" class="text-reset text-decoration-none">
+          <%# profile image %>
           <img src="<%=profile['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
-          <%# user name %>
-          <span class="d-block"><strong><%= profile['userName'] %></strong></span>
-          <%# user handle %>
-          <span class="d-block mb-1">@<%= profile['userHandle'] %></span>
+          <div>
+            <%# user name %>
+            <span><strong><%= profile['userName'] %></strong></span>
+            <%# user handle %>
+            <span>@<%= profile['userHandle'] %></span>
+          </div>
         </a>
+
+        <div class="d-flex justify-content-between">
+          <%# follower count of profile %>
+          <span class="d-flex align-items-baseline me-2">
+            <strong class="me-2">Followers</strong>
+            <button id="showFollowers" class="btn p-0"><%= followers.length %></button>
+          </span>
+          <%# following count of profile %>
+          <span class="d-flex align-items-baseline ms-2">
+            <strong class="me-2">Following</strong>
+            <button id="showFollowing" class="btn p-0"><%= following.length %></button>
+          </span>
+        </div>
+
       </div>
 
       <div>
-
-        <%
-          if(profile['_id'].toString().trim() != currentUser['_id'].toString().trim()){
-        %>
+        <%# if user view their own profile don't show follow status and messages %>
+        <% if(profile['_id'].toString().trim() != currentUser['_id'].toString().trim()){ %>
 
         <i class="fa fa-envelope "></i>
-        
+
+        <%# change current user following status %>
         <a href="/auth/followings/<%=profile['_id']%>">
           <button class="btnSub">
-
-            <%
-            if(currentUser['following'].includes(profile['_id'])){
-            %>
-            
-            Following
-
-            <%
-            }else{
-            %>
-
-            Follow
-
-            <%
-            }
-            %>
-            
-            </button>
+            <%# show following status %>
+            <%=currentUser['following'].includes(profile['_id'])?'Following':'Follow'%>
+          </button>
         </a>
-        
+
         <%
           }
         %>
@@ -159,6 +160,9 @@
   </main>
 
 </div>
+
+<%# load follower and following modals %>
+<%- include('partials/modals/followings') -%>
 
 <%# load comment modal %>
 <%- include('partials/modals/comment') -%>

@@ -1,0 +1,111 @@
+<%# followers modal %>
+<div class="modal fade" id="followerModal" tabindex="-1" role="dialog" aria-labelledby="followerModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# modal title %>
+        <h5 class="modal-title" id="followerModalTitle">Followers</h5>
+        <%# close modal %>
+        <button type="button" class="btn btn-secondary fa fa-window-close close" data-dismiss="modal" aria-label="close"></button>
+      </div>
+
+      <div class="modal-body">
+        <%# loop through all the followers %>
+        <%followers.forEach(follower=>{%>
+
+        <%# container for user %>
+        <div class="d-flex mb-3">
+          <%# user profile image %>
+          <div class="flex-column">
+            <a href="/profile/<%=follower['followers']['_id']%>" class="text-reset text-decoration-none">
+              <img src="<%= follower['followers']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+            </a>
+          </div>
+
+          <div class="flex-column">
+            <%# user details %>
+            <div>
+              <a href="/profile/<%=follower['followers']['_id']%>" class="text-reset text-decoration-none">
+                <%# user name %>
+                <span><strong><%= follower['followers']['userName'] %></strong></span>
+                <%# user handle %>
+                <span>@<%= follower['followers']['userHandle'] %></span>
+              </a>
+            </div>
+
+            <%# link to profile - follow/unfollow button in future %>
+            <a href="/profile/<%=follower['followers']['_id'] %>">
+              <button class="btnSub">view</button>
+            </a>
+
+          </div>
+        </div>
+
+        <%})%>
+
+      </div>
+
+      <div class="modal-footer">
+        <%# close modal %>
+        <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<%# following modal %>
+<div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%# modal title %>
+        <h5 class="modal-title" id="followingModalTitle">Followers</h5>
+        <%# close modal %>
+        <button type="button" class="btn btn-secondary fa fa-window-close close" data-dismiss="modal" aria-label="close"></button>
+      </div>
+
+      <div class="modal-body">
+        <%# loop through all the followers %>
+        <%following.forEach(user=>{%>
+
+        <%# container for user %>
+        <div class="d-flex mb-3">
+          <%# user profile image %>
+          <div class="flex-column">
+            <a href="/profile/<%=user['followingUsers']['_id']%>" class="text-reset text-decoration-none">
+              <img src="<%= user['followingUsers']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+            </a>
+          </div>
+
+          <div class="flex-column">
+            <%# user details %>
+            <div>
+              <a href="/profile/<%=user['followingUsers']['_id']%>" class="text-reset text-decoration-none">
+                <%# user name %>
+                <span><strong><%= user['followingUsers']['userName'] %></strong></span>
+                <%# user handle %>
+                <span>@<%= user['followingUsers']['userHandle'] %></span>
+              </a>
+            </div>
+
+            <%# link to profile - follow/unfollow button in future %>
+            <a href="/profile/<%=user['followingUsers']['_id'] %>">
+              <button class="btnSub">view</button>
+            </a>
+
+          </div>
+        </div>
+
+        <%})%>
+
+      </div>
+
+      <div class="modal-footer">
+        <%# close modal %>
+        <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>

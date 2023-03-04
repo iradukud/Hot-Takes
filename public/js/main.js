@@ -10,7 +10,9 @@ function autoResize() {
 //trigger event to close modals
 $('.close').click(function () {
     $('#commentModal').modal('hide');
-    $('#editPostModal').modal('hide')
+    $('#editPostModal').modal('hide');
+    $('#followerModal').modal('hide');
+    $('#followingModal').modal('hide');
 });
 
 //trigger event to add comment
@@ -52,3 +54,12 @@ $('#searchPosts').click(function () {
     document.querySelector('#searchForm').setAttribute('action', '/searchPosts')
 })
 
+//trigger event to show followers
+$('#showFollowers').click(function () {
+    $('#followerModal').modal('show');
+});
+
+//trigger event to show following
+$('#showFollowing').click(function () {
+    $('#followingModal').modal('show');
+});
