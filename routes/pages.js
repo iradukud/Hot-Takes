@@ -9,6 +9,7 @@ router.get("/home", ensureAuth, pagesController.getHome);
 router.get("/explore", ensureAuth, pagesController.getExplore);
 router.get("/trending", ensureAuth, pagesController.getTrending);
 router.get("/profile/:id", ensureAuth, pagesController.getProfile);
+router.get("/message/:id", ensureAuth, pagesController.getMessage);
 
 
 router.post("/searchUsers", pagesController.searchUsers);

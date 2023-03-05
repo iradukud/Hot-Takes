@@ -33,13 +33,17 @@
           <span>Trending</span>
         </a>
       </li>
+      
       <%# nav item - messages %>
+      <% if(title=="Messages"){ %>
       <li>
-        <a href="#" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
+        <a href="#" class="nav-link link-light text-nav <%= title=="Messages" ? "selected" : "" %>">
           <i class="fa fa-envelope"></i>
           <span>Messages</span>
         </a>
       </li>
+      <% } %>
+      
       <%# nav item - profile %>
       <li>
         <a href="/profile/<%= currentUser['_id'] %>" class="nav-link link-light text-nav <%= title=="Profile" ? "selected" : "" %>">

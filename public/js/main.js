@@ -13,6 +13,7 @@ $('.close').click(function () {
     $('#editPostModal').modal('hide');
     $('#followerModal').modal('hide');
     $('#followingModal').modal('hide');
+    $('#messageModal').modal('hide');
 });
 
 //trigger event to add comment
@@ -26,7 +27,7 @@ $('.commentTrigger').click(function () {
 //trigger event to edit post
 $('.editPostTrigger').click(function () {
     $('#editPostModal').modal('show');
-    
+
     //place current post's id into the forms
     document.querySelector('#postId2').value = this.getAttribute('class').split(' ').pop().trim()
     document.querySelector('#editPost').value = document.querySelector('#postContent').innerText
@@ -35,7 +36,7 @@ $('.editPostTrigger').click(function () {
 //trigger event to edit post
 $('.editPostTrigger').click(function () {
     $('#editPostModal').modal('show');
-    
+
     //place current post's id into the forms
     document.querySelector('#postId2').value = this.getAttribute('class').split(' ').pop().trim()
     document.querySelector('#editPost').value = document.querySelector('#postContent').innerText
@@ -45,14 +46,20 @@ $('.editPostTrigger').click(function () {
 $('#searchUsers').click(function () {
     //set action of form
     document.querySelector('#searchForm').setAttribute('action', '/searchUsers')
-})
+});
 
 //setup form to quickly search for posts
 $('#searchPosts').click(function () {
-        
+
     //set action of form
     document.querySelector('#searchForm').setAttribute('action', '/searchPosts')
-})
+});
+
+//trigger event to message user
+$('#showMessage').click(function () {
+    $('#messageModal').modal('show');
+});
+
 
 //trigger event to show followers
 $('#showFollowers').click(function () {

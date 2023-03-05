@@ -550,3 +550,29 @@ exports.searchPosts = async (req, res) => {
   }
 
 };
+
+//get profile page
+exports.getMessage = async (req, res) => {
+  try {
+    //find logged in user
+    const user = await User.findOne({ account: req.user._id });
+
+    //find clicked user
+    const profile = await User.findById({ _id: req.params.id });
+
+    //find every message between users
+    /*
+    posts = await mongoose.connection.db.collection("posts").aggregate([
+      {
+        //implement way to fetch user's followers posts
+        $match: { user: mongoose.Types.ObjectId(req.params.id) }
+      },
+      ]).toArray();
+     */ 
+     
+
+    res.render("messages.ejs", { title: 'Messages', currentUser: user, profile: profile, });
+  } catch (err) {
+    console.log(err);
+  }
+};

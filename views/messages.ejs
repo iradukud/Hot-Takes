@@ -1,0 +1,90 @@
+<%- include('partials/header') -%>
+
+<div class="d-flex flex-nowrap">
+  <%# load desktop sidebar modals partial %>
+  <%- include('partials/sidebar') -%>
+
+  <%# main section of the page %>
+  <main class="d-flex flex-column col-sm-3 mx-3 ">
+    <h1 class="text-center">Chat logs</h1>
+
+
+  </main>
+
+  <%# message participants %>
+  <div class="d-flex flex-column text-center mt-3 mx-1">
+    <h6>Participants</h6>
+
+    <%# user signed in %>
+    <div class="d-flex mb-3">
+      <%# user profile image %>
+      <div class="flex-column">
+        <a href="/profile/<%=currentUser['_id']%>" class="text-reset text-decoration-none">
+          <img src="<%= currentUser['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+        </a>
+      </div>
+
+      <div class="flex-column">
+        <%# user details %>
+        <div>
+          <a href="/profile/<%=currentUser['_id']%>" class="text-reset text-decoration-none">
+            <%# user name %>
+            <span><strong><%= currentUser['userName'] %></strong></span>
+            <%# user handle %>
+            <span>@<%= currentUser['userHandle'] %></span>
+          </a>
+        </div>
+
+        <%# link to profile - follow/unfollow button in future %>
+        <a href="/profile/<%=currentUser['_id'] %>">
+          <button class="btnSub">view</button>
+        </a>
+      </div>
+    </div>
+
+    <%# other participant's profile %>
+    <div class="d-flex mb-3">
+      <%# user profile image %>
+      <div class="flex-column">
+        <a href="/profile/<%=profile['_id']%>" class="text-reset text-decoration-none">
+          <img src="<%= profile['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+        </a>
+      </div>
+
+      <div class="flex-column">
+        <%# user details %>
+        <div>
+          <a href="/profile/<%=profile['_id']%>" class="text-reset text-decoration-none">
+            <%# user name %>
+            <span><strong><%= profile['userName'] %></strong></span>
+            <%# user handle %>
+            <span>@<%= profile['userHandle'] %></span>
+          </a>
+        </div>
+
+        <%# link to profile - follow/unfollow button in future %>
+        <a href="/profile/<%=profile['_id'] %>">
+          <button class="btnSub">view</button>
+        </a>
+      </div>
+
+    </div>
+    <%# send modal trigger %>
+    <div>
+      <button id="showMessage" class="btnSub">
+        <i class="fa fa-envelope"></i>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<%# load message modal %>
+<%- include('partials/modals/message') -%>
+
+
+<%# load basic site scripts %>
+<%- include('partials/scripts') -%>
+
+<%# load footer partial %>
+<%- include('partials/footer') -%>

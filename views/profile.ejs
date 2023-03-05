@@ -42,7 +42,9 @@
         <%# if user view their own profile don't show follow status and messages %>
         <% if(profile['_id'].toString().trim() != currentUser['_id'].toString().trim()){ %>
 
-        <i class="fa fa-envelope "></i>
+        <a href="/message/<%=profile['_id']%>" class="text-reset text-decoration-none">
+          <i class="fa fa-envelope"></i>
+        </a>
 
         <%# change current user following status %>
         <a href="/auth/followings/<%=profile['_id']%>">
@@ -202,6 +204,7 @@
             <%
             }
             %>
+
           </div>
 
           <%# post icons %>
@@ -224,7 +227,9 @@
         </div>
       </div>
 
-      <%})%>
+      <%
+    })
+    %>
 
     </div>
 

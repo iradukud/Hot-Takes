@@ -82,7 +82,7 @@ module.exports = {
           postId: req.body.postId,
         });
       } else {
-        await Like.remove({ user: req.body.user, postId: req.body.postId });
+        await Like.deleteOne({ user: req.body.user, postId: req.body.postId });
       };
 
       console.log("like added or removed");
