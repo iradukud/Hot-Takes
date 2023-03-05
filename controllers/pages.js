@@ -84,7 +84,7 @@ exports.getExplore = async (req, res) => {
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
         //get all posts posted and followered by user
-        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString()  }] }
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString() }] }
       },
       {
         $lookup:
@@ -154,7 +154,7 @@ exports.getTrending = async (req, res) => {
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
         //get all posts posted and followered by user
-        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString()  }] }
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString() }] }
       },
       {
         $lookup:
@@ -313,7 +313,14 @@ exports.getProfile = async (req, res) => {
       },
     ]).toArray();
 
-    res.render("profile.ejs", { title: 'Profile', posts: posts, currentUser: user, profile: profile, following: following, followers: followers });
+
+    const hottest = [...posts]
+      //sort post based on user interactions
+      .sort((postA, postB) => (postB['likes'].length + postB['comments'].length) - (postA['likes'].length + postA['comments'].length))
+      //select first 10 posts 
+      .slice(0, 10);
+
+    res.render("profile.ejs", { title: 'Profile', posts: posts, currentUser: user, profile: profile, following: following, followers: followers, hottest: hottest });
   } catch (err) {
     console.log(err);
   }
@@ -331,7 +338,7 @@ exports.searchUsers = async (req, res) => {
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
         //get all posts posted and followered by user
-        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString()  }] }
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString() }] }
       },
       {
         $lookup:
