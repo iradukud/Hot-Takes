@@ -35,6 +35,108 @@ module.exports = {
       console.log(err);
     }
   },
+
+  //create a new post
+  getPost: async (req, res) => {
+    try {
+      //find logged in user
+      const user = await User.findOne({ account: req.user._id });
+
+      //find clicked post - along side with poster, its like and comments
+      const post = await mongoose.connection.db.collection("posts").aggregate([
+        {
+          //get all posts posted and followered by user
+          $match: { _id: mongoose.Types.ObjectId(req.params['id']) }
+        },
+        {
+          $lookup:
+          {
+            from: "users",
+            localField: "user",
+            foreignField: "_id",
+            as: "postUser"
+          }
+
+        },
+        {
+          $unwind: "$postUser"
+        },
+        {
+          $project: {
+            "postUser._id": 0,
+            "postUser.cloudinaryId": 0,
+            "postUser.account": 0,
+          }
+        },
+        {
+          $lookup:
+          {
+            from: "comments",
+            localField: "_id",
+            foreignField: "postId",
+            as: "comments"
+          }
+        },
+        {
+          $lookup:
+          {
+            from: "likes",
+            localField: "_id",
+            foreignField: "postId",
+            as: "likes"
+          },
+        },
+      ]).toArray();
+
+      //find clicked post - comments and it's commenter
+      const comments = await mongoose.connection.db.collection("comments").aggregate([
+        {
+          //get all posts comments
+          $match: { postId: mongoose.Types.ObjectId(req.params['id']) }
+        },
+        {
+          $lookup:
+          {
+            from: "users",
+            localField: "user",
+            foreignField: "_id",
+            as: "commentUser"
+          }
+
+        },
+        {
+          $unwind: "$commentUser"
+        },
+      ]).toArray();
+
+      const likes = await mongoose.connection.db.collection("likes").aggregate([
+        {
+          //get all posts comments
+          $match: { postId: mongoose.Types.ObjectId(req.params['id']) }
+        },
+        {
+          $lookup:
+          {
+            from: "users",
+            localField: "user",
+            foreignField: "_id",
+            as: "likeUser"
+          }
+
+        },
+        {
+          $unwind: "$likeUser"
+        },
+      ]).toArray();
+
+
+      console.log("post has been retrieved!");
+      res.render("post.ejs", { title: 'Homepage', post: post, currentUser: user, comments: comments, likes: likes });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
   //add comment to post  
   addComment: async (req, res) => {
     let result = ''
@@ -68,6 +170,7 @@ module.exports = {
       console.log(err);
     }
   },
+
   //like post
   likePost: async (req, res) => {
     try {
@@ -136,6 +239,7 @@ module.exports = {
       console.log(err);
     }
   },
+
   //delete specified post
   deletePost: async (req, res) => {
     try {

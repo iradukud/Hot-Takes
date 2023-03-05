@@ -6,116 +6,20 @@
 
   <%# main section of the page %>
   <main class="d-flex flex-column col-sm-3 mx-3 ">
-    <h1 class="text-center">Home</h1>
-    <div class="d-flex justify-content-center mb-4">
-      <form action="/post/create" enctype="multipart/form-data" method='POST'>
-        <div class="d-flex">
-          <%# user profile image %>
-          <img src="https://github.com/mdo.png" alt="user profile" width="32" height="32" class="rounded-circle me-2">
-          <textarea name="post" cols="50" rows="3" placeholder="What's your take?" class="post"></textarea>
-        </div>
-        <div class="d-flex justify-content-between align-items-center ms-5 mt-2">
-          <%# post image %>
-          <div>
-            <label for="file-input" class="fa fa-file-image" width="35"></label>
-            <input type="file" id="file-input" name="postImage" class="inputImage">
-          </div>
-          <div>
-            <%# submission button %>
-            <button type="sumbit" value="Upload" class="btnSub">Take</button>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <%# if user has any post show them %>
-    <%if(posts.length){%>
-    <section class="d-flex flex-column align-items-center">
-      <div class="row col-10">
-        <%posts.forEach(post=>{%>
-        <%# container for each post %>
-        <div class="d-flex mb-3">
-          <%# user profile image %>
-          <div class="flex-column">
-            <img src="https://github.com/mdo.png" alt="user profile" width="60" height="60" class="rounded-circle me-2">
-          </div>
-          <%# post text %>
-          <div class="flex-column w-100">
-            <%# user name %>
-            <span><strong><%= post['userName'] %></strong></span>
-            <%# user handle %>
-            <span class="mb-1">@<%= post['userHandle'] %></span>
-            <%# post text %>
-            <p class="text-wrap"><%= post.take %></p>
-            <%# post image image %>
-            <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
-              <%if(post['image']){%>
-              <img src="<%= post['image']%>" alt="" width="200" height="100%">
-              <%}%>
-            </div>
-            <%# post icons %>
-              <div class="d-flex justify-content-around align-items-center">
-                <%# if owner of post %>
-                <%if(post['user'].toString().trim() == user['_id'].toString().trim()){%>
-                <i class="fas fa-edit"></i>
-                <i class="fa fa-trash"></i>
-                <%}%>
-            
-                <%# like and comment buttons %>
-                <div>
-                  <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
-                  <span><%= post['comments'].length %></span>
-                </div>
-                <div>
-                  <i class="fa fa-fire"></i>
-                  <span><%= post['flames'].length %></span>
-                </div>
-              </div>
-
-              <%# post comments %>
-              <%  for(i=0;i<post['comments'].length;i++){ %>
-              <div class="d-flex mb-3">
-                <div class="flex-column">
-                  <img src="https://github.com/mdo.png" alt="user profile" width="45" height="45" class="rounded-circle me-2">
-                </div>
-                <div class="flex-column w-100">
-                  <%# user name %>
-                  <span><strong><%= post['comments'][i]['userName'] %></strong></span>
-                  <%# user handle %>
-                  <span class="mb-1">@<%= post['comments'][i]['userHandle'] %></span>
-                  <%# post text %>
-                  <p class="text-wrap border-bottom"><%= post['comments'][i]['comment']%></p>
-
-                  <div class="d-flex justify-content-around align-items-center">
-                    <%# if owner of post %>
-                    <%if(post['user'].toString().trim() == user['_id'].toString().trim()){%>
-                    <i class="fas fa-edit"></i>
-                    <i class="fa fa-trash"></i>
-                    <%}%>
-                  </div>
-                </div>
-              </div>
-
-              <% } %>
-
-                  </div>
-                </div>
-                <%})%>
-              </div>
-            </div>
-    </section>
-    <%}%>
-
-
+    <h1 class="text-center">Post</h1>
   </main>
 
+  <div class="d-flex flex-column mt-3 mx-1">
+    <h6 class="text-center">owner</h6>
+  </div>
+  
 </div>
 
 <%# load basic site scripts %>
-    <%- include('partials/modals/comment') -%>
+<%- include('partials/modals/comment') -%>
 
-    <%# load basic site scripts %>
-    <%- include('partials/scripts') -%>
+<%# load basic site scripts %>
+<%- include('partials/scripts') -%>
 
-    <%# load footer partial %>
-    <%- include('partials/footer') -%>
+<%# load footer partial %>
+<%- include('partials/footer') -%>

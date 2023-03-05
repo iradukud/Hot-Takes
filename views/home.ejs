@@ -62,7 +62,9 @@
               <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
             </a>
             <%# post text %>
+            <a href="/post/<%=post['_id']%>" class="text-reset text-decoration-none">
             <p id="postContent" class="text-wrap"><%= post['post'] %></p>
+            </a>
 
             <%# post image image %>
             <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
