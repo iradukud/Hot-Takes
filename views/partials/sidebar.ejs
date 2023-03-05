@@ -37,7 +37,7 @@
       <%# nav item - messages %>
       <% if(title=="Messages"){ %>
       <li>
-        <a href="#" class="nav-link link-light text-nav <%= title=="Messages" ? "selected" : "" %>">
+        <a href="/message/<%=otherUser['_id']%>" class="nav-link link-light text-nav <%= title=="Messages" ? "selected" : "" %>">
           <i class="fa fa-envelope"></i>
           <span>Messages</span>
         </a>

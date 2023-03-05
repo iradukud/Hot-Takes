@@ -4,27 +4,22 @@
     <div class="modal-content">
       <div class="modal-header">
         <%# modal title %>
-        <h5 class="modal-title" id="messageModalTitle">Message - <%= profile['userHandle'] %></h5>
+        <h5 class="modal-title" id="messageModalTitle">Message - <%= otherUser['userHandle'] %></h5>
         <%# close modal %>
         <button type="button" class="btn btn-secondary fa fa-window-close close" data-dismiss="modal" aria-label="close"></button>
       </div>
 
       <%# message form %>
-      <form action="/message/send" enctype="multipart/form-data" method="POST">
+      <form action="/message/send"  method="POST">
         <div class="modal-body">
           <%# message text %>
           <textarea class="form-control" id="message" name="message" placeholder="Hello World!" cols="50" rows="3"></textarea>
-          <%# message image %>
-          <div class="text-center my-3">
-            <label for="file-input" class="fa fa-file-image" width="35">Message Image</label>
-            <input type="file" id="file-input" name="messageImage" class="inputImage">
-          </div>
           <%# hidden inputs %>
           <div>
             <%# post id %>
-            <input type="hidden" id="postId" name="postId" value="<%=profile['_id']%>" />
+            <input type="hidden" name="recieverId" value="<%=otherUser['_id']%>" />
             <%# user id %>
-            <input type="hidden" name="userId" value="<%=currentUser['_id']%>" />
+            <input type="hidden" name="senderId" value="<%=currentUser['_id']%>" />
           </div>
         </div>
         <%# form buttons %>
@@ -32,7 +27,7 @@
           <%# close modal %>
           <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancel</button>
           <%# login buttons %>
-          <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+          <button type="submit" class="btn btn-primary" >Submit</button>
         </div>
       </form>
 

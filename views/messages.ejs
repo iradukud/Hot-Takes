@@ -8,7 +8,27 @@
   <main class="d-flex flex-column col-sm-3 mx-3 ">
     <h1 class="text-center">Chat logs</h1>
 
+    <% messages.forEach(message=>{%>
 
+    <%if(message['sender'].toString().trim() == currentUser['_id'].toString().trim()){%>
+
+    <div class="d-flex ">
+      <p>
+        <%= message['message']%>
+      </p>
+    </div>
+
+    <% }else{ %>
+
+    <div class="d-flex flex-row-reverse mb-3">
+      <p>
+        <%= message['message']%>
+      </p>
+    </div>
+
+    <% } %>
+
+    <% })%>
   </main>
 
   <%# message participants %>
@@ -46,24 +66,24 @@
     <div class="d-flex mb-3">
       <%# user profile image %>
       <div class="flex-column">
-        <a href="/profile/<%=profile['_id']%>" class="text-reset text-decoration-none">
-          <img src="<%= profile['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+        <a href="/profile/<%=otherUser['_id']%>" class="text-reset text-decoration-none">
+          <img src="<%= otherUser['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
         </a>
       </div>
 
       <div class="flex-column">
         <%# user details %>
         <div>
-          <a href="/profile/<%=profile['_id']%>" class="text-reset text-decoration-none">
+          <a href="/profile/<%=otherUser['_id']%>" class="text-reset text-decoration-none">
             <%# user name %>
-            <span><strong><%= profile['userName'] %></strong></span>
+            <span><strong><%= otherUser['userName'] %></strong></span>
             <%# user handle %>
-            <span>@<%= profile['userHandle'] %></span>
+            <span>@<%= otherUser['userHandle'] %></span>
           </a>
         </div>
 
         <%# link to profile - follow/unfollow button in future %>
-        <a href="/profile/<%=profile['_id'] %>">
+        <a href="/profile/<%=otherUser['_id'] %>">
           <button class="btnSub">view</button>
         </a>
       </div>

@@ -557,21 +557,23 @@ exports.getMessage = async (req, res) => {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
 
-    //find clicked user
-    const profile = await User.findById({ _id: req.params.id });
+    //find message recipient
+    const otherUser = await User.findById({ _id: req.params.id });
 
     //find every message between users
-    /*
-    posts = await mongoose.connection.db.collection("posts").aggregate([
+    const messages = await mongoose.connection.db.collection("messages").aggregate([
       {
-        //implement way to fetch user's followers posts
-        $match: { user: mongoose.Types.ObjectId(req.params.id) }
+        $match: {
+          $or: [
+            { sender: user['_id'], recipient: mongoose.Types.ObjectId(req.params['id']) },
+            { sender: mongoose.Types.ObjectId(req.params['id']), recipient: user['_id'] }
+          ]
+        }
       },
-      ]).toArray();
-     */ 
-     
+    ]).toArray();
 
-    res.render("messages.ejs", { title: 'Messages', currentUser: user, profile: profile, });
+    console.log(messages)
+    res.render("messages.ejs", { title: 'Messages', currentUser: user, otherUser: otherUser, messages: messages });
   } catch (err) {
     console.log(err);
   }
