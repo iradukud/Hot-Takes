@@ -8,32 +8,29 @@
         <%# close modal %>
         <button type="button" class="btn btn-secondary fa fa-window-close close" data-dismiss="modal" aria-label="close"></button>
       </div>
+
       <%# login form %>
-      <form action="/post/addComment" enctype="multipart/form-data" method="POST">
+      <form action="/comment/addComment" id="commentForm" method="POST">
         <div class="modal-body">
           <%# comment text %>
           <textarea class="form-control" id="commentText" name="comment" placeholder="Comment" cols="50" rows="3"></textarea>
-          <%# comment image %>
-          <div class="text-center my-3">
-            <label for="file-input" class="fa fa-file-image" width="35">Comment Image</label>
-            <input type="file" id="file-input" name="commentImage" class="inputImage">
-          </div>
+
           <%# hidden inputs %>
           <div>
-            <%# post id %>
-            <input type="hidden" id="postId" name="postId" value="" />
             <%# user id %>
             <input type="hidden" name="userId" value="<%=currentUser['_id']%>" />
           </div>
         </div>
+
         <%# form buttons %>
         <div class="modal-footer">
           <%# close modal %>
           <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancel</button>
           <%# login buttons %>
-          <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
+
     </div>
   </div>
 </div>

@@ -142,7 +142,7 @@ exports.getExplore = async (req, res) => {
   }
 };
 
-//get trending   page
+//get trending page
 exports.getTrending = async (req, res) => {
   try {
     //find logged in user

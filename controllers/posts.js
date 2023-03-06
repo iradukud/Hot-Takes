@@ -129,43 +129,9 @@ module.exports = {
         },
       ]).toArray();
 
-
+      console.log(post);
       console.log("post has been retrieved!");
-      res.render("post.ejs", { title: 'Homepage', post: post, currentUser: user, comments: comments, likes: likes });
-    } catch (err) {
-      console.log(err);
-    }
-  },
-
-  //add comment to post  
-  addComment: async (req, res) => {
-    let result = ''
-
-    // Upload image to cloudinary, if provided
-    if (req.file) {
-      result = await cloudinary.uploader.upload(req.file.path);
-    }
-
-    try {
-      //save comment in DB
-      await Comment.create({
-        comment: req.body.comment,
-        image: result.secure_url || '',
-        cloudinaryId: result.public_id || '',
-        user: req.body.userId,
-        postId: req.body.postId,
-      });
-
-      //retrieve created comment
-      const comment = await Comment.findOne({ user: req.body.userId, postId: req.body.postId, comment: req.body.comment, });
-
-      //placed the created comment
-      await Post.findOneAndUpdate({ _id: req.body.postId }, {
-        $push: { comments: comment['_id'] }
-      });
-
-      console.log("comment added!");
-      res.redirect('/home');
+      res.render("post.ejs", { title: 'Post', post: post[0], currentUser: user, comments: comments, likes: likes });
     } catch (err) {
       console.log(err);
     }

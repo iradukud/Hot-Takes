@@ -9,7 +9,6 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 router.get("/:id", postsController.getPost);
 
 router.post("/create", upload.single("postImage"), postsController.createPost);
-router.post("/addComment", upload.single("commentImage"), postsController.addComment);
 router.post("/like", postsController.likePost);
 
 router.put("/editPost", upload.single("postImage"), postsController.editPost);

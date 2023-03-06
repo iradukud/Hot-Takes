@@ -7,13 +7,129 @@
   <%# main section of the page %>
   <main class="d-flex flex-column col-sm-3 mx-3 ">
     <h1 class="text-center">Post</h1>
+
+    <%# post content %>
+    <div class="d-flex mb-3">
+      <%# poster profile image %>
+      <div class="flex-column">
+        <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+      </div>
+
+      <div class="flex-column w-100">
+        <%# poster user name %>
+        <span><strong><%= post['postUser']['userName'] %></strong></span>
+
+        <%# poster user handle %>
+        <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
+
+        <%# post text %>
+        <p id="postContent" class="text-wrap"><%= post['post'] %></p>
+
+        <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
+          <%# if post has image %>
+          <% if(post['image']){ %>
+
+          <%# display post image %>
+          <img src="<%= post['image']%>" alt="" width="200" height="100%">
+
+          <% } %>
+        </div>
+
+        <%# post icons %>
+        <div class="d-flex justify-content-around align-items-center">
+
+          <%# if owner of post, show edit and delete buttons  %>
+          <% if(post['user'].toString().trim() == currentUser['_id'].toString().trim()){ %>
+
+          <%# trigger edit post %>
+          <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
+
+          <%# delete post form %>
+          <form action="/post/deletePost?_method=delete" method="POST">
+            <input type="hidden" name="postId" value="<%= post['_id'] %>" />
+            <button type="sumbit" class="btn fa fa-trash py-0"></button>
+          </form>
+
+          <% } %>
+
+          <%# trigger comment modal button and comment count %>
+          <div>
+            <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
+            <span><%= post['comments'].length %></span>
+          </div>
+
+          <%# like button and count %>
+          <div class="d-flex">
+            <form action="/post/like" method="POST">
+              <input type="hidden" name="postId" value="<%= post['_id'] %>" />
+              <input type="hidden" name="user" value="<%= currentUser['_id'] %>" />
+              <button type="sumbit" class="btn fa fa-fire px-1 py-0"></button>
+            </form>
+            <span><%= post['likes'].length %></span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <%# post's comments %>
+    <% comments.forEach(comment=>{ %>
+
+    <%# comment content %>
+    <div class="d-flex mb-3">
+      <%# commenter profile image %>
+      <div class="flex-column">
+        <img src="<%=comment['commentUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+      </div>
+
+      <div class="flex-column w-100">
+        <%# poster user name %>
+        <span><strong><%= comment['commentUser']['userName'] %></strong></span>
+
+        <%# poster user handle %>
+        <span class="mb-1">@<%= comment['commentUser']['userHandle'] %></span>
+
+        <%# post text %>
+        <p id="commentContent-<%=comment['_id']%>" class="text-wrap"><%= comment['comment'] %></p>
+
+        <%# post icons %>
+        <div class="d-flex justify-content-around align-items-center">
+
+          <%# if owner of post, show edit and delete buttons  %>
+          <% if(comment['user'].toString().trim() == currentUser['_id'].toString().trim()){ %>
+
+          <%# trigger edit comment %>
+          <button class="btn fas fa-edit editCommentTrigger <%=comment['_id']%>"></button>
+
+          <%# delete post button %>
+          <a href="/comment/delete/<%= comment['_id'] %>">
+            <button type="sumbit" class="btn fa fa-trash py-0"></button>
+          </a>
+
+          <% } %>
+
+        </div>
+      </div>
+    </div>
+
+
+    <% }) %>
+
+
+
   </main>
 
   <div class="d-flex flex-column mt-3 mx-1">
     <h6 class="text-center">owner</h6>
   </div>
-  
+
+
+
+
+
 </div>
+<%# load comment modal %>
+<%- include('partials/modals/post') -%>
 
 <%# load basic site scripts %>
 <%- include('partials/modals/comment') -%>

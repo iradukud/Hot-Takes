@@ -19,10 +19,32 @@ $('.close').click(function () {
 //trigger event to add comment
 $('.commentTrigger').click(function () {
     $('#commentModal').modal('show');
+    //extract the post's id
+    const postId = this.getAttribute('class').split(' ').pop().trim()
 
-    //place current post's id into the forms
-    document.querySelector('#postId').value = this.getAttribute('class').split(' ').pop().trim()
+    //sets form's action
+    document.querySelector('#commentForm').setAttribute('action', `/comment/add/${postId}`)
+    //set value of comment in form
+    document.querySelector('#commentText').innerText = ''
 })
+
+//trigger event to edit comment
+$('.editCommentTrigger').click(function () {
+    $('#commentModal').modal('show');
+    //extract the comment's id
+    const commentId = this.getAttribute('class').split(' ').pop().trim()
+
+    //sets form's action
+    document.querySelector('#commentForm').setAttribute('action', `/comment/edit/${commentId}`)
+    //set value of comment in form
+    document.querySelector('#commentText').innerText = document.querySelector(`#commentContent-${commentId}`).innerText
+})
+
+
+
+
+
+
 
 //trigger event to edit post
 $('.editPostTrigger').click(function () {

@@ -11,6 +11,7 @@ const connectDB = require("./config/database");
 const authRoutes = require("./routes/auth");
 const pagesRoutes = require("./routes/pages");
 const postRoutes = require("./routes/posts");
+const commentRoutes = require("./routes/comments");
 const messageRoutes = require("./routes/messages");
 
 //Use .env file in config folder
@@ -59,6 +60,7 @@ app.use(flash());
 app.use("/", pagesRoutes);
 app.use("/auth", authRoutes);
 app.use("/post", postRoutes);
+app.use("/comment", commentRoutes);
 app.use("/message", messageRoutes);
 
 //Server Running
