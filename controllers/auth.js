@@ -167,14 +167,70 @@ exports.postSignup = (req, res, next) => {
     });
 };
 
-//follow or unfollow user
+//get account page
 exports.getAccount = async (req, res, next) => {
   //find logged in user
   const user = await User.findById({ _id: req.params.id });
+  const account = await Account.findById({ _id: user['account'] });
+
+
 
   console.log('user has been follow or unfollowed!')
   //render account page of user
-  res.render("account.ejs", { title: 'Account', currentUser: user });
+  res.render("account.ejs", { title: 'Account', currentUser: user, email: account['email'] });
+};
+
+//edit user details
+exports.editUser = async (req, res, next) => {
+  //find logged in user
+  let user = await User.findById({ _id: req.params.id });
+  try {
+    //if userName is provide
+    if (req.body.userName) {
+      //change current userName
+      await User.findByIdAndUpdate({ _id: req.params.id }, {
+        $set: {
+          userName: req.body.userName,
+        }
+      });
+    };
+
+    //if userHandle is provide
+    if (req.body.userHandle) {
+      //change current userHandle
+      await User.findByIdAndUpdate({ _id: req.params.id }, {
+        $set: {
+          userHandle: req.body.userHandle,
+        }
+      });
+    };
+
+    //if image provided
+    if (req.file) {
+      //delete user's profile image from cloudinary
+      if (user.cloudinaryId) {
+        await cloudinary.uploader.destroy(user.cloudinaryId);
+      }
+
+      //upload image to cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+
+      //change current profile image
+      await User.findByIdAndUpdate({ _id: req.params.id }, {
+        $set: {
+          profileImage: result.secure_url,
+          cloudinaryId: result.public_id,
+        }
+      });
+    };
+
+    console.log('user detail(s) have been edited!')
+    //render account page of user
+    res.redirect(`/auth/account/${req.params.id}`);
+  } catch {
+    res.redirect(`/auth/account/${req.params.id}`);
+  }
+
 };
 
 //follow or unfollow user

@@ -8,7 +8,91 @@
   <main class="d-flex flex-column col-sm-3 mx-3 ">
     <h1 class="text-center">Account Details</h1>
 
+    <%# profile %>
+    <div class="d-flex justify-content-center border p-4">
+      <form action="/auth/editUser/<%= currentUser['_id'] %>?_method=PUT" enctype="multipart/form-data" method="POST" class="flex-column w-100">
+        <%# username %>
+        <div>
+          <span class="d-block"><strong>Username</strong></span>
+          <div class="d-flex justify-content-between">
+            <span><%= currentUser['userName'] %></span>
+            <div class="form-floating">
+              <input type="text" name="userName" id="userName" class="form-control">
+              <label for="userName" class="form-label">New Username</label>
+            </div>
+          </div>
+        </div>
+        <%# userhandle %>
+        <div>
+          <span class="d-block"><strong>Userhandle</strong></span>
+          <div class="d-flex justify-content-between">
+            <span>@<%= currentUser['userHandle'] %></span>
+            <div class="form-floating">
+              <input type="text" name="userHandle" id="userHandle" class="form-control">
+              <label for="userHandle" class="form-label">New Handle</label>
+            </div>
+          </div>
+        </div>
+        <%# profile image %>
+        <div>
+          <span class="d-block"><strong>Profile Image</strong></span>
+          <div class="d-flex justify-content-between">
+            <img src="<%= currentUser['profileImage'] %>" alt="user profile" width="32" height="32" class="rounded-circle me-2">
+            <input type="file" id="file-input" name="profileImage" class="inputImage text-center">
+            <label for="file-input" class="fa fa-file-image" width="35">-New Profile Image</label>
+          </div>
+        </div>
 
+        <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary" value="Upload">Save Changes</button>
+        </div>
+      </form>
+    </div>
+
+    <%# security %>
+    <div class="d-flex justify-content-center border p-4">
+      <form action="/auth/account/<%= currentUser['_id'] %>?_method=PUT" method="POST" class="flex-column w-100">
+        <%# user email %>
+        <div>
+          <span><strong>Email</strong></span>
+          <div class="d-flex justify-content-between">
+            <span><%= email %></span>
+            <div class="form-floating">
+              <input type="text" name="email" id="email" class="form-control">
+              <label for="email" class="form-label">New Email</label>
+            </div>
+          </div>
+          <%# user password %>
+          <div>
+            <span><strong>Password</strong></span>
+            <div class="d-flex justify-content-end">
+              <%# maybe allow user to see password in the future %>
+              <%# current password %>
+              <div class="form-floating">
+                <input type="password" name="currentPassword" id="currentPassword" class="form-control">
+                <label for="currentPassword" class="form-label">Current Password</label>
+              </div>
+            </div>
+            <%# new current password %>
+            <div class="d-flex justify-content-end">
+              <div class="form-floating">
+                <input type="password" name="password" id="password" class="form-control">
+                <label for="password" class="form-label">New Password</label>
+              </div>
+            </div>
+            <div class="d-flex justify-content-end">
+              <div class="form-floating">
+                <input type="password" name="confirmPassword" id="confirmPassword" class="form-control">
+                <label for="confirmPassword" class="form-label">New Password</label>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+            </div>
+          </div>
+      </form>
+    </div>
 
   </main>
 
