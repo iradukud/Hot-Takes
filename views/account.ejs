@@ -1,0 +1,29 @@
+<%- include('partials/header') -%>
+
+<div class="d-flex flex-nowrap">
+  <%# load desktop sidebar modals partial %>
+  <%- include('partials/sidebar') -%>
+
+  <%# main section of the page %>
+  <main class="d-flex flex-column col-sm-3 mx-3 ">
+    <h1 class="text-center">Account Details</h1>
+
+
+
+  </main>
+
+  <div class="d-flex flex-column text-center mt-3 mx-1">
+    <h6>Account Stats</h6>
+
+  </div>
+
+</div>
+
+<%# load comment modal %>
+<%- include('partials/modals/post') -%>
+
+<%# load basic site scripts %>
+<%- include('partials/scripts') -%>
+
+<%# load footer partial %>
+<%- include('partials/footer') -%>

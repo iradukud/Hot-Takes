@@ -44,16 +44,6 @@
       </li>
       <% } %>
 
-      <%# nav item - post %>
-      <% if(title=="Post"){ %>
-      <li>
-        <a href="/post/<%=post['_id']%>" class="nav-link link-light text-nav <%= title=="Post" ? "selected" : "" %>">
-          <i class="fa fa-clipboard"></i>
-          <span>Post</span>
-        </a>
-      </li>
-      <% } %>
-
       <%# nav item - profile %>
       <li>
         <a href="/profile/<%= currentUser['_id'] %>" class="nav-link link-light text-nav <%= title=="Profile" ? "selected" : "" %>">
@@ -77,12 +67,12 @@
         <%# user profile image %>
         <img src="<%= currentUser['profileImage'] %>" alt="user profile image" width="32" height="32" class="rounded-circle me-2">
         <%# user handle %>
-        <strong>mdo</strong>
+        <strong><%= currentUser['userHandle'] %></strong>
       </a>
       <%# list of dropdown items %>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
         <%# account link %>
-        <li><a class="dropdown-item" href="#">Account</a></li>
+        <li><a class="dropdown-item" href="/auth/account/<%= currentUser['_id'] %>">Account</a></li>
         <li>
           <hr class="dropdown-divider">
         </li>

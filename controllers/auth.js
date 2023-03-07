@@ -168,6 +168,16 @@ exports.postSignup = (req, res, next) => {
 };
 
 //follow or unfollow user
+exports.getAccount = async (req, res, next) => {
+  //find logged in user
+  const user = await User.findById({ _id: req.params.id });
+
+  console.log('user has been follow or unfollowed!')
+  //render account page of user
+  res.render("account.ejs", { title: 'Account', currentUser: user });
+};
+
+//follow or unfollow user
 exports.followings = async (req, res, next) => {
   //find logged in user
   const user = await User.findOne({ account: req.user._id });

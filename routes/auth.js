@@ -10,5 +10,9 @@ router.post("/signup", upload.single('profileImage'), authController.postSignup)
 
 router.get("/followings/:id", authController.followings);
 
+router.get("/account/:id", authController.getAccount);
+
+
+
 
 module.exports = router;
