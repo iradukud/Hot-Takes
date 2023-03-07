@@ -165,7 +165,7 @@ module.exports = {
   editPost: async (req, res) => {
     try {
       //retrieve post by id
-      let post = await Post.findById({ _id: req.body.postId })
+      let post = await Post.findById({ _id: req.params.id })
       let result = ''
 
       // Upload image to cloudinary, if provided
@@ -180,27 +180,28 @@ module.exports = {
         result = await cloudinary.uploader.upload(req.file.path);
 
         //assign image and other changes to post
-        await Post.findOneAndUpdate({ _id: req.body.postId },
+        await Post.findOneAndUpdate({ _id: req.params.id },
           {
             $set: {
               image: result.secure_url,
               cloudinaryId: result.public_id,
-              post: req.body.editPost,
+              post: req.body.post,
             }
           });
 
       } else {
         //assign changes to post
-        await Post.findOneAndUpdate({ _id: req.body.postId },
+        await Post.findOneAndUpdate({ _id: req.params.id },
           {
             $set: {
-              post: req.body.editPost,
+              post: req.body.post,
             }
           });
       }
 
-      console.log("post has been editted!");
-      res.redirect('/home');
+      console.log("post has been edited!");
+      //redirect to edited post
+      res.redirect(`/post/${req.params.id}`);
     } catch (err) {
       console.log(err);
     }

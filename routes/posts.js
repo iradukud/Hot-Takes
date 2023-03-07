@@ -11,7 +11,7 @@ router.get("/:id", postsController.getPost);
 router.post("/create", upload.single("postImage"), postsController.createPost);
 router.post("/like", postsController.likePost);
 
-router.put("/editPost", upload.single("postImage"), postsController.editPost);
+router.put("/edit/:id", upload.single("postImage"), postsController.editPost);
 
 router.delete("/deletePost", postsController.deletePost);
 

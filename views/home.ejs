@@ -63,7 +63,7 @@
             </a>
             <%# post text %>
             <a href="/post/<%=post['_id']%>" class="text-reset text-decoration-none">
-            <p id="postContent" class="text-wrap"><%= post['post'] %></p>
+            <p id="postContent-<%= post['_id'] %>" class="text-wrap"><%= post['post'] %></p>
             </a>
 
             <%# post image image %>
@@ -86,7 +86,7 @@
                 <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
                 <form action="/post/deletePost?_method=delete" method="POST">
                   <input type="hidden" name="postId" value="<%= post['_id'] %>" />
-                  <button type="sumbit" class="btn fa fa-trash py-0 %>"></button>
+                  <button type="sumbit" class="btn fa fa-trash py-0"></button>
                 </form>
 
                 <%}%>

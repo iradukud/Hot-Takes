@@ -33,7 +33,7 @@
           <span>Trending</span>
         </a>
       </li>
-      
+
       <%# nav item - messages %>
       <% if(title=="Messages"){ %>
       <li>
@@ -43,7 +43,17 @@
         </a>
       </li>
       <% } %>
-      
+
+      <%# nav item - post %>
+      <% if(title=="Post"){ %>
+      <li>
+        <a href="/post/<%=post['_id']%>" class="nav-link link-light text-nav <%= title=="Post" ? "selected" : "" %>">
+          <i class="fa fa-clipboard"></i>
+          <span>Post</span>
+        </a>
+      </li>
+      <% } %>
+
       <%# nav item - profile %>
       <li>
         <a href="/profile/<%= currentUser['_id'] %>" class="nav-link link-light text-nav <%= title=="Profile" ? "selected" : "" %>">
@@ -54,7 +64,7 @@
       <%# create take %>
       <li>
         <div class="btn nav-link text-nav active mt-4">
-          <span>Take</span>
+          <span id="triggerPost">Take</span>
         </div>
       </li>
     </ul>
