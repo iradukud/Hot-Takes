@@ -1,15 +1,15 @@
 <%- include('partials/header') -%>
 
-<div class="d-flex flex-nowrap">
-  <%# load desktop sidebar modals partial %>
+<div class="d-flex justify-content-center">
+  <%# load sidebar modals partial %>
   <%- include('partials/sidebar') -%>
 
   <%# main section of the page %>
-  <main class="d-flex flex-column col-sm-3 mx-3 ">
+  <main class="d-flex flex-column align-items-center col-8 px-3">
     <h1 class="text-center">Trending</h1>
-    <div class="row col-10">
+    <div class="row col-md-7">
       <%
-      trending.forEach(post => {
+        trending.forEach(post => {
       %>
 
       <%# container for each post %>
@@ -40,14 +40,15 @@
           <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
 
             <%
-            if(post['image']){
+              if(post['image']){
             %>
 
             <img src="<%= post['image']%>" alt="" width="200" height="100%" />
 
             <%
-            }
+              };
             %>
+
           </div>
 
           <%# post icons %>
@@ -62,8 +63,10 @@
               <button type="sumbit" class="btn fa fa-trash py-0 %>"></button>
             </form>
 
-            <%}%>
-            
+            <%
+              };
+            %>
+
             <%# like and comment buttons %>
             <div>
               <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
@@ -83,7 +86,7 @@
       </div>
 
       <%
-      })
+        });
       %>
 
     </div>

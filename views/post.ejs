@@ -1,15 +1,15 @@
 <%- include('partials/header') -%>
 
-<div class="d-flex flex-nowrap">
-  <%# load desktop sidebar modals partial %>
+<div class="d-flex justify-content-center">
+  <%# load sidebar modals partial %>
   <%- include('partials/sidebar') -%>
 
   <%# main section of the page %>
-  <main class="d-flex flex-column col-sm-3 mx-3 ">
+  <main class="d-flex flex-column flex-shrink-1 col-md-6 col-10 px-3">
     <h1 class="text-center">Post</h1>
 
     <%# post content %>
-    <div class="d-flex mb-3">
+    <div class="d-flex col-md-6 col-10 mb-3">
       <%# poster profile image %>
       <div class="flex-column">
         <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
@@ -26,13 +26,20 @@
         <p id="postContent" class="text-wrap"><%= post['post'] %></p>
 
         <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
+
           <%# if post has image %>
           <% if(post['image']){ %>
 
-          <%# display post image %>
-          <img src="<%= post['image']%>" alt="" width="200" height="100%">
+          <%# link to post %>
+          <a href="/post/<%=post['_id']%>" class="text-reset text-decoration-none">
+            <%# post image image %>
+            <img src="<%= post['image']%>" alt="" width="200" height="100%">
+          </a>
 
-          <% } %>
+          <%
+            };
+          %>
+
         </div>
 
         <%# post icons %>
@@ -50,7 +57,9 @@
             <button type="sumbit" class="btn fa fa-trash py-0"></button>
           </form>
 
-          <% } %>
+          <% 
+            }; 
+          %>
 
           <%# trigger comment modal button and comment count %>
           <div>
@@ -72,62 +81,99 @@
       </div>
     </div>
 
+
     <%# post's comments %>
     <% comments.forEach(comment=>{ %>
+    <div class="row justify-content-center col-md-7">
+      <%# comment content %>
+      <div class="d-flex col-7 mb-3">
+        <%# commenter profile image %>
+        <div class="flex-column">
+          <img src="<%=comment['commentUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+        </div>
 
-    <%# comment content %>
-    <div class="d-flex mb-3">
-      <%# commenter profile image %>
-      <div class="flex-column">
-        <img src="<%=comment['commentUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
-      </div>
+        <div class="flex-column w-100">
+          <%# poster user name %>
+          <span><strong><%= comment['commentUser']['userName'] %></strong></span>
 
-      <div class="flex-column w-100">
-        <%# poster user name %>
-        <span><strong><%= comment['commentUser']['userName'] %></strong></span>
+          <%# poster user handle %>
+          <span class="mb-1">@<%= comment['commentUser']['userHandle'] %></span>
 
-        <%# poster user handle %>
-        <span class="mb-1">@<%= comment['commentUser']['userHandle'] %></span>
+          <%# post text %>
+          <p id="commentContent-<%=comment['_id']%>" class="text-wrap"><%= comment['comment'] %></p>
 
-        <%# post text %>
-        <p id="commentContent-<%=comment['_id']%>" class="text-wrap"><%= comment['comment'] %></p>
+          <%# post icons %>
+          <div class="d-flex justify-content-around align-items-center">
 
-        <%# post icons %>
-        <div class="d-flex justify-content-around align-items-center">
+            <%# if owner of post, show edit and delete buttons  %>
+            <% if(comment['user'].toString().trim() == currentUser['_id'].toString().trim()){ %>
 
-          <%# if owner of post, show edit and delete buttons  %>
-          <% if(comment['user'].toString().trim() == currentUser['_id'].toString().trim()){ %>
+            <%# trigger edit comment %>
+            <button class="btn fas fa-edit editCommentTrigger <%=comment['_id']%>"></button>
 
-          <%# trigger edit comment %>
-          <button class="btn fas fa-edit editCommentTrigger <%=comment['_id']%>"></button>
+            <%# delete post button %>
+            <a href="/comment/delete/<%= comment['_id'] %>">
+              <button type="sumbit" class="btn fa fa-trash py-0"></button>
+            </a>
 
-          <%# delete post button %>
-          <a href="/comment/delete/<%= comment['_id'] %>">
-            <button type="sumbit" class="btn fa fa-trash py-0"></button>
-          </a>
+          <% 
+            };
+          %>
 
-          <% } %>
-
+          </div>
         </div>
       </div>
     </div>
 
-
-    <% }) %>
+    <% 
+      }); 
+    %>
 
 
 
   </main>
 
-  <div class="d-flex flex-column mt-3 mx-1">
+  <div class="d-flex flex-column position-fixed end-0 overflow-auto col-md-3 col-sm-3 big mt-3 mx-1">
     <h6 class="text-center">owner</h6>
+
+    <%# container for user %>
+    <div class="d-flex mb-3">
+
+      <div class="flex-column">
+        <%# link to poster %>
+        <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
+          <%# user profile image %>
+          <img src="<%= post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+        </a>
+      </div>
+
+      <div class="flex-column">
+        <%# user details %>
+        <div>
+          <%# link to profile %>
+          <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
+            <%# user name %>
+            <span><strong><%= post['postUser']['userName'] %></strong></span>
+          </a>
+
+          <%# link to profile %>
+          <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
+            <%# user handle %>
+            <span>@<%= post['postUser']['userHandle'] %></span>
+          </a>
+        </div>
+
+        <%# link to profile %>
+        <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
+          <button class="btnSub">view</button>
+        </a>
+
+      </div>
+    </div>
   </div>
 
-
-
-
-
 </div>
+
 <%# load comment modal %>
 <%- include('partials/modals/post') -%>
 

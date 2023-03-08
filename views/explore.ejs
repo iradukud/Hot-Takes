@@ -1,11 +1,11 @@
 <%- include('partials/header') -%>
 
-<div class="d-flex flex-nowrap">
-  <%# load desktop sidebar modals partial %>
+<div class="d-flex justify-content-center">
+  <%# load sidebar modals partial %>
   <%- include('partials/sidebar') -%>
 
   <%# main section of the page %>
-  <main class="d-flex flex-column col-sm-3 mx-3 ">
+  <main class="d-flex flex-column flex-shrink-1 col-md-5 col-8 px-3 ">
     <h1 class="text-center">Explore</h1>
     <form action="" id="searchForm" class="col-12 col-lg-auto mb-3 mb-lg-0" method="POST">
       <input type="hidden" name="title" value="<%= title %>" />
@@ -17,10 +17,11 @@
     </form>
 
     <% 
-    //search results for users
-    if(typeof searchUsers != 'undefined') {
-      searchUsers.forEach(user=>{
+      //search results for users
+      if(typeof searchUsers != 'undefined') {
+        searchUsers.forEach(user=>{
     %>
+
     <%# container for user %>
     <div class="d-flex mb-3">
       <%# user profile image %>
@@ -52,8 +53,8 @@
     </div>
 
     <%
-      })
-    }
+        });
+      };
 
       if(typeof searchPosts != 'undefined') {
     %>
@@ -61,93 +62,110 @@
       <div class="row col-10">
 
         <%
-      searchPosts.forEach(post=>{
-    %>
+          searchPosts.forEach(post=>{
+        %>
 
         <%# container for each post %>
         <div class="d-flex mb-3">
-          <%# user profile image %>
           <div class="flex-column">
             <%# link to poster %>
             <a href="/profile/<%=post['user']%>">
+              <%# user profile image %>
               <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
             </a>
           </div>
 
-          <%# post text %>
           <div class="flex-column w-100">
             <%# link to poster %>
             <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
               <%# user name %>
               <span><strong><%= post['postUser']['userName'] %></strong></span>
+            </a>
 
+            <%# link to poster %>
+            <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
               <%# user handle %>
               <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
             </a>
-            <%# post text %>
-            <p id="postContent" class="text-wrap"><%= post['post'] %></p>
 
-            <%# post image image %>
+            <%# link to post %>
+            <a href="/post/<%=post['_id']%>" class="text-reset text-decoration-none">
+              <%# post text %>
+              <p id="postContent-<%= post['_id'] %>" class="text-wrap"><%= post['post'] %></p>
+            </a>
+
             <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
 
-              <%if(post['image']){%>
+              <% if(post['image']){ %>
 
-              <img src="<%= post['image']%>" alt="" width="200" height="100%">
+              <%# link to post %>
+              <a href="/post/<%=post['_id']%>" class="text-reset text-decoration-none">
+                <%# post image image %>
+                <img src="<%= post['image']%>" alt="" width="200" height="100%">
+              </a>
 
-              <%}%>
+              <%
+                };
+              %>
 
             </div>
-              
-              <%# post icons %>
-              <div class="d-flex justify-content-around align-items-center">
 
-                <%# if owner of post, show edit and delete buttons  %>
-                <%if(post['user'].toString().trim() == currentUser['_id'].toString().trim()){%>
+            <%# post icons %>
+            <div class="d-flex justify-content-around align-items-center">
 
-                <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
-                <form action="/post/deletePost?_method=delete" method="POST">
-                  <input type="hidden" name="postId" value="<%= post['_id'] %>" />
-                  <button type="sumbit" class="btn fa fa-trash py-0 %>"></button>
-                </form>
+              <%# if owner of post, show edit and delete buttons  %>
+              <% if(post['user'].toString().trim() == currentUser['_id'].toString().trim()){ %>
 
-                <%}%>
+              <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
+              <form action="/post/deletePost?_method=delete" method="POST">
+                <input type="hidden" name="postId" value="<%= post['_id'] %>" />
+                <button type="sumbit" class="btn fa fa-trash py-0 %>"></button>
+              </form>
 
-                <%# like and comment buttons %>
-                <div>
-                  <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
-                  <span><%= post['comments'].length %></span>
-                </div>
-                <div class="d-flex">
-                  <form action="/post/like" method="POST">
-                    <input type="hidden" name="postId" value="<%= post['_id'] %>" />
-                    <input type="hidden" name="user" value="<%= currentUser['_id'] %>" />
-                    <button type="sumbit" class="btn fa fa-fire px-1 py-0 %>"></button>
-                  </form>
-                  <span><%= post['likes'].length %></span>
-                </div>
+              <%
+                };
+              %>
 
+              <%# like and comment buttons %>
+              <div>
+                <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
+                <span><%= post['comments'].length %></span>
               </div>
+              <div class="d-flex">
+                <form action="/post/like" method="POST">
+                  <input type="hidden" name="postId" value="<%= post['_id'] %>" />
+                  <input type="hidden" name="user" value="<%= currentUser['_id'] %>" />
+                  <button type="sumbit" class="btn fa fa-fire px-1 py-0 %>"></button>
+                </form>
+                <span><%= post['likes'].length %></span>
+              </div>
+
             </div>
           </div>
-
-          <%})%>
-
         </div>
+
         <%
-      }
-    %>
+          });
+        %>
+
+      </div>
+
+      <%
+        };
+      %>
+
     </section>
   </main>
 
-  <div class="d-flex flex-column mt-3 mx-1">
+  <div class="d-flex flex-column position-fixed end-0 overflow-auto col-md-3 col-sm-3 big mt-3 mx-1">
     <h6 class="text-center">Trending</h6>
     <div class="row col-10">
 
       <%
-      for(i=0;i<trending.length;i++){
-        if(i==10) { 
-          break; 
-        };   
+        for(i=0;i<trending.length;i++){
+          if(i==5) { 
+            break; 
+          };   
       %>
 
       <%# container for each post %>
@@ -166,25 +184,34 @@
           <a href="/profile/<%=trending[i]['user']%>" class="text-reset text-decoration-none">
             <%# user name %>
             <span><strong><%= trending[i]['postUser']['userName'] %></strong></span>
+          </a>
 
+          <%# link to poster %>
+          <a href="/profile/<%=trending[i]['user']%>" class="text-reset text-decoration-none">
             <%# user handle %>
             <span class="mb-1">@<%= trending[i]['postUser']['userHandle'] %></span>
           </a>
+
           <%# post text %>
-          <p id="postContent" class="text-wrap"><%= trending[i]['post'] %></p>
+          <a href="/post/<%=trending[i]['_id']%>" class="text-reset text-decoration-none">
+            <p class="text-wrap"><%= trending[i]['post'] %></p>
+          </a>
 
           <%# post image image %>
           <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
 
+            <% if(trending[i]['image']){ %>
+
+            <%# link to post %>
+            <a href="/post/<%=post['_id']%>" class="text-reset text-decoration-none">
+              <%# post image image %>
+              <img src="<%= trending[i]['image']%>" alt="" width="200" height="100%">
+            </a>
+
             <%
-            if(trending[i]['image']){
+              };
             %>
 
-            <img src="<%= trending[i]['image']%>" alt="" width="150" height="100%" />
-
-            <%
-            }
-            %>
           </div>
 
           <%# post icons %>
@@ -208,21 +235,13 @@
       </div>
 
       <%
-      }
-      if(trending.length>10){ 
-      %>
-
-      <button class="btnSub">more</button>
-
-      <% 
-      } 
+        };
       %>
     </div>
 
   </div>
 
 </div>
-
 
 <%# load comment modal %>
 <%- include('partials/modals/comment') -%>

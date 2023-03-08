@@ -1,9 +1,11 @@
 <%# quick searchbar %>
-<div class="d-flex flex-column text-center mt-3 mx-1">
+<div class="d-flex flex-column position-fixed end-0 col-md-2 col-sm-3 big mt-3 mx-1">
   <h6>Quick Search</h6>
   <form action="" id="searchForm" class="col-12 col-lg-auto mb-3 mb-lg-0" method="POST">
-    <input type="hidden" name="title" value="<%= title %>">
-    <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="search">
+    <div class="w-75">
+      <input type="hidden" name="title" value="<%= title %>">
+      <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="search">
+    </div>
     <div class="my-2">
       <button type="sumbit" id="searchUsers" class="btnSub">Users</button>
       <button type="sumbit" id="searchPosts" class="btnSub">Takes</button>
@@ -16,14 +18,14 @@
     for(i=0;i<searchUsers.length;i++){ 
       if(i==3) { 
         break; 
-      } 
+      }; 
   %>
 
   <%# container for user %>
   <div class="d-flex mb-3">
-    <%# user profile image %>
     <div class="flex-column">
       <a href="/profile/<%=searchUsers[i]['_id']%>" class="text-reset text-decoration-none">
+        <%# link to profile %>
         <img src="<%= searchUsers[i]['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
       </a>
     </div>
@@ -31,81 +33,143 @@
     <div class="flex-column">
       <%# user details %>
       <div>
+        <%# link to profile %>
         <a href="/profile/<%=searchUsers[i]['_id']%>" class="text-reset text-decoration-none">
           <%# user name %>
           <span><strong><%= searchUsers[i]['userName'] %></strong></span>
+        </a>
+
+        <%# link to profile %>
+        <a href="/profile/<%=searchUsers[i]['_id']%>" class="text-reset text-decoration-none">
           <%# user handle %>
           <span>@<%= searchUsers[i]['userHandle'] %></span>
         </a>
       </div>
 
-      <%# link to profile - follow/unfollow button in future %>
+      <%# link to profile %>
       <a href="/profile/<%=searchUsers[i]['_id'] %>">
         <button class="btnSub">view</button>
       </a>
-    
+
     </div>
   </div>
-  
+
   <%
     }
-    //.length>3
-    if(searchUsers){%>
-
-  <button class="btnSub">more</button>
-
+    //if more then 3 search results 
+    if(searchUsers.length>3){
+  %>
+  //send request to see the rest
+  <form action="/searchUsers" method="POST">
+    <input type="hidden" name="title" value="Explore">
+    <input type="hidden" class="form-control" name="search" value="<%=searchItem%>">
+    <button class="btnSub">more</button>
+  </form>
   <%
-    } 
-  } 
+    }; 
+  }; 
 
+  //search results for post
   if(typeof searchPosts != 'undefined') {
     for(i=0;i<searchPosts.length;i++){ 
       if(i==3) { 
         break; 
-      } 
+      };
   %>
 
   <div class="d-flex mb-3">
-    <%# user profile image %>
     <div class="flex-column">
-      <img src="<%=searchPosts[i]['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+      <%# link to poster %>
+      <a href="/profile/<%=searchPosts[i]['user']%>" class="text-reset text-decoration-none">
+        <%# user profile image %>
+        <img src="<%=searchPosts[i]['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+      </a>
     </div>
 
-    <%# post text %>
     <div class="flex-column w-100">
-      <%# user name %>
-      <span><strong><%= searchPosts[i]['postUser']['userName'] %></strong></span>
+      <%# link to poster %>
+      <a href="/profile/<%=searchPosts[i]['user']%>" class="text-reset text-decoration-none">
+        <%# user name %>
+        <span><strong><%= searchPosts[i]['postUser']['userName'] %></strong></span>
+      </a>
 
-      <%# user handle %>
-      <span class="mb-1">@<%= searchPosts[i]['postUser']['userHandle'] %></span>
+      <%# link to poster %>
+      <a href="/profile/<%=searchPosts[i]['user']%>" class="text-reset text-decoration-none">
+        <%# user handle %>
+        <span class="mb-1">@<%= searchPosts[i]['postUser']['userHandle'] %></span>
+      </a>
 
-      <%# post text %>
-      <p class="text-wrap"><%= searchPosts[i]['post'] %></p>
-
+      <%# link to post %>
+      <a href="/post/<%=searchPosts[i]['_id']%>" class="text-reset text-decoration-none">
+        <%# post text %>
+        <p class="text-wrap"><%= searchPosts[i]['post'] %></p>
+      </a>
       <%# post image image %>
-      <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
 
-        <%if(searchPosts[i]['image']){%>
+      <div class="d-flex justify-content-center mb-1 pb-1">
+
+        <% if(searchPosts[i]['image']){ %>
 
         <img src="<%= searchPosts[i]['image']%>" alt="" width="100" height="100%" />
 
-        <% } %>
+        <% 
+          }; 
+        %>
 
       </div>
     </div>
   </div>
 
   <%
-    }  
+    };  
 
     if(searchPosts.length>3){
   %>
 
-  <button class="btnSub">more</button>
+  <%# send request to see the rest %>
+  <form action="/searchPosts" method="POST">
+    <input type="hidden" name="title" value="Explore">
+    <input type="hidden" class="form-control" name="search" value="<%=searchItem%>">
+    <button class="btnSub">more</button>
+  </form>
 
   <%
-    }
-  }
+    };
+  };
   %>
 
+</div>
+
+<%# drop down searchbar for mobiles %>
+<div class="d-flex justify-content-end mobile fixed-top overflow-auto me-4 mt-2">
+  <nav class="navbar-dark bg-transparent">
+    <%# dropdown menu %>
+    <div class="dropdown">
+      <a href="#" class="link-dark text-decoration-none text-nav" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-search p-2"></i>
+      </a>
+
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownMenuLink">
+        <%# nav item - search users %>
+        <li class="nav-item">
+          <form action="/searchUsers" method="POST" class="p-2">
+            <input type="search" class="form-control" placeholder="search users" aria-label="Search" name="search" />
+            <div class="d-flex justify-content-center">
+              <button type="sumbit" class="btnSub">Users</button>
+            </div>
+          </form>
+        </li>
+        <%# nav item - search posts %>
+        <li class="nav-item">
+          <form action="/searchPosts" method="POST" class="p-2">
+            <input type="search" class="form-control" placeholder="search posts" aria-label="Search" name="search" />
+            <div class="d-flex justify-content-center">
+              <button type="sumbit" class="btnSub">Post</button>
+            </div>
+          </form>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
 </div>

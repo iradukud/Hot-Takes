@@ -1,11 +1,11 @@
 <%- include('partials/header') -%>
 
-<div class="d-flex flex-nowrap">
+<div class="d-flex justify-content-center">
   <%# load desktop sidebar modals partial %>
   <%- include('partials/sidebar') -%>
 
   <%# main section of the page %>
-  <main class="d-flex flex-column col-sm-3 mx-3 ">
+  <main class="d-flex flex-column flex-shrink-1 col-md-7 col-10 px-3">
     <h1 class="text-center">Account Details</h1>
 
     <%# profile %>
@@ -38,8 +38,8 @@
           <span class="d-block"><strong>Profile Image</strong></span>
           <div class="d-flex justify-content-between">
             <img src="<%= currentUser['profileImage'] %>" alt="user profile" width="32" height="32" class="rounded-circle me-2">
-            <input type="file" id="file-input" name="profileImage" class="inputImage text-center">
-            <label for="file-input" class="fa fa-file-image" width="35">-New Profile Image</label>
+            <input type="file" id="file-input1" name="profileImage" class="inputImage text-center">
+            <label for="file-input1" class="fa fa-file-image" width="35">-New Profile Image</label>
           </div>
         </div>
 
@@ -96,9 +96,20 @@
 
   </main>
 
-  <div class="d-flex flex-column text-center mt-3 mx-1">
-    <h6>Account Stats</h6>
+  <div class="d-flex position-fixed end-0 sidebar big">
+    <div class="d-flex flex-column text-center mt-3 mx-1">
+      <h6>Account Stats</h6>
 
+      <div class="d-flex justify-content-between">
+        <%# follower count of profile %>
+        <span class="d-flex align-items-baseline me-2">
+          <strong class="me-2">Followers</strong><%= currentUser['followers'].length %></span>
+
+        <%# following count of profile %>
+        <span class="d-flex align-items-baseline ms-2">
+          <strong class="me-2">Following</strong><%= currentUser['following'].length %></span>
+      </div>
+    </div>
   </div>
 
 </div>

@@ -1,70 +1,98 @@
-    /* sidebar styling */
-    .sidebar {
-      height: 100vh;
-      /*
+ /* sidebar styling */
+ .sidebar {
+   height: 100vh;
+   /*
     removed cause it behaves funny, probably due to lack of content on screen
     height: -webkit-fill-available;
     */
-      max-height: 100vh;
-      overflow-x: auto;
-      overflow-y: hidden;
-    }
+   max-height: 100vh;
+   overflow-x: auto;
+   overflow-y: hidden;
+ }
 
-    .dropdown-toggle {
-      outline: 0;
-    }
+ .dropdown-toggle {
+   outline: 0;
+ }
 
-    .text-nav {
-      color: #ff7f27;
-    }
+ .text-nav {
+   color: #ff7f27;
+ }
 
-    .selected {
-      color: white;
-    }
+ .selected {
+   color: white;
+ }
 
-    .active {
-      background-color: #ff7f27 !important;
-    }
+ .active {
+   background-color: #ff7f27 !important;
+ }
 
-    /* desktop nav */
-    @media (max-width: 576px) {
-      .desktop {
-        display: none !important;
-      }
-    }
+ /* Webpage responsiveness */
+ /* desktop nav */
+ @media (max-width: 649px) {
+  .small {
+    display: none !important;
+  }
+  .big {
+    display: none !important;
+  }
+  .mobile{
+    display: show !important;
+  }
+}
+@media (max-width: 900px) and (min-width: 650px) {
+  .small {
+    display: show !important;
+  }
+  .big {
+    display: none !important;
+  }
+  .mobile{
+    display: none !important;
+  }
+}
+@media (min-width: 901px) {
+  .small {
+    display: none !important;
+  }
+  .big {
+    display: show !important;
+  }
+  .mobile{
+    display: none !important;
+  }
+}
 
-    /* mobile nav */
-    @media (min-width: 576px) {
-      .mobile {
-        display: none !important;
-      }
-    }
 
-    /* post form styling */
-    /* remove textarea's border */
-    .post {
-      border: none;
-      outline: none;
-      overflow: hidden;
-      resize: none;
-      border-bottom: 1px solid #ff7f27;
-    }
 
-    /* hide default file input */
-    .inputImage {
-      display: none;
-    }
 
-    /* icons */
-    .fa-file-image {
-      color: #ff7f27;
-    }
 
-    /* form button */
-    .btnSub {
-      color: white;
-      background-color: #ff7f27;
-      border: none;
-      border-radius: 0.25rem;
-      padding: 0.1rem 1rem
-    }
+
+
+ /* post form styling */
+ /* remove textarea's border */
+ .post {
+   border: none;
+   outline: none;
+   overflow: hidden;
+   resize: none;
+   border-bottom: 1px solid #ff7f27;
+ }
+
+ /* hide default file input */
+ .inputImage {
+   display: none;
+ }
+
+ /* icons */
+ .fa-file-image {
+   color: #ff7f27;
+ }
+
+ /* form button */
+ .btnSub {
+   color: white;
+   background-color: #ff7f27;
+   border: none;
+   border-radius: 0.25rem;
+   padding: 0.1rem 1rem
+ }

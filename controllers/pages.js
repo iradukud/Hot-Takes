@@ -318,7 +318,7 @@ exports.getProfile = async (req, res) => {
       //sort post based on user interactions
       .sort((postA, postB) => (postB['likes'].length + postB['comments'].length) - (postA['likes'].length + postA['comments'].length))
       //select first 10 posts 
-      .slice(0, 10);
+      .slice(0, 3);
 
     res.render("profile.ejs", { title: 'Profile', posts: posts, currentUser: user, profile: profile, following: following, followers: followers, hottest: hottest });
   } catch (err) {
@@ -423,15 +423,13 @@ exports.searchPosts = async (req, res) => {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
 
-    console.log(user)
-
     let posts = []
 
     //find every post posted by posted by user and people their following
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
         //get all posts posted and followered by user
-        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'] }] }
+        $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString() }] }
       },
       {
         $lookup:
@@ -551,7 +549,7 @@ exports.searchPosts = async (req, res) => {
 
 };
 
-//get profile page
+//get message page
 exports.getMessage = async (req, res) => {
   try {
     //find logged in user
@@ -572,7 +570,6 @@ exports.getMessage = async (req, res) => {
       },
     ]).toArray();
 
-    console.log(messages)
     res.render("messages.ejs", { title: 'Messages', currentUser: user, otherUser: otherUser, messages: messages });
   } catch (err) {
     console.log(err);

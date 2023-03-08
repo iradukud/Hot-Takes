@@ -15,6 +15,5 @@ router.get("/message/:id", ensureAuth, pagesController.getMessage);
 router.post("/searchUsers", pagesController.searchUsers);
 router.post("/searchPosts", pagesController.searchPosts);
 
-//router.get("/feed", ensureAuth, postsController.getFeed);
 
 module.exports = router;

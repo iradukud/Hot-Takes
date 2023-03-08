@@ -1,6 +1,6 @@
 <%# desktop sidebar navigation %>
-<nav class="d-flex flex-md-wrap sidebar desktop">
-  <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-nav" style="width: 160px;">
+<nav class="d-flex flex-grow-1 position-fixed start-0 sidebar  big">
+  <div class="d-flex flex-column  p-3 bg-dark text-nav">
     <%# site log %>
     <div class="d-flex justify-content-center">
       <a href="/home" class="link-light">
@@ -33,17 +33,6 @@
           <span>Trending</span>
         </a>
       </li>
-
-      <%# nav item - messages %>
-      <% if(title=="Messages"){ %>
-      <li>
-        <a href="/message/<%=otherUser['_id']%>" class="nav-link link-light text-nav <%= title=="Messages" ? "selected" : "" %>">
-          <i class="fa fa-envelope"></i>
-          <span>Messages</span>
-        </a>
-      </li>
-      <% } %>
-
       <%# nav item - profile %>
       <li>
         <a href="/profile/<%= currentUser['_id'] %>" class="nav-link link-light text-nav <%= title=="Profile" ? "selected" : "" %>">
@@ -54,7 +43,7 @@
       <%# create take %>
       <li>
         <div class="btn nav-link text-nav active mt-4">
-          <span id="triggerPost">Take</span>
+          <span class="triggerPost">Take</span>
         </div>
       </li>
     </ul>
@@ -70,7 +59,7 @@
         <strong><%= currentUser['userHandle'] %></strong>
       </a>
       <%# list of dropdown items %>
-      <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
         <%# account link %>
         <li><a class="dropdown-item" href="/auth/account/<%= currentUser['_id'] %>">Account</a></li>
         <li>
@@ -80,54 +69,60 @@
         <li><a class="dropdown-item" href="/auth/logout">Sign out</a></li>
       </ul>
     </div>
+
   </div>
 </nav>
 
-<%# mobile sidebar navigation %>
-<nav class="d-flex flex-md-wrap sidebar mobile">
-  <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-nav" style="width: 80px;">
+<%# smaller sidebar navigation %>
+<nav class="d-flex position-fixed start-0 sidebar small">
+  <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-nav">
     <%# site log %>
     <div class="d-flex justify-content-center">
-      <a href="/" class="link-light">
+      <a href="/home" class="link-light">
         <img src="/imgs/hot_takes-nav-mobile-logo.png" alt="hot_takes-logo" width="25" height="100%">
       </a>
     </div>
 
     <hr>
 
-    <%# nav container %>
-    <ul class="nav nav-pills flex-column mb-auto align-items-center">
-      <%# nav item - home %>
-      <li class="nav-item">
-        <a href="/home" class="nav-link link-light text-nav <%= title=="Homepage" ? "selected" : "" %>">
-          <i class="fa fa-home"></i>
-        </a>
-      </li>
-      <%# nav item - trending %>
-      <li>
-        <a href="#" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
-          <i class="fa fa-hashtag"></i>
-        </a>
-      </li>
-      <%# nav item - messages %>
-      <li>
-        <a href="#" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
-          <i class="fa fa-envelope"></i>
-        </a>
-      </li>
-      <%# nav item - trending %>
-      <li>
-        <a href="#" class="nav-link link-light text-nav <%= title=="" ? "selected" : "" %>">
-          <i class="fa fa-user"></i>
-        </a>
-      </li>
-      <%# create take %>
-      <li>
-        <div class="btn nav-link text-nav active mt-4">
-          <i class="fas fa-edit"></i>
-        </div>
-      </li>
-    </ul>
+    <nav class="navbar navbar-dark bg-transparent">
+      <%# nav container %>
+      <ul class="nav nav-pills flex-column mb-auto align-items-center">
+        <%# nav item - home %>
+        <li class="nav-item">
+          <a href="/home" class="nav-link link-light text-nav <%= title=="Homepage" ? "selected" : "" %>">
+            <i class="fa fa-home"></i>
+          </a>
+        </li>
+        <%# nav item - explore %>
+        <li class="nav-item">
+          <a href="/explore" class="nav-link link-light text-nav <%= title=="Explore" ? "selected" : "" %>">
+            <i class="fa fa-search"></i>
+          </a>
+        </li>
+        <%# nav item - trending %>
+        <li>
+          <a href="/trending" class="nav-link link-light text-nav <%= title=="Trending" ? "selected" : "" %>">
+            <i class="fa fa-hashtag"></i>
+          </a>
+        </li>
+        <%# nav item - profile %>
+        <li>
+          <a href="/profile/<%= currentUser['_id'] %>" class="nav-link link-light text-nav <%= title=="Profile" ? "selected" : "" %>">
+            <i class="fa fa-user"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+
+        <%# create take %>
+        <li>
+          <div class="btn nav-link text-nav active mt-4">
+            <span class="triggerPost">Take</span>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
 
     <hr>
 
@@ -150,3 +145,82 @@
     </div>
   </div>
 </nav>
+
+
+<div class="d-flex justify-content-start mobile fixed-top ms-3">
+  <nav class="navbar navbar-dark bg-transparent">
+    <%# dropdown menu %>
+    <div class="dropdown">
+      <a href="#" class="link-dark text-decoration-none text-nav" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-bars p-2"></i>
+      </a>
+      <%# list of dropdown items %>
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+        <%# nav item - home %>
+        <li class="nav-item">
+          <a href="/home" class="nav-link link-light text-nav <%= title=="Homepage" ? "selected" : "" %>">
+            <i class="fa fa-home"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <%# nav item - explore %>
+        <li class="nav-item">
+          <a href="/explore" class="nav-link link-light text-nav <%= title=="Explore" ? "selected" : "" %>">
+            <i class="fa fa-search"></i>
+            <span>Explore</span>
+          </a>
+        </li>
+        <%# nav item - trending %>
+        <li>
+          <a href="/trending" class="nav-link link-light text-nav <%= title=="Trending" ? "selected" : "" %>">
+            <i class="fa fa-hashtag"></i>
+            <span>Trending</span>
+          </a>
+        </li>
+
+        <%# nav item - profile %>
+        <li>
+          <a href="/profile/<%= currentUser['_id'] %>" class="nav-link link-light text-nav <%= title=="Profile" ? "selected" : "" %>">
+            <i class="fa fa-user"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+
+        <%# create take %>
+        <li>
+          <div class="btn nav-link text-nav active mt-4">
+            <span class="triggerPost">Take</span>
+          </div>
+        </li>
+
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+
+        <%# logout link %>
+        <li>
+          <a href="/auth/account/<%= currentUser['_id'] %>" class="nav-link link-light text-nav">
+            <span>Account</span>
+          </a>
+        </li>
+
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+
+        <%# logout link %>
+        <li>
+          <a href="/auth/logout" class="nav-link link-light text-nav">
+            <span>Sign Out</span>
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+  </nav>
+</div>

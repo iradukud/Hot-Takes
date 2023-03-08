@@ -17,7 +17,7 @@ $('.close').click(function () {
 });
 
 //trigger event to edit post
-$('#triggerPost').click(function () {
+$('.triggerPost').click(function () {
     $('#postModal').modal('show');
 
     //sets form's action

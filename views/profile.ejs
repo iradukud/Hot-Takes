@@ -1,14 +1,14 @@
 <%- include('partials/header') -%>
 
-<div class="d-flex flex-nowrap">
-  <%# load desktop sidebar modals partial %>
+<div class="d-flex justify-content-center">
+  <%# load sidebar modals partial %>
   <%- include('partials/sidebar') -%>
 
   <%# main section of the page %>
-  <main class="d-flex flex-column col-sm-3 mx-3 ">
+  <main class="d-flex flex-column flex-shrink-1 col-md-5 col-8 px-3">
     <h1 class="text-center">Profile</h1>
 
-    <div class="d-flex d-flex justify-content-around border-bottom mb-4 pb-3">
+    <div class="d-flex d-flex justify-content-around mb-4 pb-3">
 
       <div class="d-flex flex-column align-items-center text-center">
         <%# link to profile %>
@@ -39,9 +39,11 @@
       </div>
 
       <div>
+
         <%# if user view their own profile don't show follow status and messages %>
         <% if(profile['_id'].toString().trim() != currentUser['_id'].toString().trim()){ %>
 
+        <%# link to messages between user %>
         <a href="/message/<%=profile['_id']%>" class="text-reset text-decoration-none">
           <i class="fa fa-envelope"></i>
         </a>
@@ -55,7 +57,7 @@
         </a>
 
         <%
-          }
+          };
         %>
 
       </div>
@@ -63,15 +65,16 @@
     </div>
 
     <%
-    if(posts.length){
-      %>
+      if(posts.length){
+    %>
 
     <section class="d-flex flex-column align-items-center">
       <div class="row col-10">
 
         <%
-        posts.forEach(post=>{
-          %>
+          //loop through each post
+          posts.forEach(post=>{
+        %>
 
         <%# container for each post %>
         <div class="d-flex mb-3">
@@ -85,30 +88,38 @@
 
           <%# post text %>
           <div class="flex-column w-100">
+
             <%# link to poster %>
             <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
               <%# user name %>
               <span><strong><%= post['postUser']['userName'] %></strong></span>
+            </a>
 
+            <%# link to poster %>
+            <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
               <%# user handle %>
               <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
             </a>
 
             <%# post text %>
-            <p id="postContent" class="text-wrap"><%= post['post'] %></p>
+            <a href="/post/<%=post['_id']%>" class="text-reset text-decoration-none">
+              <p id="postContent-<%= post['_id'] %>" class="text-wrap"><%= post['post'] %></p>
+            </a>
 
             <%# post image image %>
             <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
 
-              <%
-              if(post['image']){
-                %>
+              <% if(post['image']){ %>
 
-              <img src="<%= post['image']%>" alt="" width="200" height="100%">
+              <%# link to post %>
+              <a href="/post/<%=post['_id']%>" class="text-reset text-decoration-none">
+                <%# post image image %>
+                <img src="<%= post['image']%>" alt="" width="200" height="100%">
+              </a>
 
               <%
-            }
-            %>
+                };
+              %>
 
             </div>
 
@@ -118,7 +129,7 @@
               <%# if owner of post, show edit and delete buttons  %>
               <%
                 if(post['user'].toString().trim() == currentUser['_id'].toString().trim()){
-                %>
+              %>
 
               <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
               <form action="/post/deletePost?_method=delete" method="POST">
@@ -127,7 +138,7 @@
               </form>
 
               <%
-              }
+                };
               %>
 
               <%# like and comment buttons %>
@@ -149,60 +160,67 @@
         </div>
 
         <%
-        })
+          });
         %>
 
       </div>
     </section>
 
     <%
-  }
-  %>
-
-
+      };
+    %>
 
   </main>
 
-  <div class="d-flex flex-column mt-3 mx-1">
+  <div class="d-flex flex-column position-fixed end-0 col-md-3 col-sm-3 big mt-3 mx-1">
     <h6 class="text-center"><%=profile['userName']%> - Hottest Takes</h6>
     <div class="row col-10">
 
-      <%hottest.forEach(post=>{%>
+      <% hottest.forEach(post=>{ %>
 
       <%# container for each post %>
       <div class="d-flex mb-3">
-        <%# user profile image %>
+
         <div class="flex-column">
           <%# link to poster %>
           <a href="/profile/<%=post['user']%>">
+            <%# user profile image %>
             <img src="<%=post['postUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
           </a>
         </div>
 
-        <%# post text %>
         <div class="flex-column w-100">
+
           <%# link to poster %>
           <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
             <%# user name %>
             <span><strong><%= post['postUser']['userName'] %></strong></span>
+          </a>
 
+          <%# link to poster %>
+          <a href="/profile/<%=post['user']%>" class="text-reset text-decoration-none">
             <%# user handle %>
             <span class="mb-1">@<%= post['postUser']['userHandle'] %></span>
           </a>
-          <%# post text %>
-          <p id="postContent" class="text-wrap"><%= post['post'] %></p>
+
+          <a href="/post/<%=post['_id']%>" class="text-reset text-decoration-none">
+            <%# post text %>
+            <p class="text-wrap"><%= post['post'] %></p>
+          </a>
 
           <%# post image image %>
           <div class="d-flex justify-content-center border-bottom mb-1 pb-1">
 
-            <%
-            if(post['image']){
-            %>
+            <% if(post['image']){ %>
 
-            <img src="<%= post['image']%>" alt="" width="150" height="100%" />
+            <%# link to post %>
+            <a href="/post/<%=post['_id']%>" class="text-reset text-decoration-none">
+              <%# post image image %>
+              <img src="<%= post['image']%>" alt="" width="200" height="100%">
+            </a>
 
             <%
-            }
+              };
             %>
 
           </div>
@@ -228,8 +246,9 @@
       </div>
 
       <%
-      })
+        });
       %>
+
     </div>
   </div>
 </div>

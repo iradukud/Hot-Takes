@@ -6,28 +6,35 @@
     <%# alert section %>
     <section class="container">
       <%
-    //error alerts 
-    if (locals.messages.errors) { %> <% messages.errors.forEach( el => { 
-    %>
+        //error alerts 
+        if (locals.messages.errors) { 
+          messages.errors.forEach( el => { 
+      %>
+
       <%# each alert %>
       <div class="row justify-content-center">
         <div class="alert alert-danger col-4"><%= el.msg %></div>
       </div>
+
       <% 
-        }) 
-    } 
-    //information alerts
-    if (locals.messages.info) { 
-        messages.info.forEach( el => { 
-    %>
+          }); 
+        }; 
+
+        //information alerts
+        if (locals.messages.info) { 
+          messages.info.forEach( el => { 
+      %>
+
       <%# each alert %>
       <div class="row justify-content-center">
         <div class="alert alert-info col-4"><%= el.msg %></div>
       </div>
+
       <%
-        })  
-    } 
-    %>
+          });  
+        }; 
+      %>
+
     </section>
 
     <%# hero logo %>
@@ -46,6 +53,7 @@
       </div>
     </div>
   </div>
+
 </main>
 
 
