@@ -1,11 +1,13 @@
 const passport = require("passport");
 const validator = require("validator");
+const bcrypt = require("bcrypt");
 const Account = require("../models/Account");
 const User = require("../models/User");
 const Post = require("../models/Post");
 const Following = require("../models/following");
 const Follower = require("../models/follower");
 const cloudinary = require("../middleware/cloudinary");
+const { request } = require("express");
 
 //login verification
 exports.postLogin = (req, res, next) => {
@@ -173,9 +175,7 @@ exports.getAccount = async (req, res, next) => {
   const user = await User.findById({ _id: req.params.id });
   const account = await Account.findById({ _id: user['account'] });
 
-
-
-  console.log('user has been follow or unfollowed!')
+  console.log('account page has been retrieved!')
   //render account page of user
   res.render("account.ejs", { title: 'Account', currentUser: user, email: account['email'] });
 };
@@ -184,6 +184,7 @@ exports.getAccount = async (req, res, next) => {
 exports.editUser = async (req, res, next) => {
   //find logged in user
   let user = await User.findById({ _id: req.params.id });
+
   try {
     //if userName is provide
     if (req.body.userName) {
@@ -230,8 +231,124 @@ exports.editUser = async (req, res, next) => {
   } catch {
     res.redirect(`/auth/account/${req.params.id}`);
   }
-
 };
+
+//edit user details
+exports.editAccount = async (req, res, next) => {
+  //find logged in user
+  let user = await User.findById({ _id: req.params.id });
+  let account = await Account.findById({ _id: req.user['_id'] })
+
+  //variable that holds an array of error messages
+  const validationErrors = [];
+
+
+  try {
+    //if email is provide
+    if (req.body.email) {
+      //if any of the inputs parameters are empty add said messages to the validationErrors variable  
+      if (!validator.isEmail(req.body.email)) {
+        validationErrors.push({ msg: "Please enter a valid email address." });
+      };
+
+      req.body.email = validator.normalizeEmail(req.body.email, {
+        gmail_remove_dots: false,
+      });
+
+      //check to see if user's email exist
+      Account.findOne(
+        { email: req.body.email },
+        async (err, existingUser) => {
+
+          //if an error occurs end function and return the error
+          if (err) {
+            return next(err);
+          };
+          //if user is already in use return error and redirect back to account page
+          if (existingUser) {
+            req.flash("errors", { msg: "Account with that email already exists." });
+
+            console.log('Account with that email already exists.')
+            //redirect to account page with error message
+            req.flash("errors", { msg: 'Account with that email already exists.' });
+            res.redirect(`/auth/account/${req.params.id}`);
+          } else {
+            //else change the current account's username
+            await Account.findByIdAndUpdate({ _id: user['account'] },
+              {
+                $set: {
+                  email: req.body.email
+                }
+              });
+
+            console.log('Account email has been changed.');
+            //redirect to account page with information message
+            req.flash("info", { msg: 'Email change successful' });
+            res.redirect(`/auth/account/${req.params.id}`);
+          };
+        }
+      );
+    };
+
+    //if password inputs are provide
+    if (req.body.currentPassword && req.body.password && req.body.confirmPassword) {
+      //if password length is to short add error message to array
+      if (!validator.isLength(req.body.password, { min: 8 })) {
+        console.log("Password must be at least 8 characters long!");
+        validationErrors.push({ msg: "Password must be at least 8 characters long" });
+      };
+
+      //if inputted new passwords don't match add error message to array
+      if (req.body.password !== req.body.confirmPassword) {
+        console.log("new passwords do not match!");
+        validationErrors.push({ msg: "Passwords do not match" });
+      };
+
+      //check to see if the inputted password matches our data
+      bcrypt.compare(req.body.currentPassword, account.password, (err, isMatch) => {
+        //if error throw error message
+        if (err) {
+          throw err;
+        } else if (!isMatch) {
+          console.log("Password doesn't match account password!");
+          //redirect to account page with error message
+          validationErrors.push({ msg: "password doesn't match account password" });
+        };
+      });
+
+      //if the validationErrors array has any messages redirect to account page with error presented to the user   
+      if (validationErrors.length) {
+        console.log('At least one input field has a problem');
+
+        //redirect to account page with error message
+        req.flash("errors", validationErrors);
+        return res.redirect(`/auth/account/${req.params.id}`);
+
+      } else {
+        //change password
+        //encryting the new password
+        const hash = await bcrypt.hash(req.body.password, 10)
+
+        //find and change user's password
+        await Account.findByIdAndUpdate({ _id: req.user['_id'] },
+          {
+            set: {
+              password: hash
+            }
+          });
+
+        console.log('Account password changed.');
+        //redirect to information message
+        req.flash("info", { msg: 'Password change successful' });
+        return res.redirect(`/auth/account/${req.params.id}`);
+      }
+    }
+  }
+  catch {
+    res.redirect(`/auth/account/${req.params.id}`);
+  }
+}
+
 
 //follow or unfollow user
 exports.followings = async (req, res, next) => {

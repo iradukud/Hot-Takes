@@ -51,7 +51,7 @@
 
     <%# security %>
     <div class="d-flex justify-content-center border p-4">
-      <form action="/auth/account/<%= currentUser['_id'] %>?_method=PUT" method="POST" class="flex-column w-100">
+      <form action="/auth/editAccount/<%= currentUser['_id'] %>?_method=PUT" method="POST" class="flex-column w-100">
         <%# user email %>
         <div>
           <span><strong>Email</strong></span>
@@ -83,7 +83,7 @@
             <div class="d-flex justify-content-end">
               <div class="form-floating">
                 <input type="password" name="confirmPassword" id="confirmPassword" class="form-control">
-                <label for="confirmPassword" class="form-label">New Password</label>
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
               </div>
             </div>
 
