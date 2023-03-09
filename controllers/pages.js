@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const User = require("../models/User");
 
-//get main/index page
+//get index page/main
 exports.getIndex = (req, res) => {
-  //if already signed in redirect to dashboard
+  //if already signed in redirect to home page
   if (req.user) {
     return res.redirect("/home");
   };
@@ -16,12 +16,12 @@ exports.getHome = async (req, res) => {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
 
-    let posts = []
+    let posts = [];
 
-    //find every post posted by posted by user and people their following
+    //find every post posted by user and people their following
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
-        //get all posts posted and followered by user
+        //get all users posts and following users post
         $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString() }] }
       },
       {
@@ -78,9 +78,9 @@ exports.getExplore = async (req, res) => {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
 
-    let posts = []
+    let posts = [];
 
-    //find every post posted by posted by user and people their following
+    //find every post posted user and people their following
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
         //get all posts posted and followered by user
@@ -123,7 +123,7 @@ exports.getExplore = async (req, res) => {
           foreignField: "postId",
           as: "likes"
         }
-      },
+      },{ $sort: { createdAt: -1 } },
     ]).toArray()
 
     //store date for 7 days age
@@ -148,12 +148,12 @@ exports.getTrending = async (req, res) => {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
 
-    let posts = []
+    let posts = [];
 
-    //find every post posted by posted by user and people their following
+    //find every post posted by user and people their following
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
-        //get all posts posted and followered by user
+        //get all user posted and followered by user
         $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString() }] }
       },
       {
@@ -206,11 +206,8 @@ exports.getTrending = async (req, res) => {
       //sort post based on user interactions
       .sort((postA, postB) => (postB['likes'].length + postB['comments'].length) - (postA['likes'].length + postA['comments'].length));
 
-    console.log("search has been completed!")
-
-    //respond by rendering trending w/searched data
+    console.log("search has been completed!");
     res.render("trending.ejs", { title: 'Trending', trending: trending, currentUser: user });
-
   } catch (err) {
     console.log(err);
   }
@@ -225,14 +222,14 @@ exports.getProfile = async (req, res) => {
     //find clicked user
     const profile = await User.findById({ _id: req.params.id });
 
-    let posts = []
-    let followers = []
-    let following = []
+    let posts = [];
+    let followers = [];
+    let following = [];
 
-    //find every post posted by posted by clicked user
+    //find every post posted by clicked user
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
-        //implement way to fetch user's followers posts
+        //get all user posted
         $match: { user: mongoose.Types.ObjectId(req.params.id) }
       },
       {
@@ -272,7 +269,7 @@ exports.getProfile = async (req, res) => {
           foreignField: "postId",
           as: "likes"
         }
-      },
+      },{ $sort: { createdAt: -1 } },
     ]).toArray();
 
     //find every user's follower
@@ -323,7 +320,7 @@ exports.getProfile = async (req, res) => {
     res.render("profile.ejs", { title: 'Profile', posts: posts, currentUser: user, profile: profile, following: following, followers: followers, hottest: hottest });
   } catch (err) {
     console.log(err);
-  }
+  };
 };
 
 //complete a user search
@@ -332,9 +329,9 @@ exports.searchUsers = async (req, res) => {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
 
-    let posts = []
+    let posts = [];
 
-    //find every post posted by posted by user and people their following
+    //find every post posted user and people their following
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
         //get all posts posted and followered by user
@@ -377,14 +374,14 @@ exports.searchUsers = async (req, res) => {
           foreignField: "postId",
           as: "likes"
         }
-      },
+      },{ $sort: { createdAt: -1 } },
     ]).toArray();
 
 
     //retrieves users that match the search
     const searchUsers = await User.find({ userHandle: { "$regex": req.body.search, "$options": "i" } });
 
-    console.log("search has been completed!")
+    console.log("search has been completed!");
 
     //render page depending on where request came from
     if (req.body.title == 'Explore' || req.body.title == 'Trending') {
@@ -423,12 +420,12 @@ exports.searchPosts = async (req, res) => {
     //find logged in user
     const user = await User.findOne({ account: req.user._id });
 
-    let posts = []
+    let posts = [];
 
-    //find every post posted by posted by user and people their following
+    //find every post posted by user and people their following
     posts = await mongoose.connection.db.collection("posts").aggregate([
       {
-        //get all posts posted and followered by user
+        //get all user posts and users they follow
         $match: { $or: [{ user: user['_id'] }, { followers: user['_id'].toString() }] }
       },
       {
@@ -468,7 +465,7 @@ exports.searchPosts = async (req, res) => {
           foreignField: "postId",
           as: "likes"
         }
-      },
+      },{ $sort: { createdAt: -1 } },
     ]).toArray();
 
     //retrieves post that match the search
@@ -516,7 +513,7 @@ exports.searchPosts = async (req, res) => {
       },
     ]).toArray();
 
-    console.log("search has been completed!")
+    console.log("search has been completed!");
 
     //render page depending on where request came from
     if (req.body.title == 'Explore' || req.body.title == 'Trending') {
@@ -545,7 +542,7 @@ exports.searchPosts = async (req, res) => {
 
   } catch (err) {
     console.log(err);
-  }
+  };
 
 };
 
@@ -567,7 +564,7 @@ exports.getMessage = async (req, res) => {
             { sender: mongoose.Types.ObjectId(req.params['id']), recipient: user['_id'] }
           ]
         }
-      },
+      },{ $sort: { createdAt: -1 } },
     ]).toArray();
 
     res.render("messages.ejs", { title: 'Messages', currentUser: user, otherUser: otherUser, messages: messages });

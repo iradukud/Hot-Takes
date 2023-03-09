@@ -27,7 +27,6 @@
  }
 
  /* Webpage responsiveness */
- /* desktop nav */
  @media (max-width: 649px) {
   .small {
     display: none !important;
@@ -61,12 +60,6 @@
     display: none !important;
   }
 }
-
-
-
-
-
-
 
  /* post form styling */
  /* remove textarea's border */

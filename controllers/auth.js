@@ -4,10 +4,12 @@ const bcrypt = require("bcrypt");
 const Account = require("../models/Account");
 const User = require("../models/User");
 const Post = require("../models/Post");
-const Following = require("../models/following");
-const Follower = require("../models/follower");
+const Comment = require("../models/Comment");
+const Like = require("../models/Like");
+const Following = require("../models/Following");
+const Follower = require("../models/Follower");
+const Message = require("../models/Message");
 const cloudinary = require("../middleware/cloudinary");
-const { request } = require("express");
 
 //login verification
 exports.postLogin = (req, res, next) => {
@@ -145,7 +147,7 @@ exports.postSignup = (req, res, next) => {
             return next(err);
           }
 
-          let result = ''
+          let result = '';
 
           // Upload image to cloudinary, if provided
           if (req.file) {
@@ -225,19 +227,19 @@ exports.editUser = async (req, res, next) => {
       });
     };
 
-    console.log('user detail(s) have been edited!')
+    console.log('user detail(s) have been edited!');
     //render account page of user
     res.redirect(`/auth/account/${req.params.id}`);
   } catch {
     res.redirect(`/auth/account/${req.params.id}`);
-  }
+  };
 };
 
 //edit user details
 exports.editAccount = async (req, res, next) => {
   //find logged in user
   let user = await User.findById({ _id: req.params.id });
-  let account = await Account.findById({ _id: req.user['_id'] })
+  let account = await Account.findById({ _id: req.user['_id'] });
 
   //variable that holds an array of error messages
   const validationErrors = [];
@@ -268,7 +270,7 @@ exports.editAccount = async (req, res, next) => {
           if (existingUser) {
             req.flash("errors", { msg: "Account with that email already exists." });
 
-            console.log('Account with that email already exists.')
+            console.log('Account with that email already exists.');
             //redirect to account page with error message
             req.flash("errors", { msg: 'Account with that email already exists.' });
             res.redirect(`/auth/account/${req.params.id}`);
@@ -287,7 +289,7 @@ exports.editAccount = async (req, res, next) => {
             res.redirect(`/auth/account/${req.params.id}`);
           };
         }
-      );
+      )
     };
 
     //if password inputs are provide
@@ -327,7 +329,7 @@ exports.editAccount = async (req, res, next) => {
       } else {
         //change password
         //encryting the new password
-        const hash = await bcrypt.hash(req.body.password, 10)
+        const hash = await bcrypt.hash(req.body.password, 10);
 
         //find and change user's password
         await Account.findByIdAndUpdate({ _id: req.user['_id'] },
@@ -341,14 +343,12 @@ exports.editAccount = async (req, res, next) => {
         //redirect to information message
         req.flash("info", { msg: 'Password change successful' });
         return res.redirect(`/auth/account/${req.params.id}`);
-      }
-    }
-  }
-  catch {
+      };
+    };
+  } catch {
     res.redirect(`/auth/account/${req.params.id}`);
-  }
-}
-
+  };
+};
 
 //follow or unfollow user
 exports.followings = async (req, res, next) => {
@@ -432,4 +432,72 @@ exports.followings = async (req, res, next) => {
   console.log('user has been follow or unfollowed!')
   res.redirect(`/profile/${req.params.id}`)
 
+};
+
+//delete account
+exports.deleteAccount = async (req, res, next) => {
+  try {
+    //remove followers and following from other users
+    await User.updateMany({},
+      {
+        $pull: {
+          followers: req.params.id.toString(),
+          following: req.params.id.toString(),
+        }
+      });
+
+    //remove post followers
+    await Post.updateMany({},
+      {
+        $pull: {
+          followers: req.params.id.toString(),
+        }
+      });
+
+    //delete followers
+    await Following.deleteMany({ user: req.params.id });
+
+    //delete all follows 
+    await Follower.deleteMany({ follower: req.params.id });
+
+    //find all posts by user
+    const posts = await Post.find({ user: req.params.id });
+
+    //remove every comment and like associated with post
+    posts.forEach(async (post) => {
+      await Comment.deleteMany({ postId: post['_id'] });
+      await Like.deleteMany({ postId: post['_id'] });
+    });
+
+    //delete all post by user
+    await Post.deleteMany({ user: req.params.id });
+
+    //delete all comments by user
+    await Comment.deleteMany({ user: req.params.id });
+
+    //delete all likes by user
+    await Like.deleteMany({ user: req.params.id });
+
+    //delete user profile
+    await User.deleteOne({ _id: req.params.id });
+
+    //delete user account
+    await Account.deleteOne({ _id: req.user.id });
+
+    //delete all message sent and recieved by user 
+    await Message.deleteMany({ sender: req.params.id });
+    await Message.deleteMany({ recipient: req.params.id });
+
+    //remove current user's session
+    req.session.destroy((err) => {
+      //if error console.log log it
+      if (err) {
+        console.log("Error : Failed to destroy the session during logout.", err);
+      };
+      res.redirect("/");
+    });
+
+  } catch (err) {
+    console.log(err);
+  };
 };

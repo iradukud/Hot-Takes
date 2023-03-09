@@ -140,17 +140,17 @@
 
 </div>
 
-<%# drop down searchbar for mobiles %>
+<%# drop down searchbar for mobiles 
 <div class="d-flex justify-content-end mobile fixed-top overflow-auto me-4 mt-2">
   <nav class="navbar-dark bg-transparent">
-    <%# dropdown menu %>
+    //dropdown menu
     <div class="dropdown">
       <a href="#" class="link-dark text-decoration-none text-nav" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="fa fa-search p-2"></i>
       </a>
 
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownMenuLink">
-        <%# nav item - search users %>
+        //nav item - search users
         <li class="nav-item">
           <form action="/searchUsers" method="POST" class="p-2">
             <input type="search" class="form-control" placeholder="search users" aria-label="Search" name="search" />
@@ -159,7 +159,7 @@
             </div>
           </form>
         </li>
-        <%# nav item - search posts %>
+        //nav item - search posts
         <li class="nav-item">
           <form action="/searchPosts" method="POST" class="p-2">
             <input type="search" class="form-control" placeholder="search posts" aria-label="Search" name="search" />
@@ -173,3 +173,4 @@
     </div>
   </nav>
 </div>
+%>

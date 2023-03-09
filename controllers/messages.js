@@ -1,4 +1,3 @@
-const cloudinary = require("../middleware/cloudinary");
 const mongoose = require("mongoose");
 const Message = require("../models/Message");
 const User = require("../models/User");
@@ -33,6 +32,6 @@ exports.sendMessage = async (req, res) => {
 
         res.render("messages.ejs", { title: 'Messages', currentUser: user, otherUser: otherUser, messages: messages });
     } catch (err) {
-        console.log(err)
+        console.log(err);
     }
 }

@@ -110,7 +110,6 @@
         <li>
           <a href="/profile/<%= currentUser['_id'] %>" class="nav-link link-light text-nav <%= title=="Profile" ? "selected" : "" %>">
             <i class="fa fa-user"></i>
-            <span>Profile</span>
           </a>
         </li>
 
@@ -135,7 +134,7 @@
       <%# list of dropdown items %>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
         <%# account link %>
-        <li><a class="dropdown-item" href="#">Account</a></li>
+        <li><a class="dropdown-item" href="/auth/account/<%= currentUser['_id']%>">Account</a></li>
         <li>
           <hr class="dropdown-divider">
         </li>
@@ -143,6 +142,7 @@
         <li><a class="dropdown-item" href="/auth/logout">Sign out</a></li>
       </ul>
     </div>
+
   </div>
 </nav>
 
@@ -186,13 +186,9 @@
           </a>
         </li>
 
-        <li>
-          <hr class="dropdown-divider">
-        </li>
-
         <%# create take %>
         <li>
-          <div class="btn nav-link text-nav active mt-4">
+          <div class="btn nav-link active mt-4">
             <span class="triggerPost">Take</span>
           </div>
         </li>
@@ -201,7 +197,8 @@
           <hr class="dropdown-divider">
         </li>
 
-        <%# logout link %>
+
+        <%# account link %>
         <li>
           <a href="/auth/account/<%= currentUser['_id'] %>" class="nav-link link-light text-nav">
             <span>Account</span>

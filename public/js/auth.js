@@ -7,7 +7,7 @@ $('.close').click(function () {
 //trigger event to login
 $('#login').click(function () {
     $('#loginModal').modal('show');
-})
+});
 
 //trigger event to signup, step 1
 $('#signup').click(function () {
@@ -39,4 +39,4 @@ $('#signup').click(function () {
         document.querySelectorAll('.step1').forEach(section => section.style.display = 'block');
     });
     });
-})
+});

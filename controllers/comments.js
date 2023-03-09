@@ -1,8 +1,4 @@
-const cloudinary = require("../middleware/cloudinary");
-const mongoose = require("mongoose");
-const User = require("../models/User");
-const Post = require("../models/Post");
-const Comment = require("../models/Comment")
+const Comment = require("../models/Comment");
 
 module.exports = {
   //add comment to post  
@@ -20,7 +16,7 @@ module.exports = {
       res.redirect(`/post/${req.params.id}`);
     } catch (err) {
       console.log(err);
-    }
+    };
   },
 
   //delete specified post
@@ -36,31 +32,31 @@ module.exports = {
         });
 
       //find comment
-      const comment = await Comment.findById({ _id: req.params.id })
+      const comment = await Comment.findById({ _id: req.params.id });
 
       console.log("comment was edited");
       //redirect to post
       res.redirect(`/post/${comment['postId']}`);
     } catch (err) {
       res.redirect("/home");
-    }
+    };
   },
 
   //delete specified post
   deleteComment: async (req, res) => {
     try {
       //find comment
-      const comment = await Comment.findById({ _id: req.params.id })
+      const comment = await Comment.findById({ _id: req.params.id });
 
       //delete comment
       await Comment.deleteOne({ _id: req.params.id });
 
-      console.log("deleted comment");
+      console.log("deleted comment!");
       //redirect to post
       res.redirect(`/post/${comment['postId']}`);
     } catch (err) {
       res.redirect("/home");
-    }
+    };
   },
 
 };

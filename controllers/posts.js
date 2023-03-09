@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
-const Like = require("../models/Like")
+const Like = require("../models/Like");
 
 module.exports = {
   //create a new post
@@ -12,7 +12,7 @@ module.exports = {
       //find logged in user
       const user = await User.findOne({ account: req.user._id });
 
-      let result = ''
+      let result = '';
 
       // Upload image to cloudinary, if provided
       if (req.file) {
@@ -33,10 +33,10 @@ module.exports = {
       res.redirect('/home');
     } catch (err) {
       console.log(err);
-    }
+    };
   },
 
-  //create a new post
+  //get post
   getPost: async (req, res) => {
     try {
       //find logged in user
@@ -45,7 +45,7 @@ module.exports = {
       //find clicked post - along side with poster, its like and comments
       const post = await mongoose.connection.db.collection("posts").aggregate([
         {
-          //get all posts posted and followered by user
+          //find clicked post
           $match: { _id: mongoose.Types.ObjectId(req.params['id']) }
         },
         {
@@ -88,10 +88,10 @@ module.exports = {
         },
       ]).toArray();
 
-      //find clicked post - comments and it's commenter
+      //find comments and associated commenter of post
       const comments = await mongoose.connection.db.collection("comments").aggregate([
         {
-          //get all posts comments
+          //get all associated comments
           $match: { postId: mongoose.Types.ObjectId(req.params['id']) }
         },
         {
@@ -109,9 +109,10 @@ module.exports = {
         },
       ]).toArray();
 
+      //find likes and associated liker of post
       const likes = await mongoose.connection.db.collection("likes").aggregate([
         {
-          //get all posts comments
+          //get all associated comments
           $match: { postId: mongoose.Types.ObjectId(req.params['id']) }
         },
         {
@@ -129,7 +130,6 @@ module.exports = {
         },
       ]).toArray();
 
-      console.log(post);
       console.log("post has been retrieved!");
       res.render("post.ejs", { title: 'Post', post: post[0], currentUser: user, comments: comments, likes: likes });
     } catch (err) {
@@ -140,36 +140,39 @@ module.exports = {
   //like post
   likePost: async (req, res) => {
     try {
-      //find if user already liked post
-      const liked = await Like.findOne({ user: req.body.user, postId: req.body.postId });
+      //find post
+      const post = await Post.findById({_id:req.params.id})
 
-      //if user has'nt liked the post create new like
-      //else remove existing like
+      //find if user already liked post
+      const liked = await Like.findOne({ user: post.user, postId: req.params.id });
+
       if (!liked) {
+        //if user hasn't liked the post create new like
         await Like.create({
-          user: req.body.user,
-          postId: req.body.postId,
+          user: post.user,
+          postId: req.params.id,
         });
+
       } else {
-        await Like.deleteOne({ user: req.body.user, postId: req.body.postId });
+        //else remove existing like
+        await Like.deleteOne({ user: post.user, postId: req.params.id});
       };
 
       console.log("like added or removed");
-      res.redirect(`/home`);
+      res.redirect(`/post/${req.params.id}`);
     } catch (err) {
       console.log(err);
-    }
+    };
   },
 
   //edit post
   editPost: async (req, res) => {
     try {
       //retrieve post by id
-      let post = await Post.findById({ _id: req.params.id })
-      let result = ''
+      let post = await Post.findById({ _id: req.params.id });
+      let result = '';
 
       // Upload image to cloudinary, if provided
-      // And save other changes
       if (req.file) {
         //delete post's image from cloudinary
         if (post.cloudinaryId) {
@@ -190,7 +193,7 @@ module.exports = {
           });
 
       } else {
-        //assign changes to post
+        //save changes to post
         await Post.findOneAndUpdate({ _id: req.params.id },
           {
             $set: {
@@ -211,20 +214,10 @@ module.exports = {
   deletePost: async (req, res) => {
     try {
       //find post by id
-      let post = await Post.findById({ _id: req.body.postId });
-
-      //find all the related comments
-      let comments = await Comment.find({ postId: req.body.postId });
-
-      //remove comment's image from cloudinary
-      comments.forEach(async (comment) => {
-        if (comment.cloudinaryId) {
-          await cloudinary.uploader.destroy(comment.cloudinaryId);
-        }
-      })
+      let post = await Post.findById({ _id: req.params.id });
 
       //delete comments from db
-      await Comment.deleteMany({ postId: req.body.postId });
+      await Comment.deleteMany({ postId: req.params.id });
 
       //delete post's image from cloudinary
       if (post.cloudinaryId) {
@@ -232,9 +225,9 @@ module.exports = {
       }
 
       //delete post from db
-      await Post.deleteOne({ _id: req.body.postId });
+      await Post.deleteOne({ _id: req.params.id });
 
-      console.log("Deleted Post");
+      console.log("post deleted!");
       res.redirect("/home");
     } catch (err) {
       res.redirect("/home");

@@ -2,20 +2,21 @@ const express = require("express");
 const router = express.Router();
 const upload = require("../middleware/multer");
 const postsController = require("../controllers/posts");
-const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
+/* post routes */
+//create new post
+router.post("/create", upload.single("postImage"), postsController.createPost);
 
-//Post Routes - simplified for now
+//get post page
 router.get("/:id", postsController.getPost);
 
-router.post("/create", upload.single("postImage"), postsController.createPost);
-router.post("/like", postsController.likePost);
-
+//edit post
 router.put("/edit/:id", upload.single("postImage"), postsController.editPost);
 
-router.delete("/deletePost", postsController.deletePost);
+//delete post
+router.delete("/delete/:id", postsController.deletePost);
 
-
-
+//like post
+router.get("/like/:id", postsController.likePost);
 
 module.exports = router;

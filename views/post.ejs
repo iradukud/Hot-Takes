@@ -45,15 +45,14 @@
         <%# post icons %>
         <div class="d-flex justify-content-around align-items-center">
 
-          <%# if owner of post, show edit and delete buttons  %>
+          <%# if owner of post %>
           <% if(post['user'].toString().trim() == currentUser['_id'].toString().trim()){ %>
 
-          <%# trigger edit post %>
+          <%# edit trigger %>
           <button class="btn fas fa-edit editPostTrigger <%=post['_id']%>"></button>
 
-          <%# delete post form %>
-          <form action="/post/deletePost?_method=delete" method="POST">
-            <input type="hidden" name="postId" value="<%= post['_id'] %>" />
+          <%# delete button %>
+          <form action="/post/delete/<%= post['_id'] %>?_method=delete" method="POST">
             <button type="sumbit" class="btn fa fa-trash py-0"></button>
           </form>
 
@@ -61,19 +60,17 @@
             }; 
           %>
 
-          <%# trigger comment modal button and comment count %>
-          <div>
-            <button class="btn fa fa-comments px-0 py-0 commentTrigger <%=post['_id']%>"></button>
+          <%# comment trigger buttons and comment count %>
+          <div class="d-flex">
+            <button class="btn fa fa-comments px-1 py-0 commentTrigger <%=post['_id']%>"></button>
             <span><%= post['comments'].length %></span>
           </div>
 
-          <%# like button and count %>
+          <%# like button and like count %>
           <div class="d-flex">
-            <form action="/post/like" method="POST">
-              <input type="hidden" name="postId" value="<%= post['_id'] %>" />
-              <input type="hidden" name="user" value="<%= currentUser['_id'] %>" />
+            <a href="/post/like/<%= post['_id'] %>">
               <button type="sumbit" class="btn fa fa-fire px-1 py-0"></button>
-            </form>
+            </a>
             <span><%= post['likes'].length %></span>
           </div>
 
@@ -116,7 +113,7 @@
               <button type="sumbit" class="btn fa fa-trash py-0"></button>
             </a>
 
-          <% 
+            <% 
             };
           %>
 
