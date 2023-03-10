@@ -463,10 +463,17 @@ exports.deleteAccount = async (req, res, next) => {
     //find all posts by user
     const posts = await Post.find({ user: req.params.id });
 
-    //remove every comment and like associated with post
+    //for every post by user
     posts.forEach(async (post) => {
+      //remove every comment
       await Comment.deleteMany({ postId: post['_id'] });
+      //remove every like
       await Like.deleteMany({ postId: post['_id'] });
+
+      //delete image of post from cloudinary  
+      if (post.cloudinaryId) {
+        await cloudinary.uploader.destroy(post.cloudinaryId);
+      }
     });
 
     //delete all post by user
@@ -477,6 +484,14 @@ exports.deleteAccount = async (req, res, next) => {
 
     //delete all likes by user
     await Like.deleteMany({ user: req.params.id });
+
+    //find all posts by user
+    const user = await User.findById({ _id: req.params.id })
+
+    //delete user's profile image from cloudinary  
+    if (user.cloudinaryId) {
+      await cloudinary.uploader.destroy(user.cloudinaryId);
+    }
 
     //delete user profile
     await User.deleteOne({ _id: req.params.id });
