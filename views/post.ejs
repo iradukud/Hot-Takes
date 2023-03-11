@@ -86,15 +86,23 @@
       <div class="d-flex col-7 mb-3">
         <%# commenter profile image %>
         <div class="flex-column">
-          <img src="<%=comment['commentUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+          <a href="/profile/<%=comment['user']%>">
+            <img src="<%=comment['commentUser']['profileImage'] %>" alt="user profile" width="60" height="60" class="rounded-circle me-2">
+          </a>
         </div>
 
         <div class="flex-column w-100">
           <%# poster user name %>
-          <span><strong><%= comment['commentUser']['userName'] %></strong></span>
+          <span>
+            <a href="/profile/<%=comment['user']%>" class="text-reset text-decoration-none">
+              <strong><%= comment['commentUser']['userName'] %></strong>
+            </a>
+          </span>
 
           <%# poster user handle %>
-          <span class="mb-1">@<%= comment['commentUser']['userHandle'] %></span>
+          <a href="/profile/<%=comment['user']%>" class="text-reset text-decoration-none">
+            <span class="mb-1">@<%= comment['commentUser']['userHandle'] %></span>
+          </a>
 
           <%# post text %>
           <p id="commentContent-<%=comment['_id']%>" class="text-wrap"><%= comment['comment'] %></p>

@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const Like = require("../models/Like");
+const { findOne } = require("../models/User");
 
 module.exports = {
   //create a new post
@@ -140,22 +141,22 @@ module.exports = {
   //like post
   likePost: async (req, res) => {
     try {
-      //find post
-      const post = await Post.findById({_id:req.params.id})
+      //find logged in user
+      const user = await findOne({ account: req.user.id })
 
       //find if user already liked post
-      const liked = await Like.findOne({ user: post.user, postId: req.params.id });
+      const liked = await Like.findOne({ user: user['_id'], postId: req.params.id });
 
       if (!liked) {
         //if user hasn't liked the post create new like
         await Like.create({
-          user: post.user,
+          user: user['_id'],
           postId: req.params.id,
         });
 
       } else {
         //else remove existing like
-        await Like.deleteOne({ user: post.user, postId: req.params.id});
+        await Like.deleteOne({ user: user['_id'], postId: req.params.id });
       };
 
       console.log("like added or removed");
