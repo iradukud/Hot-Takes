@@ -142,7 +142,7 @@ module.exports = {
   likePost: async (req, res) => {
     try {
       //find logged in user
-      const user = await findOne({ account: req.user.id })
+      const user = await User.findOne({ account: req.user.id })
 
       //find if user already liked post
       const liked = await Like.findOne({ user: user['_id'], postId: req.params.id });
