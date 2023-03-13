@@ -98,7 +98,9 @@
       <!-- first column -->
       <td width="33.3%">
         <!-- name w/repo link -->
-        <a align="center" target="_blank" href="https://github.com/iradukud/Meals-on-Demand">Meals on Demand</a>
+        <p align="center">
+          <a target="_blank" href="https://github.com/iradukud/Meals-on-Demand">Meals on Demand</a>
+        </p>
         <br>
         <!-- demo w/repo link -->
         <a target="_blank" href="">
