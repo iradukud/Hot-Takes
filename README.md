@@ -2,7 +2,7 @@
 # <h1 align="center">HotTakes <a href="https://hot-takes-d3el.onrender.com/" target="_blank">Application</a></h1>
 
 <!-- website demo -->
-<a href="https://meals-on-demand.onrender.com/" target="_blank">
+<a href="https://hot-takes-d3el.onrender.com" target="_blank">
   <img src="https://github.com/iradukud/iradukud/blob/main/assests/imgs/ht_demo.gif" width="100%" alt="Hot-Takes.com"/>
 </a>
 
