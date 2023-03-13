@@ -3,7 +3,7 @@
 
 <!-- website demo -->
 <a href="https://meals-on-demand.onrender.com/" target="_blank">
-  <img src="https://github.com/iradukud/iradukud/blob/main/assests/imgs/ht_demo.gif" width="100%" alt="Meals-on-Demand.com"/>
+  <img src="https://github.com/iradukud/iradukud/blob/main/assests/imgs/ht_demo.gif" width="100%" alt="Hot-Takes.com"/>
 </a>
 
 <!-- website description -->
