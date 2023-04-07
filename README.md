@@ -123,7 +123,7 @@
       <td width="33.3%">
         <!-- name w/repo link -->
         <p align="center">
-        <a target="_blank" href="https://github.com/iradukud/Shuffle-Puzzle"></a>
+        <a target="_blank" href="https://github.com/iradukud/Shuffle-Puzzle">M.City Shuffle Puzzle</a>
         </p>
         <br>
         <!-- demo w/repo link -->
