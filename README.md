@@ -103,28 +103,32 @@
         </p>
         <br>
         <!-- demo w/repo link -->
-        <a target="_blank" href="">
+        <a target="_blank" href="https://github.com/iradukud/Meals-on-Demand">
             <img src="https://github.com/iradukud/iradukud/blob/main/assests/imgs/mod_demo.gif" width="100%"  alt="Meals on Demand demo video">
         </a>
       </td>
       <!-- second column -->
       <td width="33.3%">
         <!-- name w/repo link -->
-        <a target="_blank" href=""></a>
+        <p align="center">
+          <a target="_blank" href="https://github.com/iradukud/hitlist">Hitlist</a>
+        </p>
         <br>
         <!-- demo w/repo link -->
-        <a target="_blank" href="">
-            <img src="" width="100%"  alt="">
+        <a target="_blank" href="https://github.com/iradukud/hitlist">
+            <img src="https://github.com/iradukud/iradukud/raw/main/assests/imgs/hitlist_demo.gif" width="100%"  alt="Hitlist demo video">
         </a>
       </td>
       <!-- third column -->
       <td width="33.3%">
         <!-- name w/repo link -->
-        <a target="_blank" href=""></a>
+        <p align="center">
+        <a target="_blank" href="https://github.com/iradukud/Shuffle-Puzzle"></a>
+        </p>
         <br>
         <!-- demo w/repo link -->
-        <a target="_blank" href="">
-            <img src="" width="100%"  alt="">
+        <a target="_blank" href="https://github.com/iradukud/Shuffle-Puzzle">
+            <img src="https://github.com/iradukud/iradukud/raw/main/assests/imgs/mci_puzzle_demo.gif" width="100%"  alt="M.City Shuffle Puzzle demo video">
         </a>
       </td>
     </tr>
